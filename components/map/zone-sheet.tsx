@@ -1,38 +1,76 @@
 "use client"
 
 import { useState, useTransition } from "react"
-import { X, MapPin, Clock, AlertTriangle, Users, FileText, Radio } from "lucide-react"
+import {
+  X, MapPin, AlertTriangle, Users, CheckCircle, Edit, UserPlus,
+  TrendingUp, Activity,
+} from "lucide-react"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
+import type { Zone, RiskLevel } from "./city-map"
+import { useIncidents } from "@/lib/hooks"
 
-const TABS = ["Details", "Timeline", "Log Incident"] as const
+const TABS = ["Details", "Incidents", "Log Incident"] as const
 type Tab = typeof TABS[number]
 
-const MINI_STATS = [
-  { label: "Active",    value: "3",   color: "text-destructive" },
-  { label: "Responding",value: "5",  color: "text-warning"     },
-  { label: "Resolved",  value: "47", color: "text-success"     },
-  { label: "Risk Score",value: "72", color: "text-chart-1"     },
-]
-
-const TIMELINE_ENTRIES = [
-  { type: "Fire",     severity: "Critical", time: "2025-03-08T06:32:00", desc: "Structure fire at Maharlika Hwy." },
-  { type: "Flood",    severity: "High",     time: "2025-03-08T05:45:00", desc: "Rising waters near riverbank." },
-  { type: "Medical",  severity: "Medium",   time: "2025-03-07T22:10:00", desc: "Mass casualty — vehicular incident." },
-  { type: "Crime",    severity: "Low",      time: "2025-03-07T18:30:00", desc: "Robbery. Suspects at large." },
-  { type: "Typhoon",  severity: "Critical", time: "2025-03-07T14:00:00", desc: "Typhoon Rosita landfall warning." },
-]
-
-const SEV_COLORS = {
+const RISK_TEXT: Record<RiskLevel, string> = {
   Critical: "text-destructive",
-  High: "text-warning",
-  Medium: "text-chart-1",
-  Low: "text-success",
+  High:     "text-warning",
+  Medium:   "text-chart-1",
+  Low:      "text-success",
+  Minimal:  "text-muted-foreground",
 }
 
-export function ZoneSheet({ onClose }: { onClose: () => void }) {
+const RISK_BG: Record<RiskLevel, string> = {
+  Critical: "bg-destructive/10 border-destructive/20",
+  High:     "bg-warning/10 border-warning/20",
+  Medium:   "bg-chart-1/10 border-chart-1/20",
+  Low:      "bg-success/10 border-success/20",
+  Minimal:  "bg-muted border-border",
+}
+
+const SEV_TEXT: Record<string, string> = {
+  Critical: "text-destructive",
+  High:     "text-warning",
+  Medium:   "text-chart-1",
+  Low:      "text-success",
+}
+
+const SEV_DOT: Record<string, string> = {
+  Critical: "bg-destructive",
+  High:     "bg-warning",
+  Medium:   "bg-chart-1",
+  Low:      "bg-success",
+}
+
+const STATUS_COLORS: Record<string, string> = {
+  Active:     "bg-destructive/10 text-destructive border-destructive/20",
+  Responding: "bg-warning/10 text-warning border-warning/20",
+  Contained:  "bg-chart-6/10 text-chart-6 border-chart-6/20",
+  Resolved:   "bg-success/10 text-success border-success/20",
+}
+
+function Badge({ label, className }: { label: string; className: string }) {
+  return (
+    <span className={cn("inline-flex items-center px-1.5 py-0.5 rounded-sm text-[10px] font-medium font-mono border", className)}>
+      {label}
+    </span>
+  )
+}
+
+interface ZoneSheetProps {
+  zone: Zone
+  onClose: () => void
+}
+
+export function ZoneSheet({ zone, onClose }: ZoneSheetProps) {
   const [tab, setTab] = useState<Tab>("Details")
   const [, startTransition] = useTransition()
+  const { data: allIncidents } = useIncidents()
+  const zoneIncidents = allIncidents.filter(i =>
+    i.zone.toLowerCase().includes(zone.label.split(" ")[0].toLowerCase())
+  )
+
   const [form, setForm] = useState({
     type: "Fire",
     severity: "High",
@@ -49,24 +87,39 @@ export function ZoneSheet({ onClose }: { onClose: () => void }) {
     setTimeout(() => setSubmitted(false), 3000)
   }
 
+  const alertLevel = zone.risk === "Critical" ? "ALERT 3"
+    : zone.risk === "High" ? "ALERT 2"
+    : zone.risk === "Medium" ? "ALERT 1"
+    : "NORMAL"
+
   return (
     <div className="fixed right-0 top-0 bottom-0 z-50 w-[420px] bg-card border-l border-border shadow-2xl flex flex-col">
-      {/* Sheet header */}
+      {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
-        <div className="flex items-center gap-2">
-          <MapPin className="w-4 h-4 text-primary" />
-          <div>
-            <p className="text-sm font-semibold text-foreground leading-tight">Poblacion Zone</p>
-            <p className="text-[10px] font-mono text-muted-foreground">12.0730° N, 124.0070° E</p>
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div className={cn("w-8 h-8 rounded-sm border flex items-center justify-center shrink-0", RISK_BG[zone.risk])}>
+            <MapPin className={cn("w-4 h-4", RISK_TEXT[zone.risk])} />
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm font-semibold text-foreground leading-tight truncate">{zone.label}</p>
+            <p className="text-[10px] font-mono text-muted-foreground">{zone.district} · {zone.population.toLocaleString()} pop.</p>
           </div>
         </div>
-        <button
-          onClick={onClose}
-          className="w-7 h-7 flex items-center justify-center rounded-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
-          aria-label="Close sheet"
-        >
-          <X className="w-4 h-4" />
-        </button>
+        <div className="flex items-center gap-2">
+          <span className={cn(
+            "px-1.5 py-0.5 rounded-sm text-[10px] font-mono font-semibold border",
+            RISK_BG[zone.risk], RISK_TEXT[zone.risk]
+          )}>
+            {alertLevel}
+          </span>
+          <button
+            onClick={onClose}
+            className="w-7 h-7 flex items-center justify-center rounded-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+            aria-label="Close zone sheet"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
       {/* Tabs */}
@@ -78,100 +131,143 @@ export function ZoneSheet({ onClose }: { onClose: () => void }) {
             className={cn(
               "flex-1 py-2.5 text-xs font-medium transition-colors",
               tab === t
-                ? "text-primary border-b border-primary"
+                ? "text-primary border-b-2 border-primary"
                 : "text-muted-foreground hover:text-foreground"
             )}
           >
             {t}
+            {t === "Incidents" && zoneIncidents.length > 0 && (
+              <span className="ml-1.5 text-[9px] font-mono bg-secondary text-muted-foreground px-1 py-0.5 rounded-sm">
+                {zoneIncidents.length}
+              </span>
+            )}
           </button>
         ))}
       </div>
 
-      {/* Tab content */}
+      {/* Content */}
       <div className="flex-1 overflow-y-auto">
+
+        {/* ── Details ── */}
         {tab === "Details" && (
           <div className="p-4 space-y-4">
-            {/* Mini stat grid */}
+            {/* KPI grid */}
             <div className="grid grid-cols-2 gap-2">
-              {MINI_STATS.map(s => (
-                <div
-                  key={s.label}
-                  className="bg-card-nested border border-border rounded-sm p-3 flex flex-col gap-1"
-                >
-                  <span className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">
-                    {s.label}
-                  </span>
-                  <span className={cn("text-2xl font-semibold font-mono tabular-nums leading-none", s.color)}>
-                    {s.value}
-                  </span>
+              {[
+                { label: "Active",      value: zone.activeIncidents, color: zone.activeIncidents > 0 ? "text-destructive" : "text-success" },
+                { label: "Risk Score",  value: zone.risk === "Critical" ? 85 : zone.risk === "High" ? 68 : zone.risk === "Medium" ? 45 : 18, color: RISK_TEXT[zone.risk] },
+                { label: "Population",  value: zone.population.toLocaleString(), color: "text-chart-1" },
+                { label: "Responders",  value: zoneIncidents.reduce((s, i) => s + i.responders, 0), color: "text-foreground" },
+              ].map(kpi => (
+                <div key={kpi.label} className="bg-card-nested border border-border rounded-sm p-3">
+                  <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">{kpi.label}</p>
+                  <p className={cn("text-2xl font-semibold font-mono tabular-nums leading-tight mt-1", kpi.color)}>
+                    {kpi.value}
+                  </p>
                 </div>
               ))}
             </div>
 
-            {/* Placeholder chart area */}
-            <div className="bg-card-nested border border-border rounded-sm p-4 h-32 flex items-center justify-center">
-              <span className="text-[10px] text-muted-foreground font-mono">
-                Zone trend chart renders here
-              </span>
+            {/* Risk bar */}
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">Risk Breakdown</p>
+                <span className={cn("text-[10px] font-mono font-semibold", RISK_TEXT[zone.risk])}>{zone.risk}</span>
+              </div>
+              <div className="space-y-1.5">
+                {[
+                  { label: "Fire",      val: zone.risk === "Critical" ? 88 : zone.risk === "High" ? 65 : 30 },
+                  { label: "Flood",     val: zone.risk === "Critical" ? 75 : zone.risk === "High" ? 80 : 20 },
+                  { label: "Crime",     val: zone.risk === "Critical" ? 60 : zone.risk === "High" ? 55 : 35 },
+                  { label: "Medical",   val: zone.risk === "Critical" ? 70 : zone.risk === "High" ? 50 : 45 },
+                ].map(bar => (
+                  <div key={bar.label} className="flex items-center gap-2">
+                    <span className="text-[10px] font-mono text-muted-foreground w-16 shrink-0">{bar.label}</span>
+                    <div className="flex-1 h-1.5 bg-secondary rounded-full overflow-hidden">
+                      <div
+                        className={cn("h-full rounded-full transition-all duration-500", RISK_TEXT[zone.risk].replace("text-", "bg-"))}
+                        style={{ width: `${bar.val}%` }}
+                      />
+                    </div>
+                    <span className="text-[10px] font-mono text-muted-foreground w-8 text-right">{bar.val}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* Zone info */}
-            <div className="space-y-2 text-xs">
-              <div className="flex justify-between border-b border-border pb-1.5">
-                <span className="text-muted-foreground">District</span>
-                <span className="text-foreground font-mono">District I</span>
-              </div>
-              <div className="flex justify-between border-b border-border pb-1.5">
-                <span className="text-muted-foreground">Area</span>
-                <span className="text-foreground font-mono">8.2 km²</span>
-              </div>
-              <div className="flex justify-between border-b border-border pb-1.5">
-                <span className="text-muted-foreground">Population</span>
-                <span className="text-foreground font-mono">28,500</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Alert Level</span>
-                <span className="text-destructive font-mono font-medium">ALERT 3</span>
-              </div>
+            {/* Zone metadata */}
+            <div className="space-y-1.5">
+              <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest mb-2">Zone Info</p>
+              {[
+                { label: "District",     value: zone.district },
+                { label: "Area",         value: `${(zone.population / 3000).toFixed(1)} km²` },
+                { label: "Barangays",    value: Math.round(zone.population / 4500) + " units" },
+                { label: "Alert Level",  value: alertLevel },
+              ].map(row => (
+                <div key={row.label} className="flex justify-between items-center border-b border-border pb-1.5 text-xs">
+                  <span className="text-muted-foreground">{row.label}</span>
+                  <span className={cn(
+                    "font-mono",
+                    row.label === "Alert Level" ? RISK_TEXT[zone.risk] + " font-medium" : "text-foreground"
+                  )}>
+                    {row.value}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         )}
 
-        {tab === "Timeline" && (
-          <div className="p-4 space-y-3">
-            {TIMELINE_ENTRIES.map((entry, i) => (
-              <div key={i} className="flex gap-3">
-                <div className="flex flex-col items-center">
-                  <div className={cn(
-                    "w-2 h-2 rounded-full shrink-0 mt-1",
-                    SEV_COLORS[entry.severity as keyof typeof SEV_COLORS].replace("text-", "bg-")
-                  )} />
-                  {i < TIMELINE_ENTRIES.length - 1 && (
-                    <div className="w-px flex-1 bg-border mt-1" />
-                  )}
-                </div>
-                <div className="flex-1 pb-3">
-                  <div className="flex items-center gap-2 mb-0.5">
-                    <span className={cn("text-[10px] font-semibold font-mono", SEV_COLORS[entry.severity as keyof typeof SEV_COLORS])}>
-                      {entry.type}
-                    </span>
-                    <span className="text-[9px] text-muted-foreground font-mono">
-                      {format(new Date(entry.time), "MM/dd HH:mm")}
+        {/* ── Incidents ── */}
+        {tab === "Incidents" && (
+          <div className="p-4 space-y-2">
+            {zoneIncidents.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-12 gap-2">
+                <CheckCircle className="w-8 h-8 text-success/50" />
+                <p className="text-xs text-muted-foreground font-mono">No incidents logged for this zone</p>
+              </div>
+            ) : (
+              zoneIncidents.map(inc => (
+                <div key={inc.id} className="bg-card-nested border border-border rounded-sm p-3 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono text-muted-foreground">{inc.id}</span>
+                    <span className="text-[10px] font-mono text-muted-foreground">
+                      {format(new Date(inc.timestamp), "MM/dd HH:mm")}
                     </span>
                   </div>
-                  <p className="text-xs text-foreground leading-relaxed">{entry.desc}</p>
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <Badge label={inc.type} className={`bg-card text-foreground border-border`} />
+                    <Badge label={inc.severity} className={`bg-${SEV_DOT[inc.severity]?.replace("bg-", "") || "muted"}/10 ${SEV_TEXT[inc.severity]} border-border`} />
+                    <Badge label={inc.status} className={STATUS_COLORS[inc.status]} />
+                  </div>
+                  <p className="text-[11px] text-foreground leading-relaxed line-clamp-2">{inc.description}</p>
+                  <div className="flex items-center gap-3 text-[10px] font-mono text-muted-foreground">
+                    <span className="flex items-center gap-1">
+                      <Users className="w-3 h-3" />{inc.responders} resp.
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Activity className="w-3 h-3" />{inc.duration}m
+                    </span>
+                    <span className="flex items-center gap-1 ml-auto">
+                      <MapPin className="w-3 h-3" />{inc.barangay}
+                    </span>
+                  </div>
+                  <div className="flex gap-1.5 pt-1">
+                    <ActionBtn icon={<Edit className="w-3 h-3" />} label="Edit" />
+                    <ActionBtn icon={<UserPlus className="w-3 h-3" />} label="Assign" />
+                    <ActionBtn icon={<CheckCircle className="w-3 h-3" />} label="Resolve" accent />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         )}
 
+        {/* ── Log Incident ── */}
         {tab === "Log Incident" && (
-          <form onSubmit={handleSubmit} className="p-4 space-y-3">
+          <form onSubmit={handleSubmit} className="p-4 space-y-3.5">
             <div className="space-y-1">
-              <label className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">
-                Type
-              </label>
+              <label className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">Type</label>
               <select
                 value={form.type}
                 onChange={e => setForm(f => ({ ...f, type: e.target.value }))}
@@ -184,10 +280,8 @@ export function ZoneSheet({ onClose }: { onClose: () => void }) {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">
-                Severity
-              </label>
-              <div className="flex gap-2">
+              <label className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">Severity</label>
+              <div className="flex gap-1.5">
                 {["Critical","High","Medium","Low"].map(s => (
                   <button
                     key={s}
@@ -197,7 +291,7 @@ export function ZoneSheet({ onClose }: { onClose: () => void }) {
                       "flex-1 py-1.5 text-[10px] font-mono rounded-sm border transition-colors",
                       form.severity === s
                         ? "border-primary bg-primary/10 text-primary"
-                        : "border-border text-muted-foreground hover:border-primary/50"
+                        : "border-border text-muted-foreground hover:border-primary/40"
                     )}
                   >
                     {s}
@@ -207,21 +301,26 @@ export function ZoneSheet({ onClose }: { onClose: () => void }) {
             </div>
 
             <div className="space-y-1">
-              <label className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">
-                Location
-              </label>
+              <label className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">Zone</label>
+              <input
+                value={zone.label}
+                readOnly
+                className="w-full px-2.5 py-1.5 bg-secondary border border-border rounded-sm text-xs font-mono text-muted-foreground cursor-not-allowed"
+              />
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">Location / Landmark</label>
               <input
                 value={form.location}
                 onChange={e => setForm(f => ({ ...f, location: e.target.value }))}
-                placeholder="Street, landmark, barangay..."
+                placeholder="Street, barangay, landmark..."
                 className="w-full px-2.5 py-1.5 bg-input border border-border rounded-sm text-xs font-mono text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50"
               />
             </div>
 
             <div className="space-y-1">
-              <label className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">
-                Description
-              </label>
+              <label className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">Description</label>
               <textarea
                 value={form.description}
                 onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
@@ -233,9 +332,7 @@ export function ZoneSheet({ onClose }: { onClose: () => void }) {
 
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">
-                  Responders
-                </label>
+                <label className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">Responders</label>
                 <input
                   type="number"
                   min={1}
@@ -245,9 +342,7 @@ export function ZoneSheet({ onClose }: { onClose: () => void }) {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">
-                  Status
-                </label>
+                <label className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">Status</label>
                 <select
                   value={form.status}
                   onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
@@ -275,5 +370,21 @@ export function ZoneSheet({ onClose }: { onClose: () => void }) {
         )}
       </div>
     </div>
+  )
+}
+
+function ActionBtn({ icon, label, accent = false }: { icon: React.ReactNode; label: string; accent?: boolean }) {
+  return (
+    <button
+      className={cn(
+        "inline-flex items-center gap-1 px-2 py-1 rounded-sm text-[10px] font-medium border transition-colors",
+        accent
+          ? "border-success/30 text-success bg-success/10 hover:bg-success/20"
+          : "border-border text-muted-foreground bg-card hover:bg-secondary hover:text-foreground"
+      )}
+    >
+      {icon}
+      {label}
+    </button>
   )
 }

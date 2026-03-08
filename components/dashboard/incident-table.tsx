@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo, useTransition } from "react"
+import React, { useState, useMemo, useTransition } from "react"
 import {
   ChevronDown,
   ChevronUp,
@@ -200,9 +200,8 @@ export function IncidentTable() {
             </thead>
             <tbody>
               {paged.map((inc, ri) => (
-                <>
+                <React.Fragment key={inc.id}>
                   <tr
-                    key={inc.id}
                     onClick={() => setExpandedId(prev => prev === inc.id ? null : inc.id)}
                     className={cn(
                       "border-b border-border cursor-pointer transition-colors",
@@ -319,7 +318,7 @@ export function IncidentTable() {
                       </td>
                     </tr>
                   )}
-                </>
+                </React.Fragment>
               ))}
             </tbody>
           </table>
