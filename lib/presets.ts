@@ -65,7 +65,6 @@ export const PRESETS: Record<PresetId, Preset> = {
       { id: "w-calendar", title: "Annual Rainfall", subtitle: "Daily volume", colSpan: 3, rowSpan: 1, type: "calendar" },
     ],
   },
-}
 
   fire: {
     id: "fire",
