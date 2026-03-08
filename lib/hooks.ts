@@ -186,6 +186,12 @@ export function useTimelineHeatmap() {
 // ─── Calendar Heatmap ────────────────────────────────────────────────────────
 export function useCalendarHeatmap() {
   return useQuery<CalendarCell[]>(() => {
+    // Deterministic pseudo-random using date as seed to avoid hydration mismatch
+    function seededRandom(seed: number): number {
+      const x = Math.sin(seed) * 10000
+      return x - Math.floor(x)
+    }
+
     const cells: CalendarCell[] = []
     const start = new Date("2025-01-06")
     for (let w = 0; w < 52; w++) {
@@ -193,7 +199,8 @@ export function useCalendarHeatmap() {
         const date = new Date(start)
         date.setDate(start.getDate() + w * 7 + d)
         const dateStr = date.toISOString().split("T")[0]
-        const rand = Math.random()
+        const seed = new Date(dateStr).getTime()
+        const rand = seededRandom(seed)
         cells.push({
           date: dateStr,
           count: rand < 0.3 ? 0 : Math.round(rand * rand * 18),
