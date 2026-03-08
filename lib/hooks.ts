@@ -184,31 +184,40 @@ export function useTimelineHeatmap() {
 }
 
 // ─── Calendar Heatmap ────────────────────────────────────────────────────────
-export function useCalendarHeatmap() {
-  return useQuery<CalendarCell[]>(() => {
-    // Deterministic pseudo-random using date as seed to avoid hydration mismatch
-    function seededRandom(seed: number): number {
-      const x = Math.sin(seed) * 10000
-      return x - Math.floor(x)
-    }
+// Pre-computed stable data to avoid SSR/client hydration mismatch
+const CALENDAR_DATA: CalendarCell[] = (() => {
+  // Deterministic pseudo-random using index as seed
+  function seededRandom(seed: number): number {
+    const x = Math.sin(seed * 9999) * 10000
+    return x - Math.floor(x)
+  }
 
-    const cells: CalendarCell[] = []
-    const start = new Date("2025-01-06")
-    for (let w = 0; w < 52; w++) {
-      for (let d = 0; d < 7; d++) {
-        const date = new Date(start)
-        date.setDate(start.getDate() + w * 7 + d)
-        const dateStr = date.toISOString().split("T")[0]
-        const seed = new Date(dateStr).getTime()
-        const rand = seededRandom(seed)
-        cells.push({
-          date: dateStr,
-          count: rand < 0.3 ? 0 : Math.round(rand * rand * 18),
-        })
-      }
-    }
-    return cells
-  })
+  const cells: CalendarCell[] = []
+  // Start from Monday Jan 6, 2025
+  const startYear = 2025
+  const startMonth = 0 // January
+  const startDay = 6
+  
+  for (let i = 0; i < 52 * 7; i++) {
+    const dayOffset = i
+    const totalDays = startDay + dayOffset
+    const date = new Date(Date.UTC(startYear, startMonth, totalDays))
+    const year = date.getUTCFullYear()
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0")
+    const day = String(date.getUTCDate()).padStart(2, "0")
+    const dateStr = `${year}-${month}-${day}`
+    
+    const rand = seededRandom(i + 1)
+    cells.push({
+      date: dateStr,
+      count: rand < 0.3 ? 0 : Math.round(rand * rand * 18),
+    })
+  }
+  return cells
+})()
+
+export function useCalendarHeatmap() {
+  return useQuery<CalendarCell[]>(() => CALENDAR_DATA)
 }
 
 // ─── Wind Rose (Incident Origin Direction) ───────────────────────────────────

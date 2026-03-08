@@ -186,11 +186,12 @@ export function DashboardGrid({ initialPreset = "overview" }: DashboardGridProps
       case "bullet": return <BulletChart data={bulletData} />
       case "spark":  return <SparkBarChart data={sparkData} />
     }
-    // Fallback by type for category dashboards
+    // Fallback by type for category dashboards — use id hash for deterministic values
+    const idHash = id.split("").reduce((a, c) => a + c.charCodeAt(0), 0)
     switch (type) {
-      case "stat":     return <StatCard data={statCards[Math.floor(Math.random() * 4)]} />
+      case "stat":     return <StatCard data={statCards[idHash % 4]} />
       case "line":     return <IncidentTrendChart data={trendData} />
-      case "gauge":    return <GaugeArc value={Math.floor(Math.random() * 40) + 50} label="%" />
+      case "gauge":    return <GaugeArc value={50 + (idHash % 40)} label="%" />
       case "windrose": return <WindRoseChart data={windData} />
       case "bar":      return <CategoryBarChart data={catData} />
       case "radar":    return <DistrictRadarChart data={radarData} />
