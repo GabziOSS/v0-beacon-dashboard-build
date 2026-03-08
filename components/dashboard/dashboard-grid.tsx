@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useReducer } from "react"
 import {
   DndContext,
   DragOverlay,
@@ -14,8 +14,7 @@ import {
   arrayMove,
   rectSortingStrategy,
 } from "@dnd-kit/sortable"
-import { ChartBlock } from "./chart-block"
-import type { ColSpan } from "./chart-block"
+import { ChartBlock, type ColSpan, type RowSpan, type ChartBlock as ChartBlockType } from "./chart-block"
 import { StatCard } from "@/components/charts/stat-card"
 import { IncidentTrendChart } from "@/components/charts/line-chart"
 import { GaugeArc } from "@/components/charts/gauge-arc"
@@ -49,43 +48,69 @@ import {
   useBulletData,
   useSparkBar,
 } from "@/lib/hooks"
+import { PRESETS, type PresetId, getStoredPreset, savePreset } from "@/lib/presets"
 
-interface BlockDef {
-  id: string
-  title: string
-  subtitle?: string
-  colSpan: ColSpan
+type BlocksAction =
+  | { type: "SET_BLOCKS"; blocks: ChartBlockType[] }
+  | { type: "REORDER"; oldIndex: number; newIndex: number }
+  | { type: "REMOVE"; id: string }
+  | { type: "SET_COL_SPAN"; id: string; span: ColSpan }
+  | { type: "SET_ROW_SPAN"; id: string; span: RowSpan }
+
+function blocksReducer(blocks: ChartBlockType[], action: BlocksAction): ChartBlockType[] {
+  switch (action.type) {
+    case "SET_BLOCKS":
+      return action.blocks
+    case "REORDER":
+      return arrayMove(blocks, action.oldIndex, action.newIndex)
+    case "REMOVE":
+      return blocks.filter((b) => b.id !== action.id)
+    case "SET_COL_SPAN":
+      return blocks.map((b) => (b.id === action.id ? { ...b, colSpan: action.span } : b))
+    case "SET_ROW_SPAN":
+      return blocks.map((b) => (b.id === action.id ? { ...b, rowSpan: action.span } : b))
+    default:
+      return blocks
+  }
 }
 
-const INITIAL_BLOCKS: BlockDef[] = [
-  { id: "stat-1", title: "Total Incidents",  subtitle: "All zones · 30d",  colSpan: 1 },
-  { id: "stat-2", title: "Active Alerts",    subtitle: "Right now",        colSpan: 1 },
-  { id: "stat-3", title: "High-Risk Zones",  subtitle: "Risk level ≥ 70",  colSpan: 1 },
-  { id: "stat-4", title: "Avg Response",     subtitle: "All responders",   colSpan: 1 },
-  { id: "trend",  title: "Incident Trend",   subtitle: "By type · 24h",    colSpan: 2 },
-  { id: "risk",   title: "City Risk Score",  subtitle: "Composite index",  colSpan: 1 },
-  { id: "rose",   title: "Incident Origin",  subtitle: "8-direction grid", colSpan: 1 },
-  { id: "cat",    title: "By Category",      subtitle: "Last 30 days",     colSpan: 1 },
-  { id: "radar",  title: "District Risk",    subtitle: "5 dimensions",     colSpan: 1 },
-  { id: "area",   title: "Response Time",    subtitle: "Avg & P90 · 14d",  colSpan: 2 },
-  { id: "ready",  title: "Readiness",        subtitle: "Operational score", colSpan: 1 },
-  { id: "heat",   title: "Heat Matrix",      subtitle: "Incidents by type × day", colSpan: 2 },
-  { id: "resol",  title: "Resolution Rate",  subtitle: "Last 30 days",     colSpan: 1 },
-  { id: "comp",   title: "Incidents vs Deployed", subtitle: "Monthly 2025", colSpan: 2 },
-  { id: "comp2",  title: "Risk Vector",      subtitle: "Primary threat bearing", colSpan: 1 },
-  { id: "cal",    title: "Annual Volume",    subtitle: "2025 · calendar view", colSpan: 3 },
-  { id: "scatter",title: "Density vs Population", subtitle: "Per zone",    colSpan: 1 },
-  { id: "bullet", title: "Response vs SLA",  subtitle: "10-min target",    colSpan: 1 },
-  { id: "spark",  title: "Severity Snapshot",subtitle: "Current distribution", colSpan: 1 },
-]
+interface DashboardGridProps {
+  initialPreset?: PresetId
+}
 
-export function DashboardGrid() {
-  const [blocks, setBlocks] = useState<BlockDef[]>(INITIAL_BLOCKS)
+export function DashboardGrid({ initialPreset = "overview" }: DashboardGridProps) {
+  const [blocks, dispatch] = useReducer(blocksReducer, [])
   const [activeId, setActiveId] = useState<string | null>(null)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+    const storedPreset = getStoredPreset()
+    const preset = PRESETS[initialPreset === "overview" || initialPreset === "weather_station" ? initialPreset : storedPreset]
+    const storageKey = `beacon_blocks_${preset.id}`
+    const stored = localStorage.getItem(storageKey)
+    
+    if (stored) {
+      try {
+        dispatch({ type: "SET_BLOCKS", blocks: JSON.parse(stored) })
+      } catch {
+        dispatch({ type: "SET_BLOCKS", blocks: preset.blocks })
+      }
+    } else {
+      dispatch({ type: "SET_BLOCKS", blocks: preset.blocks })
+    }
+  }, [initialPreset])
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
   )
+
+  useEffect(() => {
+    if (!mounted) return
+    const preset = PRESETS[initialPreset]
+    const storageKey = `beacon_blocks_${preset.id}`
+    localStorage.setItem(storageKey, JSON.stringify(blocks))
+  }, [blocks, initialPreset, mounted])
 
   const { data: statCards } = useStatCards()
   const { data: trendData } = useIncidentTrend()
@@ -108,19 +133,21 @@ export function DashboardGrid() {
     const { active, over } = event
     setActiveId(null)
     if (!over || active.id === over.id) return
-    setBlocks(prev => {
-      const from = prev.findIndex(b => b.id === active.id)
-      const to = prev.findIndex(b => b.id === over.id)
-      return arrayMove(prev, from, to)
-    })
+    const from = blocks.findIndex(b => b.id === active.id)
+    const to = blocks.findIndex(b => b.id === over.id)
+    dispatch({ type: "REORDER", oldIndex: from, newIndex: to })
   }
 
   function handleColSpanChange(id: string, span: ColSpan) {
-    setBlocks(prev => prev.map(b => b.id === id ? { ...b, colSpan: span } : b))
+    dispatch({ type: "SET_COL_SPAN", id, span })
+  }
+
+  function handleRowSpanChange(id: string, span: RowSpan) {
+    dispatch({ type: "SET_ROW_SPAN", id, span })
   }
 
   function handleRemove(id: string) {
-    setBlocks(prev => prev.filter(b => b.id !== id))
+    dispatch({ type: "REMOVE", id })
   }
 
   function renderContent(id: string) {
@@ -129,9 +156,16 @@ export function DashboardGrid() {
       case "stat-2": return <StatCard data={statCards[1]} />
       case "stat-3": return <StatCard data={statCards[2]} />
       case "stat-4": return <StatCard data={statCards[3]} />
+      case "w-rain": return <StatCard data={statCards[0]} />
+      case "w-sunrise": return <StatCard data={statCards[1]} />
+      case "w-moon": return <StatCard data={statCards[2]} />
+      case "w-forecast": return <StatCard data={statCards[3]} />
       case "trend":  return <IncidentTrendChart data={trendData} />
       case "risk":   return <GaugeArc value={riskScore.value} label={riskScore.label} />
       case "rose":   return <WindRoseChart data={windData} />
+      case "w-rose": return <WindRoseChart data={windData} />
+      case "w-wind": return <GaugeArc value={riskScore.value} label="km/h" />
+      case "w-thw":  return <GaugeArc value={65} label="°C" />
       case "cat":    return <CategoryBarChart data={catData} />
       case "radar":  return <DistrictRadarChart data={radarData} />
       case "area":   return <ResponseTimeChart data={responseTime} />
@@ -140,7 +174,14 @@ export function DashboardGrid() {
       case "resol":  return <ResolutionRadialChart value={resolution.value} />
       case "comp":   return <IncidentsVsDeployedChart data={composedData} />
       case "comp2":  return <CompassChart bearing={riskVector.bearing} label={riskVector.label} />
+      case "w-compass": return <CompassChart bearing={135} label="SE" />
+      case "w-baro": return <IncidentTrendChart data={trendData} />
+      case "w-temp-gauge": return <CategoryBarChart data={catData} />
+      case "w-temp-trend": return <ResponseTimeChart data={responseTime} />
+      case "w-humidity": return <GaugeArc value={88} label="%" />
       case "cal":    return <CalendarHeatmap data={calData} />
+      case "w-calendar": return <CalendarHeatmap data={calData} />
+      case "w-rain-bullet": return <BulletChart data={bulletData} />
       case "scatter":return <DensityScatterChart data={scatterData} />
       case "bullet": return <BulletChart data={bulletData} />
       case "spark":  return <SparkBarChart data={sparkData} />
@@ -170,7 +211,9 @@ export function DashboardGrid() {
               title={block.title}
               subtitle={block.subtitle}
               colSpan={block.colSpan}
+              rowSpan={block.rowSpan}
               onColSpanChange={handleColSpanChange}
+              onRowSpanChange={handleRowSpanChange}
               onRemove={handleRemove}
             >
               {renderContent(block.id)}

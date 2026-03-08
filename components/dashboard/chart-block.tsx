@@ -7,13 +7,25 @@ import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 
 export type ColSpan = 1 | 2 | 3
+export type RowSpan = 1 | 2
+
+export interface ChartBlock {
+  id: string
+  title: string
+  subtitle?: string
+  colSpan: ColSpan
+  rowSpan?: RowSpan
+  type: string
+}
 
 interface ChartBlockProps {
   id: string
   title: string
   subtitle?: string
   colSpan: ColSpan
+  rowSpan?: RowSpan
   onColSpanChange: (id: string, span: ColSpan) => void
+  onRowSpanChange?: (id: string, span: RowSpan) => void
   onRemove: (id: string) => void
   children: React.ReactNode
   isDragging?: boolean
@@ -24,19 +36,23 @@ export function ChartBlock({
   title,
   subtitle,
   colSpan,
+  rowSpan = 1,
   onColSpanChange,
+  onRowSpanChange,
   onRemove,
   children,
 }: ChartBlockProps) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [isResizing, setIsResizing] = useState(false)
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({ id })
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition: isResizing ? undefined : transition,
     gridColumn: `span ${colSpan}`,
+    gridRow: `span ${rowSpan}`,
   }
 
   function cycleColSpan() {
@@ -44,12 +60,41 @@ export function ChartBlock({
     onColSpanChange(id, next)
   }
 
+  function handleResizeStart(e: React.PointerEvent<HTMLDivElement>) {
+    setIsResizing(true)
+    const startX = e.clientX
+    const startY = e.clientY
+    const startColSpan = colSpan
+    const startRowSpan = rowSpan
+    const COL_STEP = 80
+    const ROW_STEP = 60
+
+    function handleMove(me: PointerEvent) {
+      const deltaX = me.clientX - startX
+      const deltaY = me.clientY - startY
+      const newColSpan = Math.max(1, Math.min(3, startColSpan + Math.round(deltaX / COL_STEP))) as ColSpan
+      const newRowSpan = Math.max(1, Math.min(2, startRowSpan + Math.round(deltaY / ROW_STEP))) as RowSpan
+
+      onColSpanChange(id, newColSpan)
+      if (onRowSpanChange) onRowSpanChange(id, newRowSpan)
+    }
+
+    function handleEnd() {
+      setIsResizing(false)
+      document.removeEventListener("pointermove", handleMove)
+      document.removeEventListener("pointerup", handleEnd)
+    }
+
+    document.addEventListener("pointermove", handleMove)
+    document.addEventListener("pointerup", handleEnd)
+  }
+
   return (
     <div
       ref={setNodeRef}
       style={style}
       className={cn(
-        "flex flex-col bg-card border border-border rounded-sm min-h-[220px] transition-all",
+        "flex flex-col bg-card border border-border rounded-sm min-h-[220px] transition-all relative group",
         isDragging && "opacity-50 scale-[0.97] shadow-lg ring-1 ring-primary/40"
       )}
     >
@@ -130,6 +175,18 @@ export function ChartBlock({
       {/* Chart area */}
       <div className="flex-1 min-h-0 p-3">
         {children}
+      </div>
+
+      {/* Corner resize handle */}
+      <div
+        onPointerDown={handleResizeStart}
+        className="absolute bottom-0 right-0 w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity cursor-nwse-resize"
+        style={{ touchAction: "none" }}
+      >
+        <svg className="w-full h-full" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="2" y1="14" x2="14" y2="2" stroke="currentColor" strokeWidth="1" className="text-muted-foreground" opacity="0.5" />
+          <line x1="6" y1="14" x2="14" y2="6" stroke="currentColor" strokeWidth="1" className="text-muted-foreground" opacity="0.5" />
+        </svg>
       </div>
     </div>
   )
