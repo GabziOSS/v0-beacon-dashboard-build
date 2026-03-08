@@ -12,20 +12,23 @@ import {
   ChevronLeft,
   ChevronRight,
   Shield,
+  LogOut,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useAuth } from "@/lib/auth"
 
 const NAV_ITEMS = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard, enabled: true },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, enabled: true },
   { href: "/map", label: "Map", icon: Map, enabled: true },
-  { href: "/alerts", label: "Alerts", icon: Bell, enabled: false },
-  { href: "/users", label: "Users", icon: Users, enabled: false },
-  { href: "/settings", label: "Settings", icon: Settings, enabled: false },
+  { href: "/alerts", label: "Alerts", icon: Bell, enabled: true },
+  { href: "/users", label: "Users", icon: Users, enabled: true },
+  { href: "/settings", label: "Settings", icon: Settings, enabled: true },
 ]
 
 export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false)
   const pathname = usePathname()
+  const { user, signOut } = useAuth()
 
   useEffect(() => {
     const stored = localStorage.getItem("beacon-sidebar-collapsed")
@@ -78,7 +81,7 @@ export function Sidebar() {
       </nav>
 
       {/* Bottom: user chip */}
-      <div className="px-1.5 pb-3 border-t border-sidebar-border pt-3">
+      <div className="px-1.5 pb-3 border-t border-sidebar-border pt-3 space-y-2">
         <div
           className={cn(
             "flex items-center gap-2.5 px-2 py-2 rounded-sm",
@@ -86,19 +89,30 @@ export function Sidebar() {
           )}
         >
           <div className="w-7 h-7 rounded-sm bg-primary/15 border border-primary/20 flex items-center justify-center shrink-0">
-            <span className="text-[11px] font-semibold text-primary font-mono">EC</span>
+            <span className="text-[11px] font-semibold text-primary font-mono">{user?.avatar || "?"}</span>
           </div>
           {!collapsed && (
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <p className="text-xs font-medium text-sidebar-foreground truncate leading-tight">
-                E. Coordinador
+                {user?.name || "Guest"}
               </p>
               <p className="text-[10px] text-muted-foreground truncate leading-tight font-mono">
-                CDRRMO · Calbayog
+                {user?.org || ""}
               </p>
             </div>
           )}
         </div>
+        {/* Sign out */}
+        <button
+          onClick={signOut}
+          className={cn(
+            "flex items-center gap-2.5 w-full px-2 py-2 rounded-sm text-sm text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors",
+            collapsed ? "justify-center" : ""
+          )}
+        >
+          <LogOut className="w-4 h-4 shrink-0" />
+          {!collapsed && <span className="text-xs font-medium">Sign out</span>}
+        </button>
       </div>
 
       {/* Collapse toggle */}

@@ -85,8 +85,7 @@ export function DashboardGrid({ initialPreset = "overview" }: DashboardGridProps
 
   useEffect(() => {
     setMounted(true)
-    const storedPreset = getStoredPreset()
-    const preset = PRESETS[initialPreset === "overview" || initialPreset === "weather_station" ? initialPreset : storedPreset]
+    const preset = PRESETS[initialPreset] || PRESETS.overview
     const storageKey = `beacon_blocks_${preset.id}`
     const stored = localStorage.getItem(storageKey)
     
@@ -150,7 +149,8 @@ export function DashboardGrid({ initialPreset = "overview" }: DashboardGridProps
     dispatch({ type: "REMOVE", id })
   }
 
-  function renderContent(id: string) {
+  function renderContent(id: string, type?: string) {
+    // Match by ID first for specific blocks
     switch (id) {
       case "stat-1": return <StatCard data={statCards[0]} />
       case "stat-2": return <StatCard data={statCards[1]} />
@@ -185,7 +185,25 @@ export function DashboardGrid({ initialPreset = "overview" }: DashboardGridProps
       case "scatter":return <DensityScatterChart data={scatterData} />
       case "bullet": return <BulletChart data={bulletData} />
       case "spark":  return <SparkBarChart data={sparkData} />
-      default:       return null
+    }
+    // Fallback by type for category dashboards
+    switch (type) {
+      case "stat":     return <StatCard data={statCards[Math.floor(Math.random() * 4)]} />
+      case "line":     return <IncidentTrendChart data={trendData} />
+      case "gauge":    return <GaugeArc value={Math.floor(Math.random() * 40) + 50} label="%" />
+      case "windrose": return <WindRoseChart data={windData} />
+      case "bar":      return <CategoryBarChart data={catData} />
+      case "radar":    return <DistrictRadarChart data={radarData} />
+      case "area":     return <ResponseTimeChart data={responseTime} />
+      case "heatmap":  return <TimelineHeatmap data={heatmapData} />
+      case "radial":   return <ResolutionRadialChart value={resolution.value} />
+      case "composed": return <IncidentsVsDeployedChart data={composedData} />
+      case "compass":  return <CompassChart bearing={riskVector.bearing} label={riskVector.label} />
+      case "calendar": return <CalendarHeatmap data={calData} />
+      case "scatter":  return <DensityScatterChart data={scatterData} />
+      case "bullet":   return <BulletChart data={bulletData} />
+      case "spark":    return <SparkBarChart data={sparkData} />
+      default:         return null
     }
   }
 
