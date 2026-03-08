@@ -1,0 +1,179 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─── Obsidian Ops — Beacon Design System ─── */
+:root {
+  /* Base: near-black zinc, deep cool-neutral */
+  --background:        oklch(0.118 0.006 264);
+  --foreground:        oklch(0.94 0.006 240);
+
+  /* Card depth layers */
+  --card:              oklch(0.155 0.007 262);
+  --card-foreground:   oklch(0.92 0.006 240);
+  --card-nested:       oklch(0.185 0.008 260);
+  --card-nested-foreground: oklch(0.88 0.006 240);
+
+  --popover:           oklch(0.155 0.007 262);
+  --popover-foreground:oklch(0.92 0.006 240);
+
+  /* Primary: ice blue — clinical, electric */
+  --primary:           oklch(0.72 0.155 210);
+  --primary-foreground:oklch(0.10 0.008 262);
+  --primary-dim:       oklch(0.72 0.155 210 / 0.15);
+
+  /* Secondary: subtle surface lift */
+  --secondary:         oklch(0.20 0.008 260);
+  --secondary-foreground: oklch(0.88 0.006 240);
+
+  /* Muted: barely-there fills */
+  --muted:             oklch(0.195 0.007 261);
+  --muted-foreground:  oklch(0.52 0.008 250);
+
+  /* Accent: single note of violet */
+  --accent:            oklch(0.62 0.18 288);
+  --accent-foreground: oklch(0.97 0.005 240);
+  --accent-dim:        oklch(0.62 0.18 288 / 0.12);
+
+  /* Semantic status */
+  --success:           oklch(0.68 0.15 155);
+  --success-foreground:oklch(0.10 0.008 262);
+  --success-dim:       oklch(0.68 0.15 155 / 0.15);
+
+  --warning:           oklch(0.76 0.165 60);
+  --warning-foreground:oklch(0.10 0.008 262);
+  --warning-dim:       oklch(0.76 0.165 60 / 0.15);
+
+  --destructive:       oklch(0.62 0.21 25);
+  --destructive-foreground: oklch(0.97 0.005 240);
+  --destructive-dim:   oklch(0.62 0.21 25 / 0.15);
+
+  /* Borders: barely-there separation */
+  --border:            oklch(0.255 0.010 258);
+  --input:             oklch(0.22 0.008 260);
+  --ring:              oklch(0.72 0.155 210 / 0.45);
+
+  /* Glow: ice-blue box-shadow for active/critical */
+  --glow:              0 0 0 1px oklch(0.72 0.155 210 / 0.5), 0 0 12px 2px oklch(0.72 0.155 210 / 0.18);
+  --glow-destructive:  0 0 0 1px oklch(0.62 0.21 25 / 0.5), 0 0 12px 2px oklch(0.62 0.21 25 / 0.18);
+
+  /* Chart palette — 8 distinct signal colors */
+  --chart-1:           oklch(0.72 0.155 210);  /* ice blue */
+  --chart-2:           oklch(0.62 0.18 288);   /* violet accent */
+  --chart-3:           oklch(0.68 0.15 155);   /* teal/success */
+  --chart-4:           oklch(0.76 0.165 60);   /* amber */
+  --chart-5:           oklch(0.62 0.21 25);    /* coral/destructive */
+  --chart-6:           oklch(0.72 0.13 230);   /* cyan */
+  --chart-7:           oklch(0.60 0.12 310);   /* indigo */
+  --chart-8:           oklch(0.74 0.10 180);   /* seafoam */
+
+  /* Sharp radius */
+  --radius: 0.25rem;
+
+  /* Sidebar */
+  --sidebar:           oklch(0.138 0.007 264);
+  --sidebar-foreground:oklch(0.92 0.006 240);
+  --sidebar-primary:   oklch(0.72 0.155 210);
+  --sidebar-primary-foreground: oklch(0.10 0.008 262);
+  --sidebar-accent:    oklch(0.72 0.155 210 / 0.10);
+  --sidebar-accent-foreground: oklch(0.92 0.006 240);
+  --sidebar-border:    oklch(0.215 0.008 260);
+  --sidebar-ring:      oklch(0.72 0.155 210 / 0.45);
+}
+
+@theme inline {
+  --font-sans: var(--font-space-grotesk), 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), 'IBM Plex Mono', ui-monospace, monospace;
+
+  --color-background:   var(--background);
+  --color-foreground:   var(--foreground);
+  --color-card:         var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-card-nested:  var(--card-nested);
+  --color-card-nested-foreground: var(--card-nested-foreground);
+  --color-popover:      var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary:      var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-dim:  var(--primary-dim);
+  --color-secondary:    var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted:        var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent:       var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-dim:   var(--accent-dim);
+  --color-success:      var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-dim:  var(--success-dim);
+  --color-warning:      var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning-dim:  var(--warning-dim);
+  --color-destructive:  var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-dim: var(--destructive-dim);
+  --color-border:       var(--border);
+  --color-input:        var(--input);
+  --color-ring:         var(--ring);
+  --color-chart-1:      var(--chart-1);
+  --color-chart-2:      var(--chart-2);
+  --color-chart-3:      var(--chart-3);
+  --color-chart-4:      var(--chart-4);
+  --color-chart-5:      var(--chart-5);
+  --color-chart-6:      var(--chart-6);
+  --color-chart-7:      var(--chart-7);
+  --color-chart-8:      var(--chart-8);
+  --radius-sm:          calc(var(--radius) - 0.125rem);
+  --radius-md:          var(--radius);
+  --radius-lg:          calc(var(--radius) + 0.125rem);
+  --radius-xl:          calc(var(--radius) + 0.25rem);
+  --color-sidebar:      var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  }
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.30 0.008 260);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.40 0.010 258);
+  }
+}
+
+/* Pulse shimmer skeleton animation */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    oklch(0.20 0.007 261) 25%,
+    oklch(0.26 0.009 260) 50%,
+    oklch(0.20 0.007 261) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
