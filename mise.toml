@@ -1,0 +1,60 @@
+[settings]
+experimental = true
+lockfile = true
+
+[tools]
+"aqua:fish-shell/fish-shell" = "latest"
+lazygit = "latest"
+croc = "latest"
+opencode = "latest"
+bun = "latest"
+neovim = "latest"
+"npm:ocx" = "latest"
+
+[tasks]
+# GitHub container token tasks
+[tasks.gh-container-prep]
+description = "Get current token and prepare env vars for container mode"
+run = '''
+    if command -v gh &> /dev/null && gh auth status &> /dev/null; then
+        TOKEN=$(gh auth token)
+        echo "export GITHUB_TOKEN=$TOKEN" > .container-env
+        echo "export GITHUB_IDENTITY=gabzidevs <71532830+gabzidevs@users.noreply.github.com>" >> .container-env
+        echo "GITHUB_TOKEN=$TOKEN GITHUB_IDENTITY='gabzidevs <71532830+gabzidevs@users.noreply.github.com>'"
+        echo ""
+        echo "✅ Written to .container-env"
+        echo "Run: mise run gh-container-enable"
+    else
+        echo "Error: gh not authenticated"
+        exit 1
+    fi
+'''
+
+[tasks.gh-container-enable]
+description = "Enable GitHub token for container pushing (run gh-container-prep first)"
+run = '''
+    if [ -f .container-env ]; then
+        source .container-env
+        GITHUB_TOKEN=$GITHUB_TOKEN GITHUB_IDENTITY=$GITHUB_IDENTITY ./setup-gh-git.sh enable
+    else
+        echo "Run 'mise run gh-container-prep' first"
+        exit 1
+    fi
+'''
+
+[tasks.gh-container-disable]
+description = "Disable container mode (restore original)"
+run = "./setup-gh-git.sh disable"
+
+# Fish shell setup
+[tasks.setup-fish-pure]
+description = "Install Fisher and Pure prompt for fish shell"
+run = '''
+    fish -c "curl -sL https://git.io/fisher | source && fisher install pure-fish/pure"
+'''
+
+[tasks.setup-fish-path]
+description = "Add local ./bin to fish PATH"
+run = '''
+    fish -c "fish_add_path -g (pwd)/bin"
+'''

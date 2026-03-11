@@ -1,0 +1,30 @@
+[[tools."aqua:fish-shell/fish-shell"]]
+version = "4.5.0"
+backend = "aqua:fish-shell/fish-shell"
+"platforms.macos-arm64" = { checksum = "sha256:c505f83de2ca91681f4ee595c128841eb3600363b7d0525674191ea1e86f5d94", url = "https://github.com/fish-shell/fish-shell/releases/download/4.5.0/fish-4.5.0.pkg"}
+
+[[tools.bun]]
+version = "1.3.10"
+backend = "core:bun"
+
+[[tools.croc]]
+version = "10.4.2"
+backend = "aqua:schollz/croc"
+"platforms.macos-arm64" = { checksum = "sha256:d340f273575adcf92793e4eb2eb64c13227782c82a265616b0420d3858094144", url = "https://github.com/schollz/croc/releases/download/v10.4.2/croc_v10.4.2_macOS-ARM64.tar.gz"}
+
+[[tools.lazygit]]
+version = "0.60.0"
+backend = "aqua:jesseduffield/lazygit"
+"platforms.macos-arm64" = { checksum = "sha256:5045f0ff2117f12cb5232d65e01c054eb9ea6b8e2f0f0b80e99fbaa589b581b9", url = "https://github.com/jesseduffield/lazygit/releases/download/v0.60.0/lazygit_0.60.0_darwin_arm64.tar.gz"}
+
+[[tools.neovim]]
+version = "0.11.6"
+backend = "vfox:mise-plugins/vfox-neovim"
+
+[[tools."npm:ocx"]]
+version = "2.0.0"
+backend = "npm:ocx"
+
+[[tools.opencode]]
+version = "1.2.24"
+backend = "aqua:anomalyco/opencode"
