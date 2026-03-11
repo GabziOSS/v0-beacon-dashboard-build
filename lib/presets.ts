@@ -41,28 +41,27 @@ export const PRESETS: Record<PresetId, Preset> = {
   weather_station: {
     id: "weather_station",
     label: "Weather Station",
-    description: "Weather monitoring preset",
+    description: "NwSSU-AWS weather monitoring",
     blocks: [
-      // Row 1: Stat cards
-      { id: "w-rain", title: "Current Rain", subtitle: "Day · Storm", colSpan: 1, rowSpan: 1, type: "stat" },
-      { id: "w-sunrise", title: "Sunrise/Sunset", subtitle: "Solar cycle", colSpan: 1, rowSpan: 1, type: "stat" },
-      { id: "w-moon", title: "Moon Phase", subtitle: "Illumination", colSpan: 1, rowSpan: 1, type: "stat" },
-      { id: "w-forecast", title: "Local Forecast", subtitle: "Evening", colSpan: 1, rowSpan: 1, type: "stat" },
-      // Row 2: Wind gauges and rose
-      { id: "w-wind", title: "Wind Speed", subtitle: "Current", colSpan: 1, rowSpan: 1, type: "gauge" },
-      { id: "w-rose", title: "Wind Rose", subtitle: "Distribution", colSpan: 1, rowSpan: 1, type: "windrose" },
-      { id: "w-thw", title: "THW Index", subtitle: "Heat risk", colSpan: 1, rowSpan: 1, type: "gauge" },
-      // Row 3: Compass and barometer
-      { id: "w-compass", title: "Wind Direction", subtitle: "Bearing", colSpan: 1, rowSpan: 1, type: "compass" },
-      { id: "w-baro", title: "Barometer Trend", subtitle: "Pressure", colSpan: 2, rowSpan: 1, type: "line" },
-      // Row 4: Temperature and trend
-      { id: "w-temp-gauge", title: "Temperature/Humidity", subtitle: "Multi-metric", colSpan: 1, rowSpan: 1, type: "bar" },
-      { id: "w-temp-trend", title: "Temperature Trend", subtitle: "24h", colSpan: 2, rowSpan: 1, type: "area" },
-      // Row 5: Humidity and rain bullet
-      { id: "w-humidity", title: "Humidity", subtitle: "Current %", colSpan: 1, rowSpan: 1, type: "gauge" },
-      { id: "w-rain-bullet", title: "Total Rain vs Annual", subtitle: "Volume", colSpan: 2, rowSpan: 1, type: "bullet" },
-      // Row 6: Calendar heatmap
-      { id: "w-calendar", title: "Annual Rainfall", subtitle: "Daily volume", colSpan: 3, rowSpan: 1, type: "calendar" },
+      // Row 1: Barometer, Wind Speed, Wind Direction, Total Rain, Current Rain, Temperature
+      { id: "w-baro", title: "Barometer", subtitle: "NwSSU-AWS", colSpan: 1, rowSpan: 1, type: "line" },
+      { id: "w-wind", title: "Wind Speed", subtitle: "NwSSU_AWS1", colSpan: 1, rowSpan: 1, type: "gauge" },
+      { id: "w-compass", title: "Wind Direction", subtitle: "NwSSU-AWS", colSpan: 1, rowSpan: 1, type: "compass" },
+      // Row 2: Forecast, Inside Temp/Hum, Wind Rose, Sunrise/Sunset
+      { id: "w-forecast", title: "Local Forecast", subtitle: "NwSSU-AWS", colSpan: 1, rowSpan: 1, type: "forecast" },
+      { id: "w-temp-gauge", title: "Inside Temp/Hum", subtitle: "NwSSU-AWS1", colSpan: 1, rowSpan: 1, type: "temp-hum" },
+      { id: "w-rose", title: "Wind Rose", subtitle: "NwSSU-AWS1", colSpan: 1, rowSpan: 1, type: "windrose" },
+      // Row 3: Moon Phase, Humidity, THW Index
+      { id: "w-moon", title: "Moon Phase", subtitle: "NwSSU-AWS", colSpan: 1, rowSpan: 1, type: "moon" },
+      { id: "w-humidity", title: "Humidity", subtitle: "NwSSU_AWS1", colSpan: 1, rowSpan: 1, type: "gauge" },
+      { id: "w-thw", title: "THW Index", subtitle: "NwSSU_AWS1", colSpan: 1, rowSpan: 1, type: "gauge" },
+      // Row 4: Total Rain, Current Rain, Sunrise/Sunset
+      { id: "w-total-rain", title: "Total Rain", subtitle: "NwSSU_AWS1", colSpan: 1, rowSpan: 1, type: "rain" },
+      { id: "w-rain", title: "Current Rain", subtitle: "NwSSU_AWS1", colSpan: 1, rowSpan: 1, type: "rain" },
+      { id: "w-sunrise", title: "Sunrise/Sunset", subtitle: "NwSSU-AWS1", colSpan: 1, rowSpan: 1, type: "sun" },
+      // Row 5: Multi-temperature
+      { id: "w-temp-multi", title: "Temperature", subtitle: "NwSSU_AWS1", colSpan: 1, rowSpan: 1, type: "multi-temp" },
+      { id: "w-calendar", title: "Annual Rainfall", subtitle: "Daily volume", colSpan: 2, rowSpan: 1, type: "calendar" },
     ],
   },
 
