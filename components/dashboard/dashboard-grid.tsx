@@ -30,6 +30,13 @@ import { CalendarHeatmap } from "@/components/charts/calendar-heatmap"
 import { DensityScatterChart } from "@/components/charts/scatter-chart"
 import { BulletChart } from "@/components/charts/bullet-chart"
 import { SparkBarChart } from "@/components/charts/spark-bar"
+// Weather station charts
+import { LocalForecast } from "@/components/charts/local-forecast"
+import { SunriseSunset } from "@/components/charts/sunrise-sunset"
+import { MoonPhase } from "@/components/charts/moon-phase"
+import { TempHumidityBar } from "@/components/charts/temp-humidity-bar"
+import { MultiTempBar } from "@/components/charts/multi-temp-bar"
+import { RainBar } from "@/components/charts/rain-bar"
 import {
   useStatCards,
   useIncidentTrend,
@@ -47,6 +54,17 @@ import {
   useRiskVector,
   useBulletData,
   useSparkBar,
+  // Weather station hooks
+  useLocalForecast,
+  useSunriseSunset,
+  useMoonPhase,
+  useInsideTempHum,
+  useMultiTemp,
+  useTotalRain,
+  useCurrentRain,
+  useWindSpeed,
+  useHumidity,
+  useTHWIndex,
 } from "@/lib/hooks"
 import { PRESETS, type PresetId, getStoredPreset, savePreset } from "@/lib/presets"
 
@@ -127,6 +145,17 @@ export function DashboardGrid({ initialPreset = "overview" }: DashboardGridProps
   const { data: riskVector } = useRiskVector()
   const { data: bulletData } = useBulletData()
   const { data: sparkData } = useSparkBar()
+  // Weather station data
+  const { data: forecastData } = useLocalForecast()
+  const { data: sunriseSunsetData } = useSunriseSunset()
+  const { data: moonPhaseData } = useMoonPhase()
+  const { data: insideTempHumData } = useInsideTempHum()
+  const { data: multiTempData } = useMultiTemp()
+  const { data: totalRainData } = useTotalRain()
+  const { data: currentRainData } = useCurrentRain()
+  const { data: windSpeedData } = useWindSpeed()
+  const { data: humidityData } = useHumidity()
+  const { data: thwIndexData } = useTHWIndex()
 
   function handleDragEnd(event: { active: { id: string | number }; over: { id: string | number } | null }) {
     const { active, over } = event
@@ -156,16 +185,17 @@ export function DashboardGrid({ initialPreset = "overview" }: DashboardGridProps
       case "stat-2": return <StatCard data={statCards[1]} />
       case "stat-3": return <StatCard data={statCards[2]} />
       case "stat-4": return <StatCard data={statCards[3]} />
-      case "w-rain": return <StatCard data={statCards[0]} />
-      case "w-sunrise": return <StatCard data={statCards[1]} />
-      case "w-moon": return <StatCard data={statCards[2]} />
-      case "w-forecast": return <StatCard data={statCards[3]} />
+      case "w-rain": return <RainBar data={currentRainData} />
+      case "w-total-rain": return <RainBar data={totalRainData} />
+      case "w-sunrise": return <SunriseSunset data={sunriseSunsetData} />
+      case "w-moon": return <MoonPhase data={moonPhaseData} />
+      case "w-forecast": return <LocalForecast data={forecastData} />
       case "trend":  return <IncidentTrendChart data={trendData} />
       case "risk":   return <GaugeArc value={riskScore.value} label={riskScore.label} />
       case "rose":   return <WindRoseChart data={windData} />
       case "w-rose": return <WindRoseChart data={windData} />
-      case "w-wind": return <GaugeArc value={riskScore.value} label="km/h" />
-      case "w-thw":  return <GaugeArc value={65} label="°C" />
+      case "w-wind": return <GaugeArc value={windSpeedData.value} label={windSpeedData.unit} />
+      case "w-thw":  return <GaugeArc value={thwIndexData.value} label={thwIndexData.unit} />
       case "cat":    return <CategoryBarChart data={catData} />
       case "radar":  return <DistrictRadarChart data={radarData} />
       case "area":   return <ResponseTimeChart data={responseTime} />
@@ -176,9 +206,9 @@ export function DashboardGrid({ initialPreset = "overview" }: DashboardGridProps
       case "comp2":  return <CompassChart bearing={riskVector.bearing} label={riskVector.label} />
       case "w-compass": return <CompassChart bearing={135} label="SE" />
       case "w-baro": return <IncidentTrendChart data={trendData} />
-      case "w-temp-gauge": return <CategoryBarChart data={catData} />
-      case "w-temp-trend": return <ResponseTimeChart data={responseTime} />
-      case "w-humidity": return <GaugeArc value={88} label="%" />
+      case "w-temp-gauge": return <TempHumidityBar data={insideTempHumData} />
+      case "w-temp-trend": return <MultiTempBar data={multiTempData} />
+      case "w-humidity": return <GaugeArc value={humidityData.value} label="%" />
       case "cal":    return <CalendarHeatmap data={calData} />
       case "w-calendar": return <CalendarHeatmap data={calData} />
       case "w-rain-bullet": return <BulletChart data={bulletData} />
