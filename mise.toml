@@ -10,6 +10,7 @@ opencode = "latest"
 bun = "latest"
 neovim = "latest"
 "npm:ocx" = "latest"
+dotenvx = "latest"
 
 [tasks]
 # GitHub container token tasks

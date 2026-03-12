@@ -12,6 +12,10 @@ version = "10.4.2"
 backend = "aqua:schollz/croc"
 "platforms.macos-arm64" = { checksum = "sha256:d340f273575adcf92793e4eb2eb64c13227782c82a265616b0420d3858094144", url = "https://github.com/schollz/croc/releases/download/v10.4.2/croc_v10.4.2_macOS-ARM64.tar.gz"}
 
+[[tools.dotenvx]]
+version = "1.54.1"
+backend = "aqua:dotenvx/dotenvx"
+
 [[tools.lazygit]]
 version = "0.60.0"
 backend = "aqua:jesseduffield/lazygit"
