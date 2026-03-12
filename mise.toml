@@ -155,13 +155,11 @@ run = '''
     
     # Install Fisher and Pure prompt
     echo "Installing Fisher..."
-    if ! curl -sL https://git.io/fisher | fish; then
+    # Download fisher script to a temporary file and source it
+    if ! curl -sL https://git.io/fisher > /tmp/fisher.fish && fish -c "source /tmp/fisher.fish"; then
         echo "Error: Failed to install Fisher."
         exit 1
     fi
-    
-    # Source fisher to make it available in current session
-    fish -c "source ~/.config/fish/functions/fisher.fish"
     
     echo "Installing Pure prompt..."
     if ! fish -c "fisher install pure-fish/pure"; then
