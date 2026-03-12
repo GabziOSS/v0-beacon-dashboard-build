@@ -62,8 +62,8 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* Nav */}
-      <nav className="flex-1 py-3 px-1.5 flex flex-col gap-0.5" aria-label="Main navigation">
+      {/* Nav - scrollable on short viewports */}
+      <nav className="flex-1 py-3 px-1.5 flex flex-col gap-0.5 overflow-y-auto min-h-0" aria-label="Main navigation">
         {NAV_ITEMS.map(({ href, label, icon: Icon, enabled }) => {
           const active = pathname === href || (href !== "/" && pathname.startsWith(href))
           return (

@@ -35,15 +35,15 @@ export function Topbar() {
   }, [])
 
   return (
-    <header className="h-14 flex items-center px-4 border-b border-border bg-card shrink-0 z-10">
+    <header className="h-14 flex items-center px-4 gap-4 border-b border-border bg-card shrink-0 z-10">
       {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 min-w-0 flex-1">
+      <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 min-w-0">
         {crumbs.map((crumb, i) => (
           <span key={crumb} className="flex items-center gap-1.5">
             {i > 0 && <ChevronRight className="w-3 h-3 text-muted-foreground shrink-0" />}
             <span
               className={cn(
-                "text-sm font-medium truncate",
+                "text-sm font-medium truncate max-w-[120px] sm:max-w-none",
                 i === crumbs.length - 1
                   ? "text-foreground"
                   : "text-muted-foreground"
@@ -55,18 +55,20 @@ export function Topbar() {
         ))}
       </nav>
 
-      {/* Live clock — center */}
-      <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center">
-        <span className="text-sm font-medium text-foreground font-mono tabular-nums tracking-wider">
-          {time}
-        </span>
-        <span className="text-[10px] text-muted-foreground font-medium tracking-widest uppercase leading-none">
-          Calbayog City
-        </span>
+      {/* Live clock — center (hidden on mobile) */}
+      <div className="hidden md:flex flex-1 justify-center">
+        <div className="flex flex-col items-center">
+          <span className="text-sm font-medium text-foreground font-mono tabular-nums tracking-wider">
+            {time}
+          </span>
+          <span className="text-[10px] text-muted-foreground font-medium tracking-widest uppercase leading-none hidden lg:block">
+            Calbayog City
+          </span>
+        </div>
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-2 ml-auto">
+      <div className="flex items-center gap-2 ml-auto md:ml-0">
         <button
           aria-label="Notifications"
           className="w-8 h-8 rounded-sm flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors relative"
