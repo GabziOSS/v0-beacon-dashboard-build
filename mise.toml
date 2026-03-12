@@ -17,45 +17,259 @@ dotenvx = "latest"
 [tasks.gh-container-prep]
 description = "Get current token and prepare env vars for container mode"
 run = '''
-    if command -v gh &> /dev/null && gh auth status &> /dev/null; then
-        TOKEN=$(gh auth token)
-        echo "export GITHUB_TOKEN=$TOKEN" > .container-env
-        echo "export GITHUB_IDENTITY=gabzidevs <71532830+gabzidevs@users.noreply.github.com>" >> .container-env
-        echo "GITHUB_TOKEN=$TOKEN GITHUB_IDENTITY='gabzidevs <71532830+gabzidevs@users.noreply.github.com>'"
-        echo ""
-        echo "✅ Written to .container-env"
-        echo "Run: mise run gh-container-enable"
-    else
-        echo "Error: gh not authenticated"
+    # Check if gh is available and authenticated
+    if ! command -v gh &> /dev/null; then
+        echo "Error: GitHub CLI (gh) not found. Please install it first."
         exit 1
     fi
+    
+    if ! gh auth status &> /dev/null; then
+        echo "Error: Not authenticated with GitHub CLI. Please run 'gh auth login' first."
+        exit 1
+    fi
+    
+    # Get token and prepare env vars
+    TOKEN=$(gh auth token)
+    if [ -z "$TOKEN" ]; then
+        echo "Error: Could not retrieve GitHub token."
+        exit 1
+    fi
+    
+    # Write to .container-env
+    echo "export GITHUB_TOKEN=$TOKEN" > .container-env
+    echo 'export GITHUB_IDENTITY="gabzidevs <71532830+gabzidevs@users.noreply.github.com>"' >> .container-env
+    
+    # Verify file was written correctly
+    if [ ! -f .container-env ] || [ ! -r .container-env ]; then
+        echo "Error: Failed to create or read .container-env file."
+        exit 1
+    fi
+    
+    echo ""
+    echo "✅ Written to .container-env"
+    echo "Run: mise run gh-container-enable"
 '''
 
 [tasks.gh-container-enable]
 description = "Enable GitHub token for container pushing (run gh-container-prep first)"
 run = '''
-    if [ -f .container-env ]; then
-        source .container-env
-        GITHUB_TOKEN=$GITHUB_TOKEN GITHUB_IDENTITY=$GITHUB_IDENTITY ./setup-gh-git.sh enable
-    else
-        echo "Run 'mise run gh-container-prep' first"
+    # Check if .container-env exists and is readable
+    if [ ! -f ./.container-env ]; then
+        echo "Error: .container-env not found. Please run 'mise run gh-container-prep' first."
         exit 1
     fi
+    
+    if [ ! -r ./.container-env ]; then
+        echo "Error: .container-env is not readable. Please check permissions."
+        exit 1
+    fi
+    
+    # Check if setup-gh-git.sh exists and is executable
+    if [ ! -f ./setup-gh-git.sh ]; then
+        echo "Error: setup-gh-git.sh not found. Please ensure it exists in the current directory."
+        exit 1
+    fi
+    
+    if [ ! -x ./setup-gh-git.sh ]; then
+        echo "Error: setup-gh-git.sh is not executable. Please run: chmod +x setup-gh-git.sh"
+        exit 1
+    fi
+    
+    # Source the environment file and check for required variables
+    source ./.container-env
+    
+    if [ -z "$GITHUB_TOKEN" ]; then
+        echo "Error: GITHUB_TOKEN not found in .container-env. Please run 'mise run gh-container-prep' again."
+        exit 1
+    fi
+    
+    if [ -z "$GITHUB_IDENTITY" ]; then
+        echo "Error: GITHUB_IDENTITY not found in .container-env. Please run 'mise run gh-container-prep' again."
+        exit 1
+    fi
+    
+    # Run the setup script
+    if ! GITHUB_TOKEN="$GITHUB_TOKEN" GITHUB_IDENTITY="$GITHUB_IDENTITY" ./setup-gh-git.sh enable; then
+        echo "Failed to enable GitHub token for container pushing."
+        echo "Please check your token and identity values."
+        exit 1
+    fi
+    
+    echo ""
+    echo "✅ GitHub token enabled for container pushing"
+    echo "You can now push to GitHub Container Registry"
 '''
 
 [tasks.gh-container-disable]
 description = "Disable container mode (restore original)"
-run = "./setup-gh-git.sh disable"
+run = '''
+    # Check if setup-gh-git.sh exists and is executable
+    if [ ! -f ./setup-gh-git.sh ]; then
+        echo "Error: setup-gh-git.sh not found. Please ensure it exists in the current directory."
+        exit 1
+    fi
+    
+    if [ ! -x ./setup-gh-git.sh ]; then
+        echo "Error: setup-gh-git.sh is not executable. Please run: chmod +x setup-gh-git.sh"
+        exit 1
+    fi
+    
+    # Run the disable script
+    if ! ./setup-gh-git.sh disable; then
+        echo "Failed to disable GitHub token for container pushing."
+        exit 1
+    fi
+    
+    # Clean up .container-env file if it exists
+    if [ -f ./.container-env ]; then
+        if [ ! -w ./.container-env ]; then
+            echo "Warning: .container-env is not writable. Cannot remove it."
+        else
+            rm ./.container-env
+            echo "Removed .container-env"
+        fi
+    else
+        echo ".container-env not found (already cleaned up?)"
+    fi
+    
+    echo ""
+    echo "✅ Container mode disabled"
+    echo "GitHub identity restored to original values"
+'''
 
 # Fish shell setup
 [tasks.setup-fish-pure]
 description = "Install Fisher and Pure prompt for fish shell"
 run = '''
-    fish -c "curl -sL https://git.io/fisher | source && fisher install pure-fish/pure"
+    # Check if fish is available
+    if ! command -v fish &> /dev/null; then
+        echo "Error: fish shell not found. Please install fish first."
+        exit 1
+    fi
+    
+    # Check if curl is available
+    if ! command -v curl &> /dev/null; then
+        echo "Error: curl not found. Please install curl first."
+        exit 1
+    fi
+    
+    # Install Fisher and Pure prompt
+    echo "Installing Fisher..."
+    if ! fish -c "curl -sL https://git.io/fisher | source"; then
+        echo "Error: Failed to install Fisher."
+        exit 1
+    fi
+    
+    echo "Installing Pure prompt..."
+    if ! fish -c "fisher install pure-fish/pure"; then
+        echo "Error: Failed to install Pure prompt."
+        exit 1
+    fi
+    
+    echo ""
+    echo "✅ Fisher and Pure prompt installed successfully"
+    echo "You may need to restart your fish shell for changes to take effect"
 '''
 
 [tasks.setup-fish-path]
 description = "Add local ./bin to fish PATH"
 run = '''
-    fish -c "fish_add_path -g (pwd)/bin"
+    # Check if fish is available
+    if ! command -v fish &> /dev/null; then
+        echo "Error: fish shell not found. Please install fish first."
+        exit 1
+    fi
+    
+    # Check if ./bin directory exists
+    if [ ! -d "./bin" ]; then
+        echo "Error: ./bin directory not found. Please create it first."
+        exit 1
+    fi
+    
+    # Add local ./bin to fish PATH
+    echo "Adding ./bin to fish PATH..."
+    if ! fish -c "fish_add_path -g (pwd)/bin"; then
+        echo "Error: Failed to add ./bin to fish PATH."
+        exit 1
+    fi
+    
+    echo ""
+    echo "✅ Successfully added ./bin to fish PATH"
+    echo "You may need to restart your fish shell for changes to take effect"
+'''
+
+[tasks.setup-dev-environment]
+description = "Set up complete development environment (fish shell and mise)"
+run = '''
+    echo "Setting up development environment..."
+    
+    # Run fish shell setup
+    mise run setup-fish-pure
+    mise run setup-fish-path
+    
+    echo ""
+    echo "✅ Development environment setup complete!"
+    echo "You may need to restart your fish shell for changes to take effect"
+'''
+
+[tasks.croc-send-container-env]
+description = "Send .container-env file via croc"
+run = '''
+    # Check if .container-env exists
+    if [ ! -f ./.container-env ]; then
+        echo "Error: .container-env not found. Please run 'mise run gh-container-prep' first."
+        exit 1
+    fi
+    
+    # Check if croc is available
+    if ! command -v croc &> /dev/null; then
+        echo "Error: croc not found. Please install it first."
+        exit 1
+    fi
+    
+    echo "Sending .container-env via croc..."
+    echo "On the receiving machine, run: mise run croc-receive-container-env"
+    croc send .container-env
+'''
+
+[tasks.croc-receive-container-env]
+description = "Receive .container-env file via croc"
+run = '''
+    # Check if croc is available
+    if ! command -v croc &> /dev/null; then
+        echo "Error: croc not found. Please install it first."
+        exit 1
+    fi
+    
+    echo "Waiting to receive .container-env via croc..."
+    echo "On the sending machine, run: mise run croc-send-container-env"
+    croc receive
+    
+    # Check if file was received
+    if [ ! -f ./container-env ]; then
+        echo "Error: Failed to receive .container-env file."
+        exit 1
+    fi
+    
+    # Rename to .container-env (croc preserves original filename)
+    if [ -f ./container-env ] && [ ! -f ./.container-env ]; then
+        mv ./container-env ./.container-env
+        echo "✅ Received and renamed to .container-env"
+    elif [ -f ./.container-env ]; then
+        echo "Warning: .container-env already exists. Not overwriting."
+        echo "Received file saved as ./container-env"
+    else
+        echo "Error: Unexpected state after receiving file."
+        exit 1
+    fi
+    
+    # Verify file is readable
+    if [ ! -r ./.container-env ]; then
+        echo "Error: Received .container-env is not readable."
+        exit 1
+    fi
+    
+    echo ""
+    echo "✅ .container-env received successfully"
+    echo "You can now run: mise run gh-container-enable"
 '''

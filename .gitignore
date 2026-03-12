@@ -10,3 +10,5 @@ node_modules/
 .DS_Store
 .opencode/memory-working
 .mise
+.container-env
+.gh-container-backup/
