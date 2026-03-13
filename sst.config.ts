@@ -20,8 +20,8 @@ export default $config({
     const getEnvironmentConfig = (stage: string) => {
       const baseConfig = {
         NEXT_PUBLIC_APP_STAGE: stage,
-        NEXT_PUBLIC_APP_NAME: 'Civic Pulse Alpha',
-        NEXT_PUBLIC_APP_VERSION: '1.0.0',
+        NEXT_PUBLIC_APP_NAME: 'Civic Pulse: Alpha Mode',
+        NEXT_PUBLIC_APP_VERSION: '0.0.1',
         AWS_S3_REGION: 'ap-southeast-1',
       }
 
@@ -29,10 +29,8 @@ export default $config({
         case 'production':
           return {
             ...baseConfig,
-            NEXT_PUBLIC_APP_URL: 'https://montz.qzz.io',
+            NEXT_PUBLIC_APP_URL: 'https://civicpulse.montz.qzz.io',
             DATABASE_URL: process.env.PROD_DATABASE_URL || '',
-            NEXTAUTH_URL: 'https://montz.qzz.io',
-            CIVIC_DATA_API_URL: process.env.PROD_CIVIC_DATA_API_URL || '',
             AWS_S3_BUCKET_NAME: process.env.PROD_S3_BUCKET || '',
             NEXT_PUBLIC_CDN_URL: process.env.PROD_CDN_URL || '',
             LOG_LEVEL: 'warn',
@@ -40,29 +38,20 @@ export default $config({
             NEXT_PUBLIC_ENABLE_BETA_FEATURES: 'false',
           }
 
-        case 'staging':
-          return {
-            ...baseConfig,
-            NEXT_PUBLIC_APP_URL: 'https://staging.montz.qzz.io',
-            DATABASE_URL: process.env.STAGING_DATABASE_URL || '',
-            NEXTAUTH_URL: 'https://staging.montz.qzz.io',
-            CIVIC_DATA_API_URL: process.env.STAGING_CIVIC_DATA_API_URL || '',
-            AWS_S3_BUCKET_NAME: process.env.STAGING_S3_BUCKET || '',
-            NEXT_PUBLIC_CDN_URL: process.env.STAGING_CDN_URL || '',
-            LOG_LEVEL: 'info',
-            RATE_LIMIT_REQUESTS_PER_MINUTE: '100',
-            NEXT_PUBLIC_ENABLE_BETA_FEATURES: 'true',
-          }
+        // case 'staging':
+        //   return {
+        //     ...baseConfig,
+        //     NEXT_PUBLIC_APP_URL: 'https://civicpulse-staging.montz.qzz.io',
+        //     LOG_LEVEL: 'info',
+        //     RATE_LIMIT_REQUESTS_PER_MINUTE: '100',
+        //     NEXT_PUBLIC_ENABLE_BETA_FEATURES: 'true',
+        //   }
 
         default: // dev and other stages
           return {
             ...baseConfig,
-            NEXT_PUBLIC_APP_URL: `https://${stage}.montz.qzz.io`,
+            NEXT_PUBLIC_APP_URL: `https://civicpulse-${stage}.montz.qzz.io`,
             DATABASE_URL: process.env.DEV_DATABASE_URL || '',
-            NEXTAUTH_URL: `https://${stage}.montz.qzz.io`,
-            CIVIC_DATA_API_URL: process.env.DEV_CIVIC_DATA_API_URL || '',
-            AWS_S3_BUCKET_NAME: process.env.DEV_S3_BUCKET || '',
-            NEXT_PUBLIC_CDN_URL: process.env.DEV_CDN_URL || '',
             LOG_LEVEL: 'debug',
             RATE_LIMIT_REQUESTS_PER_MINUTE: '200',
             NEXT_PUBLIC_ENABLE_BETA_FEATURES: 'true',
@@ -92,8 +81,8 @@ export default $config({
         memory: $app.stage === 'production' ? '1024 MB' : '512 MB',
       },
 
-      // Build configuration
-      buildCommand: 'mise exec -- pnpm run build',
+      // Build configuration - use OpenNext for SST deployment
+      buildCommand: 'pnpm run build:opennext',
     })
 
     return {
