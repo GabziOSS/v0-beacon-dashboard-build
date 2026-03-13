@@ -113,16 +113,17 @@ export function ChartBlock({
     }
 
     function handleEnd() {
-      if (resizePreview || true) {
-        const preview = { col: startColSpan, row: startRowSpan }
-        setResizePreview(prev => {
-          if (prev) {
+      // Capture the current preview state before clearing it
+      setResizePreview(prev => {
+        // Schedule the parent state updates after this render cycle completes
+        if (prev) {
+          queueMicrotask(() => {
             onColSpanChange(id, prev.col)
             if (onRowSpanChange) onRowSpanChange(id, prev.row)
-          }
-          return null
-        })
-      }
+          })
+        }
+        return null
+      })
       document.removeEventListener("pointermove", handleMove)
       document.removeEventListener("pointerup", handleEnd)
     }
