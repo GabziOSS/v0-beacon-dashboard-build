@@ -54,28 +54,6 @@ export const THEMES = {
     font: "Crimson Pro",
     colors: {
       dark: {
-        bg: "oklch(0.12 0.020 25)",
-        primary: "oklch(0.48 0.20 15)",
-        accent: "oklch(0.75 0.14 75)",
-      },
-      soft: {
-        bg: "oklch(0.20 0.016 25)",
-        primary: "oklch(0.52 0.18 15)",
-        accent: "oklch(0.72 0.12 75)",
-      },
-      light: {
-        bg: "oklch(0.97 0.012 60)",
-        primary: "oklch(0.42 0.20 15)",
-        accent: "oklch(0.65 0.14 75)",
-      },
-    },
-  },
-  "nwssu-academic": {
-    name: "NwSSU Academic",
-    description: "Institutional gravitas, modernised academia",
-    font: "Outfit",
-    colors: {
-      dark: {
         bg: "oklch(0.13 0.022 240)",
         primary: "oklch(0.50 0.14 235)",
         accent: "oklch(0.72 0.12 155)",
@@ -89,6 +67,28 @@ export const THEMES = {
         bg: "oklch(0.98 0.005 240)",
         primary: "oklch(0.45 0.14 235)",
         accent: "oklch(0.55 0.12 155)",
+      },
+    },
+  },
+  "nwssu-academic": {
+    name: "NwSSU Academic",
+    description: "Institutional gravitas, modernised academia",
+    font: "Outfit",
+    colors: {
+      dark: {
+        bg: "oklch(0.12 0.020 25)",
+        primary: "oklch(0.48 0.20 15)",
+        accent: "oklch(0.75 0.14 75)",
+      },
+      soft: {
+        bg: "oklch(0.20 0.016 25)",
+        primary: "oklch(0.52 0.18 15)",
+        accent: "oklch(0.72 0.12 75)",
+      },
+      light: {
+        bg: "oklch(0.97 0.012 60)",
+        primary: "oklch(0.42 0.20 15)",
+        accent: "oklch(0.65 0.14 75)",
       },
     },
   },
