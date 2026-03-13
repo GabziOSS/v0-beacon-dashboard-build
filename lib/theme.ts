@@ -54,28 +54,6 @@ export const THEMES = {
     font: "Crimson Pro",
     colors: {
       dark: {
-        bg: "oklch(0.13 0.022 240)",
-        primary: "oklch(0.50 0.14 235)",
-        accent: "oklch(0.72 0.12 155)",
-      },
-      soft: {
-        bg: "oklch(0.22 0.018 240)",
-        primary: "oklch(0.55 0.12 235)",
-        accent: "oklch(0.68 0.10 155)",
-      },
-      light: {
-        bg: "oklch(0.98 0.005 240)",
-        primary: "oklch(0.45 0.14 235)",
-        accent: "oklch(0.55 0.12 155)",
-      },
-    },
-  },
-  "nwssu-academic": {
-    name: "NwSSU Academic",
-    description: "Institutional gravitas, modernised academia",
-    font: "Outfit",
-    colors: {
-      dark: {
         bg: "oklch(0.12 0.020 25)",
         primary: "oklch(0.48 0.20 15)",
         accent: "oklch(0.75 0.14 75)",
@@ -89,6 +67,28 @@ export const THEMES = {
         bg: "oklch(0.97 0.012 60)",
         primary: "oklch(0.42 0.20 15)",
         accent: "oklch(0.65 0.14 75)",
+      },
+    },
+  },
+  "nwssu-academic": {
+    name: "NwSSU Academic",
+    description: "Institutional gravitas, modernised academia",
+    font: "Outfit",
+    colors: {
+      dark: {
+        bg: "oklch(0.13 0.022 240)",
+        primary: "oklch(0.50 0.14 235)",
+        accent: "oklch(0.72 0.12 155)",
+      },
+      soft: {
+        bg: "oklch(0.22 0.018 240)",
+        primary: "oklch(0.55 0.12 235)",
+        accent: "oklch(0.68 0.10 155)",
+      },
+      light: {
+        bg: "oklch(0.98 0.005 240)",
+        primary: "oklch(0.45 0.14 235)",
+        accent: "oklch(0.55 0.12 155)",
       },
     },
   },
@@ -215,6 +215,7 @@ export function applyTheme(themeId: ThemeId, mode: ThemeMode): void {
     try {
       const user = JSON.parse(userJson);
       localStorage.setItem(`beacon_theme_${user.id}`, themeId);
+      localStorage.setItem(`beacon_mode_${user.id}`, mode);
     } catch {
       // Ignore parse errors
     }
@@ -248,6 +249,22 @@ export function getStoredTheme(): ThemeId {
 
 export function getStoredMode(): ThemeMode {
   if (typeof window === "undefined") return "auto";
+  
+  // Check for user-specific mode preference first
+  const userJson = localStorage.getItem("beacon_user");
+  if (userJson) {
+    try {
+      const user = JSON.parse(userJson);
+      const userModeKey = `beacon_mode_${user.id}`;
+      const userMode = localStorage.getItem(userModeKey);
+      if (userMode && ["auto", "dark", "soft", "light"].includes(userMode)) {
+        return userMode as ThemeMode;
+      }
+    } catch {
+      // Ignore parse errors
+    }
+  }
+  
   const stored = localStorage.getItem("beacon_mode");
   if (stored && ["auto", "dark", "soft", "light"].includes(stored)) {
     return stored as ThemeMode;

@@ -455,10 +455,185 @@
 /* ═══════════════════════════════════════════════════════════════
    THEME: calbayog-gov-plus
    Personality: Official government digital identity. Trusted, authoritative.
-   Background: Deep navy. Primary: Navy blue. Accent: Forest green + civic gold.
-   Font: Outfit — Aligned with calbayog.gov.ph
+   Background: Warm sepia-black with maroon undertone. Primary: Deep crimson (RISE). Accent: Academic gold.
+   Font: Crimson Pro — Aligned with calbayog.gov.ph
    ═══════════════════════════════════════════════════════════════ */
 [data-theme="calbayog-gov-plus"] {
+  --background:        oklch(0.12 0.020 25);
+  --foreground:        oklch(0.94 0.010 60);
+
+  --card:              oklch(0.16 0.022 23);
+  --card-foreground:   oklch(0.92 0.010 60);
+  --card-nested:       oklch(0.19 0.024 21);
+  --card-nested-foreground: oklch(0.88 0.010 60);
+
+  --popover:           oklch(0.16 0.022 23);
+  --popover-foreground:oklch(0.92 0.010 60);
+
+  /* Deep institutional maroon — aligned with nwssu.edu.ph */
+  --primary:           oklch(0.48 0.20 15);
+  --primary-foreground:oklch(0.98 0.005 60);
+  --primary-dim:       oklch(0.48 0.20 15 / 0.15);
+
+  --secondary:         oklch(0.20 0.018 23);
+  --secondary-foreground: oklch(0.88 0.010 60);
+
+  --muted:             oklch(0.18 0.016 25);
+  --muted-foreground:  oklch(0.52 0.014 55);
+
+  /* Academic gold — more saturated for prestige */
+  --accent:            oklch(0.75 0.14 75);
+  --accent-foreground: oklch(0.12 0.020 25);
+  --accent-dim:        oklch(0.75 0.14 75 / 0.12);
+
+  --success:           oklch(0.65 0.14 155);
+  --success-foreground:oklch(0.12 0.020 25);
+  --success-dim:       oklch(0.65 0.14 155 / 0.15);
+
+  --warning:           oklch(0.75 0.14 75);
+  --warning-foreground:oklch(0.12 0.020 25);
+  --warning-dim:       oklch(0.75 0.14 75 / 0.15);
+
+  --destructive:       oklch(0.55 0.22 15);
+  --destructive-foreground: oklch(0.97 0.005 60);
+  --destructive-dim:   oklch(0.55 0.22 15 / 0.15);
+
+  --border:            oklch(0.26 0.018 23);
+  --input:             oklch(0.22 0.018 23);
+  --ring:              oklch(0.48 0.20 15 / 0.45);
+
+  --glow:              0 0 0 1px oklch(0.48 0.20 15 / 0.5), 0 0 12px 2px oklch(0.48 0.20 15 / 0.18);
+  --glow-destructive:  0 0 0 1px oklch(0.55 0.22 15 / 0.5), 0 0 12px 2px oklch(0.55 0.22 15 / 0.18);
+
+  --chart-1:           oklch(0.48 0.20 15);
+  --chart-2:           oklch(0.75 0.14 75);
+  --chart-3:           oklch(0.65 0.14 155);
+  --chart-4:           oklch(0.65 0.14 35);
+  --chart-5:           oklch(0.55 0.18 10);
+  --chart-6:           oklch(0.70 0.10 90);
+  --chart-7:           oklch(0.52 0.14 350);
+  --chart-8:           oklch(0.70 0.08 120);
+
+  --sidebar:           oklch(0.14 0.021 25);
+  --sidebar-foreground:oklch(0.92 0.010 60);
+  --sidebar-primary:   oklch(0.48 0.20 15);
+  --sidebar-primary-foreground: oklch(0.98 0.005 60);
+  --sidebar-accent:    oklch(0.48 0.20 15 / 0.10);
+  --sidebar-accent-foreground: oklch(0.92 0.010 60);
+  --sidebar-border:    oklch(0.22 0.018 23);
+  --sidebar-ring:      oklch(0.48 0.20 15 / 0.45);
+}
+/* calbayog-gov-plus-soft — Muted official for document review */
+[data-theme="calbayog-gov-plus-soft"] {
+  --background:        oklch(0.20 0.016 25);
+  --foreground:        oklch(0.92 0.010 60);
+  --card:              oklch(0.24 0.018 23);
+  --card-foreground:   oklch(0.90 0.010 60);
+  --card-nested:       oklch(0.27 0.020 21);
+  --card-nested-foreground: oklch(0.86 0.010 60);
+  --popover:           oklch(0.24 0.018 23);
+  --popover-foreground:oklch(0.90 0.010 60);
+  --primary:           oklch(0.52 0.18 15);
+  --primary-foreground:oklch(0.98 0.005 60);
+  --primary-dim:       oklch(0.52 0.18 15 / 0.15);
+  --secondary:         oklch(0.28 0.014 23);
+  --secondary-foreground: oklch(0.86 0.010 60);
+  --muted:             oklch(0.26 0.012 25);
+  --muted-foreground:  oklch(0.56 0.012 55);
+  --accent:            oklch(0.72 0.12 75);
+  --accent-foreground: oklch(0.18 0.016 25);
+  --accent-dim:        oklch(0.72 0.12 75 / 0.12);
+  --success:           oklch(0.62 0.12 155);
+  --success-foreground:oklch(0.18 0.016 25);
+  --success-dim:       oklch(0.62 0.12 155 / 0.15);
+  --warning:           oklch(0.72 0.12 75);
+  --warning-foreground:oklch(0.18 0.016 25);
+  --warning-dim:       oklch(0.72 0.12 75 / 0.15);
+  --destructive:       oklch(0.52 0.20 15);
+  --destructive-foreground: oklch(0.96 0.005 60);
+  --destructive-dim:   oklch(0.52 0.20 15 / 0.15);
+  --border:            oklch(0.32 0.016 23);
+  --input:             oklch(0.28 0.014 23);
+  --ring:              oklch(0.52 0.18 15 / 0.40);
+  --glow:              0 0 0 1px oklch(0.52 0.18 15 / 0.4), 0 0 10px 2px oklch(0.52 0.18 15 / 0.12);
+  --glow-destructive:  0 0 0 1px oklch(0.52 0.20 15 / 0.4), 0 0 10px 2px oklch(0.52 0.20 15 / 0.12);
+  --chart-1:           oklch(0.52 0.18 15);
+  --chart-2:           oklch(0.72 0.12 75);
+  --chart-3:           oklch(0.62 0.12 155);
+  --chart-4:           oklch(0.62 0.12 35);
+  --chart-5:           oklch(0.52 0.16 10);
+  --chart-6:           oklch(0.66 0.08 90);
+  --chart-7:           oklch(0.50 0.12 350);
+  --chart-8:           oklch(0.66 0.06 120);
+  --sidebar:           oklch(0.22 0.017 25);
+  --sidebar-foreground:oklch(0.90 0.010 60);
+  --sidebar-primary:   oklch(0.52 0.18 15);
+  --sidebar-primary-foreground: oklch(0.98 0.005 60);
+  --sidebar-accent:    oklch(0.52 0.18 15 / 0.10);
+  --sidebar-accent-foreground: oklch(0.90 0.010 60);
+  --sidebar-border:    oklch(0.28 0.014 23);
+  --sidebar-ring:      oklch(0.52 0.18 15 / 0.40);
+}
+
+/* calbayog-gov-plus-light — WCAG-compliant official light mode */
+[data-theme="calbayog-gov-plus-light"] {
+  --background:        oklch(0.97 0.012 60);
+  --foreground:        oklch(0.15 0.018 25);
+  --card:              oklch(0.99 0.008 60);
+  --card-foreground:   oklch(0.18 0.016 23);
+  --card-nested:       oklch(0.95 0.015 55);
+  --card-nested-foreground: oklch(0.20 0.014 21);
+  --popover:           oklch(0.99 0.008 60);
+  --popover-foreground:oklch(0.18 0.016 23);
+  --primary:           oklch(0.42 0.20 15);
+  --primary-foreground:oklch(0.98 0.005 60);
+  --primary-dim:       oklch(0.42 0.20 15 / 0.12);
+  --secondary:         oklch(0.94 0.014 58);
+  --secondary-foreground: oklch(0.22 0.014 21);
+  --muted:             oklch(0.95 0.012 58);
+  --muted-foreground:  oklch(0.45 0.014 55);
+  --accent:            oklch(0.65 0.14 75);
+  --accent-foreground: oklch(0.15 0.018 25);
+  --accent-dim:        oklch(0.65 0.14 75 / 0.15);
+  --success:           oklch(0.52 0.12 155);
+  --success-foreground:oklch(0.98 0.005 60);
+  --success-dim:       oklch(0.52 0.12 155 / 0.15);
+  --warning:           oklch(0.62 0.14 75);
+  --warning-foreground:oklch(0.15 0.018 25);
+  --warning-dim:       oklch(0.62 0.14 75 / 0.15);
+  --destructive:       oklch(0.48 0.22 15);
+  --destructive-foreground: oklch(0.98 0.005 60);
+  --destructive-dim:   oklch(0.48 0.22 15 / 0.12);
+  --border:            oklch(0.88 0.016 58);
+  --input:             oklch(0.92 0.012 58);
+  --ring:              oklch(0.42 0.20 15 / 0.35);
+  --glow:              0 0 0 1px oklch(0.42 0.20 15 / 0.3), 0 0 8px 2px oklch(0.42 0.20 15 / 0.10);
+  --glow-destructive:  0 0 0 1px oklch(0.48 0.22 15 / 0.3), 0 0 8px 2px oklch(0.48 0.22 15 / 0.10);
+  --chart-1:           oklch(0.42 0.20 15);
+  --chart-2:           oklch(0.62 0.14 75);
+  --chart-3:           oklch(0.52 0.12 155);
+  --chart-4:           oklch(0.55 0.14 35);
+  --chart-5:           oklch(0.48 0.18 10);
+  --chart-6:           oklch(0.58 0.10 90);
+  --chart-7:           oklch(0.45 0.14 350);
+  --chart-8:           oklch(0.58 0.08 120);
+  --sidebar:           oklch(0.95 0.014 60);
+  --sidebar-foreground:oklch(0.18 0.016 23);
+  --sidebar-primary:   oklch(0.42 0.20 15);
+  --sidebar-primary-foreground: oklch(0.98 0.005 60);
+  --sidebar-accent:    oklch(0.42 0.20 15 / 0.08);
+  --sidebar-accent-foreground: oklch(0.18 0.016 23);
+  --sidebar-border:    oklch(0.88 0.016 58);
+  --sidebar-ring:      oklch(0.42 0.20 15 / 0.35);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   THEME: nwssu-academic
+   Personality: Institutional gravitas, modernised academia.
+   Background: Deep navy. Primary: Navy blue. Accent: Forest green + civic gold.
+   Font: Outfit — Aligned with nwssu.edu.ph
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme="nwssu-academic"] {
   --background:        oklch(0.13 0.022 240);
   --foreground:        oklch(0.94 0.006 240);
 
@@ -524,8 +699,8 @@
   --sidebar-ring:      oklch(0.50 0.14 235 / 0.45);
 }
 
-/* calbayog-gov-plus-soft — Muted official for document review */
-[data-theme="calbayog-gov-plus-soft"] {
+/* nwssu-academic-soft — Warm academic for extended study */
+[data-theme="nwssu-academic-soft"] {
   --background:        oklch(0.22 0.018 240);
   --foreground:        oklch(0.92 0.006 240);
   --card:              oklch(0.26 0.020 238);
@@ -576,8 +751,8 @@
   --sidebar-ring:      oklch(0.55 0.12 235 / 0.40);
 }
 
-/* calbayog-gov-plus-light — WCAG-compliant official light mode */
-[data-theme="calbayog-gov-plus-light"] {
+/* nwssu-academic-light — Warm ivory academic light mode */
+[data-theme="nwssu-academic-light"] {
   --background:        oklch(0.98 0.005 240);
   --foreground:        oklch(0.18 0.020 240);
   --card:              oklch(0.99 0.003 240);
@@ -626,182 +801,6 @@
   --sidebar-accent-foreground: oklch(0.20 0.018 238);
   --sidebar-border:    oklch(0.88 0.012 238);
   --sidebar-ring:      oklch(0.45 0.14 235 / 0.35);
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   THEME: nwssu-academic
-   Personality: Institutional gravitas, modernised academia.
-   Background: Warm sepia-black with maroon undertone. Primary: Deep crimson (RISE). Accent: Academic gold.
-   Font: Crimson Pro — Aligned with nwssu.edu.ph
-   ═══════════════════════════════════════════════════════════════ */
-[data-theme="nwssu-academic"] {
-  --background:        oklch(0.12 0.020 25);
-  --foreground:        oklch(0.94 0.010 60);
-
-  --card:              oklch(0.16 0.022 23);
-  --card-foreground:   oklch(0.92 0.010 60);
-  --card-nested:       oklch(0.19 0.024 21);
-  --card-nested-foreground: oklch(0.88 0.010 60);
-
-  --popover:           oklch(0.16 0.022 23);
-  --popover-foreground:oklch(0.92 0.010 60);
-
-  /* Deep institutional maroon — aligned with nwssu.edu.ph */
-  --primary:           oklch(0.48 0.20 15);
-  --primary-foreground:oklch(0.98 0.005 60);
-  --primary-dim:       oklch(0.48 0.20 15 / 0.15);
-
-  --secondary:         oklch(0.20 0.018 23);
-  --secondary-foreground: oklch(0.88 0.010 60);
-
-  --muted:             oklch(0.18 0.016 25);
-  --muted-foreground:  oklch(0.52 0.014 55);
-
-  /* Academic gold — more saturated for prestige */
-  --accent:            oklch(0.75 0.14 75);
-  --accent-foreground: oklch(0.12 0.020 25);
-  --accent-dim:        oklch(0.75 0.14 75 / 0.12);
-
-  --success:           oklch(0.65 0.14 155);
-  --success-foreground:oklch(0.12 0.020 25);
-  --success-dim:       oklch(0.65 0.14 155 / 0.15);
-
-  --warning:           oklch(0.75 0.14 75);
-  --warning-foreground:oklch(0.12 0.020 25);
-  --warning-dim:       oklch(0.75 0.14 75 / 0.15);
-
-  --destructive:       oklch(0.55 0.22 15);
-  --destructive-foreground: oklch(0.97 0.005 60);
-  --destructive-dim:   oklch(0.55 0.22 15 / 0.15);
-
-  --border:            oklch(0.26 0.018 23);
-  --input:             oklch(0.22 0.018 23);
-  --ring:              oklch(0.48 0.20 15 / 0.45);
-
-  --glow:              0 0 0 1px oklch(0.48 0.20 15 / 0.5), 0 0 12px 2px oklch(0.48 0.20 15 / 0.18);
-  --glow-destructive:  0 0 0 1px oklch(0.55 0.22 15 / 0.5), 0 0 12px 2px oklch(0.55 0.22 15 / 0.18);
-
-  --chart-1:           oklch(0.48 0.20 15);
-  --chart-2:           oklch(0.75 0.14 75);
-  --chart-3:           oklch(0.65 0.14 155);
-  --chart-4:           oklch(0.65 0.14 35);
-  --chart-5:           oklch(0.55 0.18 10);
-  --chart-6:           oklch(0.70 0.10 90);
-  --chart-7:           oklch(0.52 0.14 350);
-  --chart-8:           oklch(0.70 0.08 120);
-
-  --sidebar:           oklch(0.14 0.021 25);
-  --sidebar-foreground:oklch(0.92 0.010 60);
-  --sidebar-primary:   oklch(0.48 0.20 15);
-  --sidebar-primary-foreground: oklch(0.98 0.005 60);
-  --sidebar-accent:    oklch(0.48 0.20 15 / 0.10);
-  --sidebar-accent-foreground: oklch(0.92 0.010 60);
-  --sidebar-border:    oklch(0.22 0.018 23);
-  --sidebar-ring:      oklch(0.48 0.20 15 / 0.45);
-}
-
-/* nwssu-academic-soft — Warm academic for extended study */
-[data-theme="nwssu-academic-soft"] {
-  --background:        oklch(0.20 0.016 25);
-  --foreground:        oklch(0.92 0.010 60);
-  --card:              oklch(0.24 0.018 23);
-  --card-foreground:   oklch(0.90 0.010 60);
-  --card-nested:       oklch(0.27 0.020 21);
-  --card-nested-foreground: oklch(0.86 0.010 60);
-  --popover:           oklch(0.24 0.018 23);
-  --popover-foreground:oklch(0.90 0.010 60);
-  --primary:           oklch(0.52 0.18 15);
-  --primary-foreground:oklch(0.98 0.005 60);
-  --primary-dim:       oklch(0.52 0.18 15 / 0.15);
-  --secondary:         oklch(0.28 0.014 23);
-  --secondary-foreground: oklch(0.86 0.010 60);
-  --muted:             oklch(0.26 0.012 25);
-  --muted-foreground:  oklch(0.56 0.012 55);
-  --accent:            oklch(0.72 0.12 75);
-  --accent-foreground: oklch(0.18 0.016 25);
-  --accent-dim:        oklch(0.72 0.12 75 / 0.12);
-  --success:           oklch(0.62 0.12 155);
-  --success-foreground:oklch(0.18 0.016 25);
-  --success-dim:       oklch(0.62 0.12 155 / 0.15);
-  --warning:           oklch(0.72 0.12 75);
-  --warning-foreground:oklch(0.18 0.016 25);
-  --warning-dim:       oklch(0.72 0.12 75 / 0.15);
-  --destructive:       oklch(0.52 0.20 15);
-  --destructive-foreground: oklch(0.96 0.005 60);
-  --destructive-dim:   oklch(0.52 0.20 15 / 0.15);
-  --border:            oklch(0.32 0.016 23);
-  --input:             oklch(0.28 0.014 23);
-  --ring:              oklch(0.52 0.18 15 / 0.40);
-  --glow:              0 0 0 1px oklch(0.52 0.18 15 / 0.4), 0 0 10px 2px oklch(0.52 0.18 15 / 0.12);
-  --glow-destructive:  0 0 0 1px oklch(0.52 0.20 15 / 0.4), 0 0 10px 2px oklch(0.52 0.20 15 / 0.12);
-  --chart-1:           oklch(0.52 0.18 15);
-  --chart-2:           oklch(0.72 0.12 75);
-  --chart-3:           oklch(0.62 0.12 155);
-  --chart-4:           oklch(0.62 0.12 35);
-  --chart-5:           oklch(0.52 0.16 10);
-  --chart-6:           oklch(0.66 0.08 90);
-  --chart-7:           oklch(0.50 0.12 350);
-  --chart-8:           oklch(0.66 0.06 120);
-  --sidebar:           oklch(0.22 0.017 25);
-  --sidebar-foreground:oklch(0.90 0.010 60);
-  --sidebar-primary:   oklch(0.52 0.18 15);
-  --sidebar-primary-foreground: oklch(0.98 0.005 60);
-  --sidebar-accent:    oklch(0.52 0.18 15 / 0.10);
-  --sidebar-accent-foreground: oklch(0.90 0.010 60);
-  --sidebar-border:    oklch(0.28 0.014 23);
-  --sidebar-ring:      oklch(0.52 0.18 15 / 0.40);
-}
-
-/* nwssu-academic-light — Warm ivory academic light mode */
-[data-theme="nwssu-academic-light"] {
-  --background:        oklch(0.97 0.012 60);
-  --foreground:        oklch(0.15 0.018 25);
-  --card:              oklch(0.99 0.008 60);
-  --card-foreground:   oklch(0.18 0.016 23);
-  --card-nested:       oklch(0.95 0.015 55);
-  --card-nested-foreground: oklch(0.20 0.014 21);
-  --popover:           oklch(0.99 0.008 60);
-  --popover-foreground:oklch(0.18 0.016 23);
-  --primary:           oklch(0.42 0.20 15);
-  --primary-foreground:oklch(0.98 0.005 60);
-  --primary-dim:       oklch(0.42 0.20 15 / 0.12);
-  --secondary:         oklch(0.94 0.014 58);
-  --secondary-foreground: oklch(0.22 0.014 21);
-  --muted:             oklch(0.95 0.012 58);
-  --muted-foreground:  oklch(0.45 0.014 55);
-  --accent:            oklch(0.65 0.14 75);
-  --accent-foreground: oklch(0.15 0.018 25);
-  --accent-dim:        oklch(0.65 0.14 75 / 0.15);
-  --success:           oklch(0.52 0.12 155);
-  --success-foreground:oklch(0.98 0.005 60);
-  --success-dim:       oklch(0.52 0.12 155 / 0.15);
-  --warning:           oklch(0.62 0.14 75);
-  --warning-foreground:oklch(0.15 0.018 25);
-  --warning-dim:       oklch(0.62 0.14 75 / 0.15);
-  --destructive:       oklch(0.48 0.22 15);
-  --destructive-foreground: oklch(0.98 0.005 60);
-  --destructive-dim:   oklch(0.48 0.22 15 / 0.12);
-  --border:            oklch(0.88 0.016 58);
-  --input:             oklch(0.92 0.012 58);
-  --ring:              oklch(0.42 0.20 15 / 0.35);
-  --glow:              0 0 0 1px oklch(0.42 0.20 15 / 0.3), 0 0 8px 2px oklch(0.42 0.20 15 / 0.10);
-  --glow-destructive:  0 0 0 1px oklch(0.48 0.22 15 / 0.3), 0 0 8px 2px oklch(0.48 0.22 15 / 0.10);
-  --chart-1:           oklch(0.42 0.20 15);
-  --chart-2:           oklch(0.62 0.14 75);
-  --chart-3:           oklch(0.52 0.12 155);
-  --chart-4:           oklch(0.55 0.14 35);
-  --chart-5:           oklch(0.48 0.18 10);
-  --chart-6:           oklch(0.58 0.10 90);
-  --chart-7:           oklch(0.45 0.14 350);
-  --chart-8:           oklch(0.58 0.08 120);
-  --sidebar:           oklch(0.95 0.014 60);
-  --sidebar-foreground:oklch(0.18 0.016 23);
-  --sidebar-primary:   oklch(0.42 0.20 15);
-  --sidebar-primary-foreground: oklch(0.98 0.005 60);
-  --sidebar-accent:    oklch(0.42 0.20 15 / 0.08);
-  --sidebar-accent-foreground: oklch(0.18 0.016 23);
-  --sidebar-border:    oklch(0.88 0.016 58);
-  --sidebar-ring:      oklch(0.42 0.20 15 / 0.35);
 }
 
 /* ═══════════════════════════════════════════════════════════════
