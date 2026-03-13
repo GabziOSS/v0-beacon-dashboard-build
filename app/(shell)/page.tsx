@@ -1,6 +1,5 @@
-import { redirect } from "next/navigation"
+import { redirect } from "next/navigation";
 
 export default function ShellPage() {
-  redirect("/dashboard/overview")
+  redirect("/dashboard/station");
 }
-

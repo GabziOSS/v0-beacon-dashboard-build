@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { usePathname } from "next/navigation"
-import { Bell, ChevronRight, Shield } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { Bell, ChevronRight, Shield } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const BREADCRUMBS: Record<string, string[]> = {
-  "/":        ["Beacon", "Dashboard"],
-  "/map":     ["Beacon", "Map"],
-  "/alerts":  ["Beacon", "Alerts"],
-  "/users":   ["Beacon", "Users"],
-  "/settings":["Beacon", "Settings"],
-}
+  "/": ["CivicPulse", "Dashboard"],
+  "/map": ["Beacon", "Map"],
+  "/alerts": ["Beacon", "Alerts"],
+  "/users": ["Beacon", "Users"],
+  "/settings": ["Beacon", "Settings"],
+};
 
 export function Topbar() {
-  const pathname = usePathname()
-  const crumbs = BREADCRUMBS[pathname] ?? ["Beacon"]
-  const [time, setTime] = useState("")
+  const pathname = usePathname();
+  const crumbs = BREADCRUMBS[pathname] ?? ["CivicPulse"];
+  const [time, setTime] = useState("");
 
   useEffect(() => {
     function tick() {
@@ -26,27 +26,32 @@ export function Topbar() {
           minute: "2-digit",
           second: "2-digit",
           hour12: false,
-        })
-      )
+        }),
+      );
     }
-    tick()
-    const id = setInterval(tick, 1000)
-    return () => clearInterval(id)
-  }, [])
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
 
   return (
     <header className="h-14 flex items-center px-4 gap-4 border-b border-border bg-card shrink-0 z-10">
       {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 min-w-0">
+      <nav
+        aria-label="Breadcrumb"
+        className="flex items-center gap-1.5 min-w-0"
+      >
         {crumbs.map((crumb, i) => (
           <span key={crumb} className="flex items-center gap-1.5">
-            {i > 0 && <ChevronRight className="w-3 h-3 text-muted-foreground shrink-0" />}
+            {i > 0 && (
+              <ChevronRight className="w-3 h-3 text-muted-foreground shrink-0" />
+            )}
             <span
               className={cn(
                 "text-sm font-medium truncate max-w-[120px] sm:max-w-none",
                 i === crumbs.length - 1
                   ? "text-foreground"
-                  : "text-muted-foreground"
+                  : "text-muted-foreground",
               )}
             >
               {crumb}
@@ -81,5 +86,5 @@ export function Topbar() {
         </div>
       </div>
     </header>
-  )
+  );
 }

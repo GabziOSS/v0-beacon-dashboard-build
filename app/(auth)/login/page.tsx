@@ -1,42 +1,42 @@
-"use client"
+"use client";
 
-import { useState, useTransition } from "react"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
-import { Eye, EyeOff, BarChart3, MapPin, Shield, Loader2 } from "lucide-react"
-import { useAuth } from "@/lib/auth"
-import { cn } from "@/lib/utils"
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Eye, EyeOff, BarChart3, MapPin, Shield, Loader2 } from "lucide-react";
+import { useAuth } from "@/lib/auth";
+import { cn } from "@/lib/utils";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
-  const [error, setError] = useState("")
-  const [isPending, startTransition] = useTransition()
-  const { signIn } = useAuth()
-  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [isPending, startTransition] = useTransition();
+  const { signIn } = useAuth();
+  const router = useRouter();
 
   function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setError("")
+    e.preventDefault();
+    setError("");
 
     if (!email.includes("@")) {
-      setError("Please enter a valid email address")
-      return
+      setError("Please enter a valid email address");
+      return;
     }
     if (!password) {
-      setError("Password is required")
-      return
+      setError("Password is required");
+      return;
     }
 
     startTransition(async () => {
-      const result = await signIn(email, password)
+      const result = await signIn(email, password);
       if (result.success) {
-        router.push("/dashboard/overview")
+        router.push("/dashboard/overview");
       } else {
-        setError(result.error || "Invalid credentials")
+        setError(result.error || "Invalid credentials");
       }
-    })
+    });
   }
 
   return (
@@ -55,9 +55,11 @@ export default function LoginPage() {
         <div className="relative z-10 flex flex-col justify-between p-12 w-full">
           {/* Logo and tagline */}
           <div>
-            <h1 className="text-4xl font-bold text-foreground tracking-tight">Beacon</h1>
+            <h1 className="text-4xl font-bold text-foreground tracking-tight">
+              CivicPulse
+            </h1>
             <p className="mt-3 text-lg text-muted-foreground max-w-sm">
-              Situational awareness for Calbayog City
+              Situational awareness for Calbayog City (WIP)
             </p>
           </div>
 
@@ -68,8 +70,12 @@ export default function LoginPage() {
                 <BarChart3 className="w-5 h-5 text-primary" />
               </div>
               <div>
-                <p className="text-sm font-medium text-foreground">19 chart types, live data</p>
-                <p className="text-xs text-muted-foreground mt-0.5">Comprehensive visualization suite</p>
+                <p className="text-sm font-medium text-foreground">
+                  Demo Charts, mock data
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Weatherlink data coming soon 🚧
+                </p>
               </div>
             </div>
             <div className="flex items-start gap-4">
@@ -77,8 +83,12 @@ export default function LoginPage() {
                 <MapPin className="w-5 h-5 text-primary" />
               </div>
               <div>
-                <p className="text-sm font-medium text-foreground">12 monitored zones</p>
-                <p className="text-xs text-muted-foreground mt-0.5">Real-time district tracking</p>
+                <p className="text-sm font-medium text-foreground">
+                  12 monitored zones (Sample)
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Map got taken out for now 🚧
+                </p>
               </div>
             </div>
             <div className="flex items-start gap-4">
@@ -86,8 +96,13 @@ export default function LoginPage() {
                 <Shield className="w-5 h-5 text-primary" />
               </div>
               <div>
-                <p className="text-sm font-medium text-foreground">Incident response tracking</p>
-                <p className="text-xs text-muted-foreground mt-0.5">Coordinated emergency management</p>
+                <p className="text-sm font-medium text-foreground">
+                  enim sint non Lorem magna aliquip minim amet non eu Lorem
+                  velit
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Took some creative liberty for the texts 😉
+                </p>
               </div>
             </div>
           </div>
@@ -104,10 +119,14 @@ export default function LoginPage() {
         <div className="w-full max-w-sm">
           {/* Mobile logo */}
           <div className="lg:hidden mb-8">
-            <h1 className="text-2xl font-bold text-foreground tracking-tight">Beacon</h1>
+            <h1 className="text-2xl font-bold text-foreground tracking-tight">
+              CivicPulse
+            </h1>
           </div>
 
-          <h2 className="text-xl font-semibold text-foreground">Sign in to Beacon</h2>
+          <h2 className="text-xl font-semibold text-foreground">
+            Sign in to CivicPulse
+          </h2>
           <p className="mt-1 text-sm text-muted-foreground">
             Enter your credentials to access the dashboard
           </p>
@@ -115,14 +134,17 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="mt-8 space-y-4">
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-xs font-medium text-foreground mb-1.5">
+              <label
+                htmlFor="email"
+                className="block text-xs font-medium text-foreground mb-1.5"
+              >
                 Email
               </label>
               <input
                 id="email"
                 type="email"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full h-10 px-3 text-sm bg-input border border-border rounded-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="coordinator@cdrrmo.gov.ph"
                 autoComplete="email"
@@ -131,7 +153,10 @@ export default function LoginPage() {
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-xs font-medium text-foreground mb-1.5">
+              <label
+                htmlFor="password"
+                className="block text-xs font-medium text-foreground mb-1.5"
+              >
                 Password
               </label>
               <div className="relative">
@@ -139,25 +164,27 @@ export default function LoginPage() {
                   id="password"
                   type={showPassword ? "text" : "password"}
                   value={password}
-                  onChange={e => setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="w-full h-10 px-3 pr-10 text-sm bg-input border border-border rounded-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                   placeholder="Enter password"
                   autoComplete="current-password"
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassword(v => !v)}
+                  onClick={() => setShowPassword((v) => !v)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
                 </button>
               </div>
             </div>
 
             {/* Error */}
-            {error && (
-              <p className="text-sm text-destructive">{error}</p>
-            )}
+            {error && <p className="text-sm text-destructive">{error}</p>}
 
             {/* Submit */}
             <button
@@ -166,7 +193,7 @@ export default function LoginPage() {
               className={cn(
                 "w-full h-10 flex items-center justify-center gap-2 text-sm font-medium rounded-sm transition-colors",
                 "bg-primary text-primary-foreground hover:bg-primary/90",
-                "disabled:opacity-50 disabled:cursor-not-allowed"
+                "disabled:opacity-50 disabled:cursor-not-allowed",
               )}
             >
               {isPending ? (
@@ -186,7 +213,9 @@ export default function LoginPage() {
               <div className="w-full border-t border-border" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-background px-2 text-muted-foreground">or</span>
+              <span className="bg-background px-2 text-muted-foreground">
+                or
+              </span>
             </div>
           </div>
 
@@ -218,12 +247,15 @@ export default function LoginPage() {
 
           {/* Forgot password */}
           <div className="mt-6 text-center">
-            <Link href="/forgot-password" className="text-sm text-primary hover:underline">
+            <Link
+              href="/forgot-password"
+              className="text-sm text-primary hover:underline"
+            >
               Forgot password?
             </Link>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
