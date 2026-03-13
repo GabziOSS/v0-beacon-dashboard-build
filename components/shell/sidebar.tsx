@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import * as React from 'react'
+import { useEffect, useState, createContext, useContext } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
@@ -13,9 +14,18 @@ import {
   ChevronRight,
   Shield,
   LogOut,
+  Menu,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/lib/auth'
+import { useIsMobile } from '@/hooks/use-mobile'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from '@/components/ui/sheet'
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, enabled: true },
@@ -25,36 +35,83 @@ const NAV_ITEMS = [
   { href: '/settings', label: 'Settings', icon: Settings, enabled: true },
 ]
 
-export function Sidebar() {
+// Context for mobile sidebar state
+type SidebarContextType = {
+  mobileOpen: boolean
+  setMobileOpen: (open: boolean) => void
+  collapsed: boolean
+  setCollapsed: (collapsed: boolean) => void
+}
+
+const SidebarContext = createContext<SidebarContextType | null>(null)
+
+export function useSidebarContext() {
+  const context = useContext(SidebarContext)
+  if (!context) {
+    throw new Error('useSidebarContext must be used within SidebarProvider')
+  }
+  return context
+}
+
+export function SidebarProvider({ children }: { children: React.ReactNode }) {
+  const [mobileOpen, setMobileOpen] = useState(false)
   const [collapsed, setCollapsed] = useState(false)
-  const pathname = usePathname()
-  const { user, signOut } = useAuth()
 
   useEffect(() => {
     const stored = localStorage.getItem('beacon-sidebar-collapsed')
     if (stored !== null) setCollapsed(stored === 'true')
   }, [])
 
-  function toggle() {
+  return (
+    <SidebarContext.Provider value={{ mobileOpen, setMobileOpen, collapsed, setCollapsed }}>
+      {children}
+    </SidebarContext.Provider>
+  )
+}
+
+export function SidebarTrigger({ className }: { className?: string }) {
+  const { setMobileOpen } = useSidebarContext()
+
+  return (
+    <button
+      onClick={() => setMobileOpen(true)}
+      className={cn(
+        'w-9 h-9 flex items-center justify-center rounded-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors md:hidden',
+        className
+      )}
+      aria-label="Open navigation menu"
+    >
+      <Menu className="w-5 h-5" />
+    </button>
+  )
+}
+
+export function Sidebar() {
+  const { collapsed, setCollapsed, mobileOpen, setMobileOpen } = useSidebarContext()
+  const pathname = usePathname()
+  const { user, signOut } = useAuth()
+  const isMobile = useIsMobile()
+
+  function toggleCollapsed() {
     const next = !collapsed
     setCollapsed(next)
     localStorage.setItem('beacon-sidebar-collapsed', String(next))
   }
 
-  return (
-    <aside
-      className={cn(
-        'relative flex flex-col bg-sidebar border-r border-sidebar-border transition-all duration-200 ease-in-out shrink-0',
-        collapsed ? 'w-14' : 'w-60'
-      )}
-    >
+  // Close mobile sidebar on route change
+  useEffect(() => {
+    setMobileOpen(false)
+  }, [pathname, setMobileOpen])
+
+  const sidebarContent = (isMobileView: boolean) => (
+    <>
       {/* Logo */}
       <div className="flex items-center h-14 px-3 border-b border-sidebar-border shrink-0">
         <div className="flex items-center gap-2.5 min-w-0">
           <div className="w-8 h-8 rounded-sm bg-primary/10 border border-primary/30 flex items-center justify-center shrink-0">
             <Shield className="w-4 h-4 text-primary" />
           </div>
-          {!collapsed && (
+          {(isMobileView || !collapsed) && (
             <span className="font-semibold text-[15px] tracking-tight text-sidebar-foreground truncate">
               CivicPulse
             </span>
@@ -77,7 +134,8 @@ export function Sidebar() {
               icon={<Icon className="w-[18px] h-[18px] shrink-0" />}
               active={active}
               enabled={enabled}
-              collapsed={collapsed}
+              collapsed={!isMobileView && collapsed}
+              onClick={() => isMobileView && setMobileOpen(false)}
             />
           )
         })}
@@ -88,7 +146,7 @@ export function Sidebar() {
         <div
           className={cn(
             'flex items-center gap-2.5 px-2 py-2 rounded-sm',
-            collapsed ? 'justify-center' : ''
+            !isMobileView && collapsed ? 'justify-center' : ''
           )}
         >
           <div className="w-7 h-7 rounded-sm bg-primary/15 border border-primary/20 flex items-center justify-center shrink-0">
@@ -96,7 +154,7 @@ export function Sidebar() {
               {user?.avatar || '?'}
             </span>
           </div>
-          {!collapsed && (
+          {(isMobileView || !collapsed) && (
             <div className="min-w-0 flex-1">
               <p className="text-xs font-medium text-sidebar-foreground truncate leading-tight">
                 {user?.name || 'Guest'}
@@ -112,17 +170,47 @@ export function Sidebar() {
           onClick={signOut}
           className={cn(
             'flex items-center gap-2.5 w-full px-2 py-2 rounded-sm text-sm text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors',
-            collapsed ? 'justify-center' : ''
+            !isMobileView && collapsed ? 'justify-center' : ''
           )}
         >
           <LogOut className="w-4 h-4 shrink-0" />
-          {!collapsed && <span className="text-xs font-medium">Sign out</span>}
+          {(isMobileView || !collapsed) && <span className="text-xs font-medium">Sign out</span>}
         </button>
       </div>
+    </>
+  )
+
+  // Mobile: Sheet-based sidebar
+  if (isMobile) {
+    return (
+      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+        <SheetContent
+          side="left"
+          className="w-72 p-0 bg-sidebar text-sidebar-foreground border-sidebar-border"
+        >
+          <SheetHeader className="sr-only">
+            <SheetTitle>Navigation Menu</SheetTitle>
+            <SheetDescription>Main navigation for CivicPulse dashboard</SheetDescription>
+          </SheetHeader>
+          <div className="flex flex-col h-full">{sidebarContent(true)}</div>
+        </SheetContent>
+      </Sheet>
+    )
+  }
+
+  // Desktop: Traditional collapsible sidebar
+  return (
+    <aside
+      className={cn(
+        'relative hidden md:flex flex-col bg-sidebar border-r border-sidebar-border transition-all duration-200 ease-in-out shrink-0',
+        collapsed ? 'w-14' : 'w-60'
+      )}
+    >
+      {sidebarContent(false)}
 
       {/* Collapse toggle */}
       <button
-        onClick={toggle}
+        onClick={toggleCollapsed}
         aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         className="absolute -right-3 top-[68px] w-6 h-6 rounded-full bg-sidebar border border-sidebar-border flex items-center justify-center hover:bg-secondary transition-colors z-10"
       >
@@ -143,6 +231,7 @@ function NavItem({
   active,
   enabled,
   collapsed,
+  onClick,
 }: {
   href: string
   label: string
@@ -150,6 +239,7 @@ function NavItem({
   active: boolean
   enabled: boolean
   collapsed: boolean
+  onClick?: () => void
 }) {
   const base = cn(
     'relative flex items-center gap-2.5 px-2 py-2 rounded-sm text-sm transition-colors duration-100',
@@ -167,7 +257,12 @@ function NavItem({
         <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-primary rounded-r-full" />
       )}
       {enabled ? (
-        <Link href={href} className={base} aria-current={active ? 'page' : undefined}>
+        <Link
+          href={href}
+          className={base}
+          aria-current={active ? 'page' : undefined}
+          onClick={onClick}
+        >
           {icon}
           {!collapsed && <span className="truncate font-medium">{label}</span>}
         </Link>

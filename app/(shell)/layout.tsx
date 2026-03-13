@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Sidebar } from '@/components/shell/sidebar'
+import { Sidebar, SidebarProvider } from '@/components/shell/sidebar'
 import { Topbar } from '@/components/shell/topbar'
 import { AuthProvider, useAuth } from '@/lib/auth'
 import { initTheme } from '@/lib/theme'
@@ -34,13 +34,15 @@ function ShellContent({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
-      <Sidebar />
-      <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
-        <Topbar />
-        <main className="flex-1 overflow-y-auto p-4">{children}</main>
+    <SidebarProvider>
+      <div className="flex h-screen overflow-hidden bg-background">
+        <Sidebar />
+        <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
+          <Topbar />
+          <main className="flex-1 overflow-y-auto p-2 sm:p-4">{children}</main>
+        </div>
       </div>
-    </div>
+    </SidebarProvider>
   )
 }
 

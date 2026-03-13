@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { Bell, ChevronRight, Shield } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { SidebarTrigger } from '@/components/shell/sidebar'
 
 const BREADCRUMBS: Record<string, string[]> = {
   '/': ['CivicPulse', 'Dashboard'],
@@ -36,7 +37,10 @@ export function Topbar() {
   }, [])
 
   return (
-    <header className="h-14 flex items-center px-4 gap-4 border-b border-border bg-card shrink-0 z-10">
+    <header className="h-14 flex items-center px-2 sm:px-4 gap-2 sm:gap-4 border-b border-border bg-card shrink-0 z-10">
+      {/* Mobile hamburger menu trigger */}
+      <SidebarTrigger />
+
       {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 min-w-0">
         {crumbs.map((crumb, i) => (
