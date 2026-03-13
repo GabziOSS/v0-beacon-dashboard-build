@@ -135,7 +135,7 @@ export function GaugeArc({
           fontSize={11}
           fontWeight={500}
           letterSpacing="0.1em"
-          textTransform="uppercase"
+          style={{ textTransform: "uppercase" }}
         >
           {label}
         </text>
