@@ -11,6 +11,9 @@ bun = "latest"
 neovim = "latest"
 "npm:ocx" = "latest"
 dotenvx = "latest"
+aws-vault = "latest"
+aws-cli = { version = "latest", symlink_bins = "true" }
+pnpm = "latest"
 
 [tasks]
 # GitHub container token tasks

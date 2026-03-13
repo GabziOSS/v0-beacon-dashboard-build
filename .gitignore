@@ -12,3 +12,9 @@ node_modules/
 .mise
 .container-env
 .gh-container-backup/
+
+# SST
+.sst/
+
+# open-next
+.open-next

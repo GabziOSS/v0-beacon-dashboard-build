@@ -155,6 +155,9 @@ importers:
       sonner:
         specifier: ^1.7.1
         version: 1.7.4(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      sst:
+        specifier: 4.2.7
+        version: 4.2.7
       tailwind-merge:
         specifier: ^3.3.1
         version: 3.4.0
@@ -1298,6 +1301,9 @@ packages:
     peerDependencies:
       postcss: ^8.1.0
 
+  aws4fetch@1.0.18:
+    resolution: {integrity: sha512-3Cf+YaUl07p24MoQ46rFwulAmiyCwH2+1zw1ZyPAX5OtJ34Hh185DwB8y/qRLb6cYYYtSFJ9pthyLc0MD4e8sQ==}
+
   baseline-browser-mapping@2.9.19:
     resolution: {integrity: sha512-ipDqC8FrAl/76p2SSWKSI+H9tFwm7vYqXQrItCuiVPt26Km0jS+NzSsBWAaBusvSbQcfJG+JitdMm+wZAgTYqg==}
     hasBin: true
@@ -1447,6 +1453,12 @@ packages:
     resolution: {integrity: sha512-ekilCSN1jwRvIbgeg/57YFh8qQDNbwDb9xT/qu2DAHbFFZUicIl4ygVaAvzveMhMVr3LnpSKTNnwt8PoOfmKhQ==}
     hasBin: true
 
+  jose@4.15.9:
+    resolution: {integrity: sha512-1vUQX+IdDMVPj4k8kOxgUqlcK518yluMuGZwqlr44FS1ppZB/5GWh4rZG89erpOBOJjU/OBsnCVFfapsRz6nEA==}
+
+  jose@5.2.3:
+    resolution: {integrity: sha512-KUXdbctm1uHVL8BYhnyHkgp3zDX5KW8ZhAKVFEfUbU2P8Alpzjb+48hHvjOdQIyPshoblhzsuqOwEEAbtHVirA==}
+
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
@@ -1531,6 +1543,10 @@ packages:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
     hasBin: true
 
+  lru-cache@6.0.0:
+    resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
+    engines: {node: '>=10'}
+
   lucide-react@0.564.0:
     resolution: {integrity: sha512-JJ8GVTQqFwuliifD48U6+h7DXEHdkhJ/E87kksGByII3qHxtPciVb8T8woQONHBQgHVOl7rSMrrip3SeVNy7Fg==}
     peerDependencies:
@@ -1577,6 +1593,17 @@ packages:
   object-assign@4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
     engines: {node: '>=0.10.0'}
+
+  object-hash@2.2.0:
+    resolution: {integrity: sha512-gScRMn0bS5fH+IuwyIFgnh9zBdo4DV+6GhygmWM9HyNJSgS0hScp1f5vjtm7oIIOiT9trXrShAkLFSc2IqKNgw==}
+    engines: {node: '>= 6'}
+
+  oidc-token-hash@5.2.0:
+    resolution: {integrity: sha512-6gj2m8cJZ+iSW8bm0FXdGF0YhIQbKrfP4yWTNzxc31U6MOjfEmB1rHvlYvxI1B7t7BCi1F2vYTT6YhtQRG4hxw==}
+    engines: {node: ^10.13.0 || >=12.0.0}
+
+  openid-client@5.6.4:
+    resolution: {integrity: sha512-T1h3B10BRPKfcObdBklX639tVz+xh34O7GjofqrqiAQdm7eHsQ00ih18x6wuJ/E6FxdtS2u3FmUGPDeEcMwzNA==}
 
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
@@ -1702,6 +1729,50 @@ packages:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
 
+  sst-darwin-arm64@4.2.7:
+    resolution: {integrity: sha512-EdQc//yBdo5ITW/wfpeX/D1J72ZPE4ztqcpwm1TWEc1Qnj/1HSwyCW11jmD9Yd4kxRXn/UiR1td3e+06uNtlTA==}
+    cpu: [arm64]
+    os: [darwin]
+
+  sst-darwin-x64@4.2.7:
+    resolution: {integrity: sha512-mhVlaWwch+E9Z9kfdm8orU/nXwmk/0FgrZXGgTr6GPA9dQiZviEBxJTjWCQalCYmfcKpdhheJURPnaK+BVgA6g==}
+    cpu: [x64]
+    os: [darwin]
+
+  sst-linux-arm64@4.2.7:
+    resolution: {integrity: sha512-cETF60sUi68J2OGQ5KNsGlpCUEjc43sQa4i+FYGh5lDIVpuAkX1Tf806JJQuYLNsPP/FmWw1gq82juFaFOm16w==}
+    cpu: [arm64]
+    os: [linux]
+
+  sst-linux-x64@4.2.7:
+    resolution: {integrity: sha512-snjEqskoNRXx2MY4vpXqxpNjMpzCRBdD8W/r+fqVXb6qPDrFbuI0S79VwFb75zzsyWUJ3lg0P84D5DDPcsglDQ==}
+    cpu: [x64]
+    os: [linux]
+
+  sst-linux-x86@4.2.7:
+    resolution: {integrity: sha512-DPGfi7cj4wBF6tvkRHhNvC6UFn5ZIw+dI2eVbXBGVNmrr4O8Q/vSVk7N7rh7+zV1Ldg71f5VaZdYe2dn7DpHMA==}
+    cpu: [x86]
+    os: [linux]
+
+  sst-win32-arm64@4.2.7:
+    resolution: {integrity: sha512-RcWeggiFLjqNnnNQlM9J8TK3jTQe89/2xMPYyNcNoDy7nVGEgPHAI35+Kz1sbTWJkLYq2d24GYAoEPIHoE0ZIQ==}
+    cpu: [arm64]
+    os: [win32]
+
+  sst-win32-x64@4.2.7:
+    resolution: {integrity: sha512-qIydmnEePqDjMbECPir475JSTInBnO7vAVNROj1wD1jmiFCljr/1meelFYO6OSMWpzz3dlLUQnwKSpTsEA5Lxg==}
+    cpu: [x64]
+    os: [win32]
+
+  sst-win32-x86@4.2.7:
+    resolution: {integrity: sha512-TTpv1xT6UQp+cj54RRm/vEGc1Z23YAagMj2o0Nrm2gnujej71BN4tPRmKZnk3AYqv//aBuy4lrdN39ekVVa+Mw==}
+    cpu: [x86]
+    os: [win32]
+
+  sst@4.2.7:
+    resolution: {integrity: sha512-shWYd4uFAVoMYnw6zsKg2/m7oRnOg1KB+FBac3Vc43fFZLCe67umTjvDaVfegMFlEg/TD8vqnsdZgp+fzXirEA==}
+    hasBin: true
+
   styled-jsx@5.1.6:
     resolution: {integrity: sha512-qSVyDTeMotdvQYoHWLNGwRFJHC+i+ZvdBRYosOFgC+Wg1vx4frN2/RG/NA7SYqqvKNLf39P2LSRA2pu6n0XYZA==}
     engines: {node: '>= 12.0.0'}
@@ -1781,6 +1852,9 @@ packages:
 
   victory-vendor@36.9.2:
     resolution: {integrity: sha512-PnpQQMuxlwYdocC8fIJqVXvkeViHYzotI+NJrCuav0ZYFoq912ZHBk3mCeuj+5/VpodOjPe1z0Fk2ihgzlXqjQ==}
+
+  yallist@4.0.0:
+    resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
 
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
@@ -2808,6 +2882,8 @@ snapshots:
       postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
+  aws4fetch@1.0.18: {}
+
   baseline-browser-mapping@2.9.19: {}
 
   browserslist@4.28.1:
@@ -2935,6 +3011,10 @@ snapshots:
 
   jiti@2.6.1: {}
 
+  jose@4.15.9: {}
+
+  jose@5.2.3: {}
+
   js-tokens@4.0.0: {}
 
   lightningcss-android-arm64@1.31.1:
@@ -2992,6 +3072,10 @@ snapshots:
     dependencies:
       js-tokens: 4.0.0
 
+  lru-cache@6.0.0:
+    dependencies:
+      yallist: 4.0.0
+
   lucide-react@0.564.0(react@19.2.4):
     dependencies:
       react: 19.2.4
@@ -3034,6 +3118,17 @@ snapshots:
   node-releases@2.0.27: {}
 
   object-assign@4.1.1: {}
+
+  object-hash@2.2.0: {}
+
+  oidc-token-hash@5.2.0: {}
+
+  openid-client@5.6.4:
+    dependencies:
+      jose: 4.15.9
+      lru-cache: 6.0.0
+      object-hash: 2.2.0
+      oidc-token-hash: 5.2.0
 
   picocolors@1.1.1: {}
 
@@ -3189,6 +3284,45 @@ snapshots:
 
   source-map-js@1.2.1: {}
 
+  sst-darwin-arm64@4.2.7:
+    optional: true
+
+  sst-darwin-x64@4.2.7:
+    optional: true
+
+  sst-linux-arm64@4.2.7:
+    optional: true
+
+  sst-linux-x64@4.2.7:
+    optional: true
+
+  sst-linux-x86@4.2.7:
+    optional: true
+
+  sst-win32-arm64@4.2.7:
+    optional: true
+
+  sst-win32-x64@4.2.7:
+    optional: true
+
+  sst-win32-x86@4.2.7:
+    optional: true
+
+  sst@4.2.7:
+    dependencies:
+      aws4fetch: 1.0.18
+      jose: 5.2.3
+      openid-client: 5.6.4
+    optionalDependencies:
+      sst-darwin-arm64: 4.2.7
+      sst-darwin-x64: 4.2.7
+      sst-linux-arm64: 4.2.7
+      sst-linux-x64: 4.2.7
+      sst-linux-x86: 4.2.7
+      sst-win32-arm64: 4.2.7
+      sst-win32-x64: 4.2.7
+      sst-win32-x86: 4.2.7
+
   styled-jsx@5.1.6(react@19.2.4):
     dependencies:
       client-only: 0.0.1
@@ -3260,5 +3394,7 @@ snapshots:
       d3-shape: 3.2.0
       d3-time: 3.1.0
       d3-timer: 3.0.1
+
+  yallist@4.0.0: {}
 
   zod@3.25.76: {}
