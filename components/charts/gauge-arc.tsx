@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react"
 
 // Adjusted constants for better layout - value text positioned below arc
 const CX = 100
-const CY = 75      // Moved up to give room for value text below
-const R = 65       // Slightly smaller for better proportions
+const CY = 85      // Move center up
+const R = 70       // Adjust radius
 const STROKE_W = 12
 
 function polarToCartesian(cx: number, cy: number, r: number, angleDeg: number) {
@@ -56,8 +56,8 @@ export function GaugeArc({
   const needleAngle = 180 + pct * 180  // 180 = left, 360 = right
 
   return (
-    <div className="flex flex-col items-center h-full justify-center gap-1 min-h-[130px]">
-      <svg viewBox="0 0 200 140" className="w-full max-w-[200px]" aria-hidden>
+    <div className="flex flex-col items-center h-full justify-center gap-2 min-h-[140px]">
+      <svg viewBox="0 0 200 150" className="w-full max-w-[220px]" aria-hidden>
         {/* Background arc */}
         <path
           d={arcPath(CX, CY, R, 180, 360)}
@@ -103,7 +103,7 @@ export function GaugeArc({
             x1={CX}
             y1={CY}
             x2={CX}
-            y2={CY - R + 20}
+            y2={CY - R + 18}
             stroke="var(--foreground)"
             strokeWidth={2.5}
             strokeLinecap="round"
@@ -116,7 +116,7 @@ export function GaugeArc({
         {/* Value - positioned below arc baseline */}
         <text
           x={CX}
-          y={CY + 38}
+          y={CY + 45}
           textAnchor="middle"
           fill="var(--foreground)"
           fontSize={24}
