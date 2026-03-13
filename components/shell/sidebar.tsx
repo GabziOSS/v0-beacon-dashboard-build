@@ -81,7 +81,7 @@ export function Sidebar() {
       </nav>
 
       {/* Bottom: user chip */}
-      <div className="px-1.5 pb-3 border-t border-sidebar-border pt-3 space-y-2">
+      <div className="px-1.5 pb-3 border-t border-sidebar-border pt-3 space-y-2 shrink-0">
         <div
           className={cn(
             "flex items-center gap-2.5 px-2 py-2 rounded-sm",
