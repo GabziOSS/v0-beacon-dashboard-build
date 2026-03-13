@@ -16,7 +16,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Beacon — Calbayog City Safety Dashboard',
+  title: 'CivicPulse — Calbayog City Safety Dashboard',
   description: 'Real-time city safety and risk management dashboard for emergency coordinators.',
   generator: 'v0.app',
 }

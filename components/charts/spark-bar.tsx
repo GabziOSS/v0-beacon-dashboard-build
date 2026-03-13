@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 export function SparkBarChart({
   data,
@@ -19,16 +19,24 @@ export function SparkBarChart({
             >
               {d.value}
             </span>
-            <div className="w-full rounded-sm" style={{ height: `${(d.value / max) * 56}px`, background: d.color, opacity: 0.8 }} />
+            <div
+              className="w-full rounded-sm"
+              style={{ height: `${(d.value / max) * 56}px`, background: d.color, opacity: 0.8 }}
+            />
           </div>
         ))}
       </div>
       <div className="flex gap-1.5 flex-wrap">
         {data.map(d => (
-          <div key={d.label} className="flex items-center gap-1 text-[9px] text-muted-foreground font-mono">
+          <div
+            key={d.label}
+            className="flex items-center gap-1 text-[9px] text-muted-foreground font-mono"
+          >
             <span className="w-1.5 h-1.5 rounded-full" style={{ background: d.color }} />
             {d.label}
-            <span className="text-foreground font-medium">{((d.value / total) * 100).toFixed(0)}%</span>
+            <span className="text-foreground font-medium">
+              {((d.value / total) * 100).toFixed(0)}%
+            </span>
           </div>
         ))}
       </div>

@@ -8,3 +8,15 @@ node_modules/
 .next/
 .env*.local
 .DS_Store
+.opencode/memory-working
+.mise
+.container-env
+.gh-container-backup/
+
+# SST
+.sst/
+
+# open-next
+.open-next
+/civicpulse_user.csv
+/mock_user.csv

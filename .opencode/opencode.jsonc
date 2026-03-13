@@ -1,0 +1,22 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    "opencode-working-memory",
+    "@zenobius/opencode-skillful",
+    "@tarquinen/opencode-dcp",
+    "@openspoon/subtask2",
+    "opencode-ignore",
+    "@franlol/opencode-md-table-formatter",
+    "@ramtinj95/opencode-tokenscope",
+  ],
+  "instructions": ["./shell_strategy.md"],
+  "agent": {
+    "explore": {
+      "disable": true,
+    },
+    "general": {
+      "disable": true,
+    },
+  },
+  // Add MCP servers, tools, plugins here
+}

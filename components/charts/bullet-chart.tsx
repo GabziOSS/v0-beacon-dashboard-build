@@ -1,13 +1,13 @@
-"use client"
+'use client'
 
-import type { BulletData } from "@/lib/types"
+import type { BulletData } from '@/lib/types'
 
 export function BulletChart({ data }: { data: BulletData }) {
-  const pctPoor       = (data.poor / data.max) * 100
+  const pctPoor = (data.poor / data.max) * 100
   const pctAcceptable = (data.acceptable / data.max) * 100
-  const pctGood       = (data.good / data.max) * 100
-  const pctActual     = (data.actual / data.max) * 100
-  const pctTarget     = (data.target / data.max) * 100
+  const pctGood = (data.good / data.max) * 100
+  const pctActual = (data.actual / data.max) * 100
+  const pctTarget = (data.target / data.max) * 100
 
   return (
     <div className="flex flex-col justify-center h-full gap-4 px-2">
@@ -23,14 +23,14 @@ export function BulletChart({ data }: { data: BulletData }) {
             {/* Good */}
             <div
               className="h-full"
-              style={{ width: `${pctGood}%`, background: "var(--success-dim)" }}
+              style={{ width: `${pctGood}%`, background: 'var(--success-dim)' }}
             />
             {/* Acceptable */}
             <div
               className="h-full"
               style={{
                 width: `${pctAcceptable - pctGood}%`,
-                background: "var(--warning-dim)",
+                background: 'var(--warning-dim)',
               }}
             />
             {/* Poor */}
@@ -38,7 +38,7 @@ export function BulletChart({ data }: { data: BulletData }) {
               className="h-full"
               style={{
                 width: `${pctPoor - pctAcceptable}%`,
-                background: "var(--destructive-dim)",
+                background: 'var(--destructive-dim)',
               }}
             />
             {/* Rest */}
@@ -50,7 +50,7 @@ export function BulletChart({ data }: { data: BulletData }) {
             className="absolute top-1/2 -translate-y-1/2 h-[40%] rounded-sm"
             style={{
               width: `${pctActual}%`,
-              background: "var(--foreground)",
+              background: 'var(--foreground)',
               opacity: 0.9,
             }}
           />
@@ -60,7 +60,7 @@ export function BulletChart({ data }: { data: BulletData }) {
             className="absolute top-1 bottom-1 w-px"
             style={{
               left: `${pctTarget}%`,
-              background: "var(--primary)",
+              background: 'var(--primary)',
             }}
           />
         </div>
@@ -77,12 +77,16 @@ export function BulletChart({ data }: { data: BulletData }) {
 
       <div className="flex items-center gap-3">
         <div className="text-center">
-          <p className="text-2xl font-semibold font-mono tabular-nums text-foreground">{data.actual}</p>
+          <p className="text-2xl font-semibold font-mono tabular-nums text-foreground">
+            {data.actual}
+          </p>
           <p className="text-[9px] text-muted-foreground font-mono">actual (min)</p>
         </div>
         <div className="w-px h-8 bg-border" />
         <div className="text-center">
-          <p className="text-2xl font-semibold font-mono tabular-nums text-primary">{data.target}</p>
+          <p className="text-2xl font-semibold font-mono tabular-nums text-primary">
+            {data.target}
+          </p>
           <p className="text-[9px] text-muted-foreground font-mono">target (min)</p>
         </div>
       </div>

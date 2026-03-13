@@ -1,0 +1,91 @@
+# .opencode-ignore
+# Exclude patterns for opencode-ignore plugin
+# Format: same as .gitignore
+# These files/dirs will NOT be read into agent context.
+# Mirror these in omo-slim's cartography skill config if using it.
+
+# ─── DEPENDENCIES ──────────────────────────────────────────────────────────
+node_modules/
+.pnpm-store/
+.yarn/cache/
+.bun/
+
+# ─── BUILD OUTPUTS ─────────────────────────────────────────────────────────
+dist/
+build/
+out/
+.next/
+.nuxt/
+.svelte-kit/
+.vite/
+.turbo/
+*.min.js
+*.min.css
+*.map
+*.tsbuildinfo
+
+# ─── LOCK FILES (high token cost, zero signal) ─────────────────────────────
+package-lock.json
+yarn.lock
+bun.lock
+pnpm-lock.yaml
+poetry.lock
+Cargo.lock
+composer.lock
+
+# ─── TEST ARTIFACTS ────────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+test-results/
+playwright-report/
+
+# ─── CACHE ─────────────────────────────────────────────────────────────────
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+*.cache
+
+# ─── ENV & SECRETS (never in context) ─────────────────────────────────────
+.env
+.env.oc
+.env.local
+.env.*.local
+*.pem
+*.key
+*.p12
+secrets/
+
+# ─── GENERATED / BINARY ────────────────────────────────────────────────────
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.ico
+*.woff
+*.woff2
+*.ttf
+*.eot
+*.pdf
+*.zip
+*.tar.gz
+
+# ─── IDE / OS ──────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ─── GIT ───────────────────────────────────────────────────────────────────
+.git/
+
+# ─── LOGS ──────────────────────────────────────────────────────────────────
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+
+# ─── OPENCODE INTERNALS (don't let agents read their own config recursively)
+.opencode/working-memory/
+.opencode/cache/

@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import { RadialBarChart, RadialBar, ResponsiveContainer } from "recharts"
+import { RadialBarChart, RadialBar, ResponsiveContainer } from 'recharts'
 
 export function ResolutionRadialChart({ value }: { value: number }) {
-  const data = [{ value, fill: "var(--success)" }]
+  const data = [{ value, fill: 'var(--success)' }]
 
   return (
     <div className="flex flex-col items-center justify-center h-full gap-2">
@@ -16,11 +16,7 @@ export function ResolutionRadialChart({ value }: { value: number }) {
             startAngle={90}
             endAngle={90 - (value / 100) * 360}
           >
-            <RadialBar
-              dataKey="value"
-              background={{ fill: "var(--muted)" }}
-              cornerRadius={4}
-            />
+            <RadialBar dataKey="value" background={{ fill: 'var(--muted)' }} cornerRadius={4} />
           </RadialBarChart>
         </ResponsiveContainer>
         <div className="absolute inset-0 flex flex-col items-center justify-center">

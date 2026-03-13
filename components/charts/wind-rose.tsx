@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { cn } from "@/lib/utils"
-import type { WindRoseData } from "@/lib/types"
+import { useState } from 'react'
+import { cn } from '@/lib/utils'
+import type { WindRoseData } from '@/lib/types'
 
 const CX = 140
 const CY = 140
@@ -32,18 +32,14 @@ function arcPath(
     `A ${outerR} ${outerR} 0 ${large} 1 ${e1.x} ${e1.y}`,
     `L ${s2.x} ${s2.y}`,
     `A ${innerR} ${innerR} 0 ${large} 0 ${e2.x} ${e2.y}`,
-    "Z",
-  ].join(" ")
+    'Z',
+  ].join(' ')
 }
 
-const BIN_COLORS = [
-  "var(--chart-1)",
-  "var(--chart-6)",
-  "var(--primary)",
-]
+const BIN_COLORS = ['var(--chart-1)', 'var(--chart-6)', 'var(--primary)']
 
 export function WindRoseChart({ data }: { data: WindRoseData[] }) {
-  const [range, setRange] = useState<"Day" | "Week" | "Month">("Week")
+  const [range, setRange] = useState<'Day' | 'Week' | 'Month'>('Week')
   const n = data.length
   const sweepAngle = 360 / n
   const gap = 4
@@ -78,14 +74,18 @@ export function WindRoseChart({ data }: { data: WindRoseData[] }) {
               <g key={d.direction}>
                 {bins.map((binVal, bi) => {
                   const total = d.low + d.mid + d.high
-                  const outerR = (total / maxTotal) * MAX_R * Math.min(1, (bi + 1) / 3 + (binVal / total) * 0.67)
+                  const outerR =
+                    (total / maxTotal) * MAX_R * Math.min(1, (bi + 1) / 3 + (binVal / total) * 0.67)
                   const segOuter = Math.min(
                     MAX_R,
-                    ((d.low * (bi === 0 ? 1 : 0) + d.mid * (bi <= 1 ? 1 : 0) + d.high) / maxTotal) * MAX_R
+                    ((d.low * (bi === 0 ? 1 : 0) + d.mid * (bi <= 1 ? 1 : 0) + d.high) / maxTotal) *
+                      MAX_R
                   )
                   // simpler: stacked outer radius per bin
-                  const cumulativeR = ((bins.slice(0, bi + 1).reduce((a, b) => a + b, 0)) / maxTotal) * MAX_R
-                  const prevR = bi === 0 ? 2 : ((bins.slice(0, bi).reduce((a, b) => a + b, 0)) / maxTotal) * MAX_R
+                  const cumulativeR =
+                    (bins.slice(0, bi + 1).reduce((a, b) => a + b, 0) / maxTotal) * MAX_R
+                  const prevR =
+                    bi === 0 ? 2 : (bins.slice(0, bi).reduce((a, b) => a + b, 0) / maxTotal) * MAX_R
                   const startA = angle - sweepAngle / 2 + gap / 2
                   const endA = angle + sweepAngle / 2 - gap / 2
                   return (
@@ -127,15 +127,15 @@ export function WindRoseChart({ data }: { data: WindRoseData[] }) {
 
       {/* Range pills */}
       <div className="flex gap-1.5">
-        {(["Day", "Week", "Month"] as const).map(r => (
+        {(['Day', 'Week', 'Month'] as const).map(r => (
           <button
             key={r}
             onClick={() => setRange(r)}
             className={cn(
-              "text-[10px] font-mono px-2.5 py-1 rounded-sm border transition-colors",
+              'text-[10px] font-mono px-2.5 py-1 rounded-sm border transition-colors',
               range === r
-                ? "border-primary text-primary bg-primary/10"
-                : "border-border text-muted-foreground hover:text-foreground"
+                ? 'border-primary text-primary bg-primary/10'
+                : 'border-border text-muted-foreground hover:text-foreground'
             )}
           >
             {r}

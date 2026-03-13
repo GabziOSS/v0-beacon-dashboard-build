@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import { useState } from "react"
+import { useState } from 'react'
 import {
   ResponsiveContainer,
   LineChart,
@@ -9,17 +9,17 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-} from "recharts"
-import { cn } from "@/lib/utils"
-import type { TrendPoint } from "@/lib/types"
+} from 'recharts'
+import { cn } from '@/lib/utils'
+import type { TrendPoint } from '@/lib/types'
 
-const SERIES: Array<{ key: keyof Omit<TrendPoint, "time">; label: string; color: string }> = [
-  { key: "medical",        label: "Medical",        color: "var(--chart-1)" },
-  { key: "crime",          label: "Crime",          color: "var(--chart-2)" },
-  { key: "fire",           label: "Fire",           color: "var(--chart-5)" },
-  { key: "flood",          label: "Flood",          color: "var(--chart-6)" },
-  { key: "infrastructure", label: "Infrastructure", color: "var(--chart-4)" },
-  { key: "typhoon",        label: "Typhoon",        color: "var(--chart-7)" },
+const SERIES: Array<{ key: keyof Omit<TrendPoint, 'time'>; label: string; color: string }> = [
+  { key: 'medical', label: 'Medical', color: 'var(--chart-1)' },
+  { key: 'crime', label: 'Crime', color: 'var(--chart-2)' },
+  { key: 'fire', label: 'Fire', color: 'var(--chart-5)' },
+  { key: 'flood', label: 'Flood', color: 'var(--chart-6)' },
+  { key: 'infrastructure', label: 'Infrastructure', color: 'var(--chart-4)' },
+  { key: 'typhoon', label: 'Typhoon', color: 'var(--chart-7)' },
 ]
 
 export function IncidentTrendChart({ data }: { data: TrendPoint[] }) {
@@ -41,26 +41,34 @@ export function IncidentTrendChart({ data }: { data: TrendPoint[] }) {
             <CartesianGrid strokeDasharray="2 4" stroke="var(--border)" vertical={false} />
             <XAxis
               dataKey="time"
-              tick={{ fill: "var(--muted-foreground)", fontSize: 10, fontFamily: "var(--font-mono)" }}
+              tick={{
+                fill: 'var(--muted-foreground)',
+                fontSize: 10,
+                fontFamily: 'var(--font-mono)',
+              }}
               tickLine={false}
               axisLine={false}
               interval={5}
             />
             <YAxis
-              tick={{ fill: "var(--muted-foreground)", fontSize: 10, fontFamily: "var(--font-mono)" }}
+              tick={{
+                fill: 'var(--muted-foreground)',
+                fontSize: 10,
+                fontFamily: 'var(--font-mono)',
+              }}
               tickLine={false}
               axisLine={false}
             />
             <Tooltip
               contentStyle={{
-                background: "var(--card)",
-                border: "1px solid var(--border)",
-                borderRadius: "var(--radius)",
+                background: 'var(--card)',
+                border: '1px solid var(--border)',
+                borderRadius: 'var(--radius)',
                 fontSize: 11,
-                fontFamily: "var(--font-mono)",
-                color: "var(--foreground)",
+                fontFamily: 'var(--font-mono)',
+                color: 'var(--foreground)',
               }}
-              cursor={{ stroke: "var(--border)", strokeWidth: 1 }}
+              cursor={{ stroke: 'var(--border)', strokeWidth: 1 }}
             />
             {SERIES.filter(s => !hidden.has(s.key)).map(s => (
               <Line
@@ -85,8 +93,8 @@ export function IncidentTrendChart({ data }: { data: TrendPoint[] }) {
             key={s.key}
             onClick={() => toggle(s.key)}
             className={cn(
-              "inline-flex items-center gap-1 text-[10px] font-medium font-mono px-2 py-0.5 rounded-sm border transition-opacity",
-              hidden.has(s.key) ? "opacity-30" : "opacity-100"
+              'inline-flex items-center gap-1 text-[10px] font-medium font-mono px-2 py-0.5 rounded-sm border transition-opacity',
+              hidden.has(s.key) ? 'opacity-30' : 'opacity-100'
             )}
             style={{ borderColor: s.color, color: s.color }}
           >
