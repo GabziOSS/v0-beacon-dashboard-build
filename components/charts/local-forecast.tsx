@@ -1,18 +1,35 @@
-"use client"
+'use client'
 
-import { Cloud, CloudRain, Sun, CloudSun, CloudSnow, CloudLightning, Wind, Droplets } from "lucide-react"
+import {
+  Cloud,
+  CloudRain,
+  Sun,
+  CloudSun,
+  CloudSnow,
+  CloudLightning,
+  Wind,
+  Droplets,
+} from 'lucide-react'
 
-type WeatherCondition = "sunny" | "partly-cloudy" | "cloudy" | "rain" | "showers" | "snow" | "thunderstorm" | "windy"
+type WeatherCondition =
+  | 'sunny'
+  | 'partly-cloudy'
+  | 'cloudy'
+  | 'rain'
+  | 'showers'
+  | 'snow'
+  | 'thunderstorm'
+  | 'windy'
 
 const ICONS: Record<WeatherCondition, typeof Sun> = {
-  "sunny": Sun,
-  "partly-cloudy": CloudSun,
-  "cloudy": Cloud,
-  "rain": CloudRain,
-  "showers": CloudRain,
-  "snow": CloudSnow,
-  "thunderstorm": CloudLightning,
-  "windy": Wind,
+  sunny: Sun,
+  'partly-cloudy': CloudSun,
+  cloudy: Cloud,
+  rain: CloudRain,
+  showers: CloudRain,
+  snow: CloudSnow,
+  thunderstorm: CloudLightning,
+  windy: Wind,
 }
 
 export interface ForecastData {

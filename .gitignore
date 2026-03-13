@@ -18,3 +18,5 @@ node_modules/
 
 # open-next
 .open-next
+/civicpulse_user.csv
+/mock_user.csv

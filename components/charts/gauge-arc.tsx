@@ -1,11 +1,11 @@
-"use client"
+'use client'
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from 'react'
 
 // Adjusted constants for better layout - value text positioned below arc
 const CX = 100
-const CY = 85      // Move center up
-const R = 70       // Adjust radius
+const CY = 85 // Move center up
+const R = 70 // Adjust radius
 const STROKE_W = 12
 
 function polarToCartesian(cx: number, cy: number, r: number, angleDeg: number) {
@@ -41,9 +41,7 @@ export function GaugeArc({
     function step(now: number) {
       const t = Math.min((now - start) / duration, 1)
       // spring-like cubic-bezier(0.34, 1.56, 0.64, 1)
-      const eased = t < 0.5
-        ? 4 * t * t * t
-        : 1 - Math.pow(-2 * t + 2, 3) / 2
+      const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
       setAnimValue(eased * value)
       if (t < 1) frame.current = requestAnimationFrame(step)
     }
@@ -53,7 +51,7 @@ export function GaugeArc({
 
   // angle spans 180deg (left to right)
   const pct = animValue / max
-  const needleAngle = 180 + pct * 180  // 180 = left, 360 = right
+  const needleAngle = 180 + pct * 180 // 180 = left, 360 = right
 
   return (
     <div className="flex flex-col items-center h-full justify-center gap-2 min-h-[140px]">
@@ -96,7 +94,7 @@ export function GaugeArc({
             strokeLinecap="round"
           />
         )}
-        
+
         {/* Needle - shortened to avoid overlapping value */}
         <g transform={`rotate(${needleAngle - 180}, ${CX}, ${CY})`}>
           <line
@@ -109,7 +107,7 @@ export function GaugeArc({
             strokeLinecap="round"
           />
         </g>
-        
+
         {/* Center dot */}
         <circle cx={CX} cy={CY} r={6} fill="var(--foreground)" />
 
@@ -125,7 +123,7 @@ export function GaugeArc({
         >
           {Math.round(animValue)}
         </text>
-        
+
         {/* Label inside SVG for better layout control */}
         <text
           x={CX}
@@ -135,7 +133,7 @@ export function GaugeArc({
           fontSize={11}
           fontWeight={500}
           letterSpacing="0.1em"
-          style={{ textTransform: "uppercase" }}
+          style={{ textTransform: 'uppercase' }}
         >
           {label}
         </text>

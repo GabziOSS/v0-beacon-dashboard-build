@@ -14,9 +14,9 @@ The City Risk Score gauge chart and derived gauges (Wind Speed, Humidity, THW In
 
 ```tsx
 // Current constants
-const CX = 100      // Center X
-const CY = 110      // Center Y - offset down
-const R = 80        // Radius
+const CX = 100 // Center X
+const CY = 110 // Center Y - offset down
+const R = 80 // Radius
 // viewBox="0 0 200 120" - tight vertical bounds
 ```
 

@@ -25,6 +25,7 @@ Two main responsiveness issues affecting the application layout:
 ```
 
 **Issues:**
+
 - Absolute positioning ignores content flow
 - Timer can overlap breadcrumb on narrow screens
 - No responsive breakpoint handling
@@ -42,6 +43,7 @@ Two main responsiveness issues affecting the application layout:
 ```
 
 **Issues:**
+
 - No `overflow-y-auto` on nav section
 - On short screens, bottom user section can push nav items off-screen
 - No min-height constraint on scrollable area
@@ -51,11 +53,13 @@ Two main responsiveness issues affecting the application layout:
 ### Topbar Fix
 
 **Option A: Responsive Hide/Show (Recommended)**
+
 - Hide timer on small screens (`hidden md:flex`)
 - Show breadcrumb only on mobile
 - Use flexbox order instead of absolute positioning
 
 **Option B: Priority-based Layout**
+
 - Use CSS container queries
 - Timer shrinks/hides based on available space
 
@@ -63,26 +67,18 @@ Two main responsiveness issues affecting the application layout:
 // Recommended implementation
 <header className="h-14 flex items-center px-4 gap-4 ...">
   {/* Breadcrumb - truncate on small */}
-  <nav className="flex items-center gap-1.5 min-w-0 flex-1 md:flex-none">
-    ...
-  </nav>
+  <nav className="flex items-center gap-1.5 min-w-0 flex-1 md:flex-none">...</nav>
 
   {/* Timer - centered with flex, hidden on mobile */}
   <div className="hidden md:flex flex-1 justify-center">
     <div className="flex flex-col items-center">
-      <span className="text-sm font-medium ...">
-        {time}
-      </span>
-      <span className="text-[10px] ... hidden lg:block">
-        Calbayog City
-      </span>
+      <span className="text-sm font-medium ...">{time}</span>
+      <span className="text-[10px] ... hidden lg:block">Calbayog City</span>
     </div>
   </div>
 
   {/* Actions - always visible */}
-  <div className="flex items-center gap-2">
-    ...
-  </div>
+  <div className="flex items-center gap-2">...</div>
 </header>
 ```
 
@@ -101,6 +97,7 @@ Two main responsiveness issues affecting the application layout:
 ## Implementation Steps
 
 ### Topbar
+
 1. [ ] Remove absolute positioning from timer
 2. [ ] Use 3-column flex layout: breadcrumb | timer | actions
 3. [ ] Add `hidden md:flex` to timer for mobile
@@ -108,6 +105,7 @@ Two main responsiveness issues affecting the application layout:
 5. [ ] Test breadcrumb truncation
 
 ### Sidebar
+
 1. [ ] Add `overflow-y-auto` to nav section
 2. [ ] Add `min-h-0` to nav (flex child scroll fix)
 3. [ ] Ensure `shrink-0` on logo and user sections
@@ -157,6 +155,7 @@ Two main responsiveness issues affecting the application layout:
 ## Testing Checklist
 
 ### Topbar
+
 - [ ] Timer hidden on mobile (< 768px)
 - [ ] Timer visible and centered on tablet+
 - [ ] City label hidden on medium, visible on large
@@ -165,6 +164,7 @@ Two main responsiveness issues affecting the application layout:
 - [ ] No horizontal overflow at any width
 
 ### Sidebar
+
 - [ ] Nav scrolls when items exceed viewport height
 - [ ] User section stays pinned at bottom
 - [ ] Scroll works in collapsed state

@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import { useEffect, useState } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard,
   Map,
@@ -13,16 +13,16 @@ import {
   ChevronRight,
   Shield,
   LogOut,
-} from "lucide-react"
-import { cn } from "@/lib/utils"
-import { useAuth } from "@/lib/auth"
+} from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { useAuth } from '@/lib/auth'
 
 const NAV_ITEMS = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, enabled: true },
-  { href: "/map", label: "Map", icon: Map, enabled: true },
-  { href: "/alerts", label: "Alerts", icon: Bell, enabled: true },
-  { href: "/users", label: "Users", icon: Users, enabled: true },
-  { href: "/settings", label: "Settings", icon: Settings, enabled: true },
+  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, enabled: true },
+  { href: '/map', label: 'Map', icon: Map, enabled: true },
+  { href: '/alerts', label: 'Alerts', icon: Bell, enabled: true },
+  { href: '/users', label: 'Users', icon: Users, enabled: true },
+  { href: '/settings', label: 'Settings', icon: Settings, enabled: true },
 ]
 
 export function Sidebar() {
@@ -31,21 +31,21 @@ export function Sidebar() {
   const { user, signOut } = useAuth()
 
   useEffect(() => {
-    const stored = localStorage.getItem("beacon-sidebar-collapsed")
-    if (stored !== null) setCollapsed(stored === "true")
+    const stored = localStorage.getItem('beacon-sidebar-collapsed')
+    if (stored !== null) setCollapsed(stored === 'true')
   }, [])
 
   function toggle() {
     const next = !collapsed
     setCollapsed(next)
-    localStorage.setItem("beacon-sidebar-collapsed", String(next))
+    localStorage.setItem('beacon-sidebar-collapsed', String(next))
   }
 
   return (
     <aside
       className={cn(
-        "relative flex flex-col bg-sidebar border-r border-sidebar-border transition-all duration-200 ease-in-out shrink-0",
-        collapsed ? "w-14" : "w-60"
+        'relative flex flex-col bg-sidebar border-r border-sidebar-border transition-all duration-200 ease-in-out shrink-0',
+        collapsed ? 'w-14' : 'w-60'
       )}
     >
       {/* Logo */}
@@ -63,9 +63,12 @@ export function Sidebar() {
       </div>
 
       {/* Nav - scrollable on short viewports */}
-      <nav className="flex-1 py-3 px-1.5 flex flex-col gap-0.5 overflow-y-auto min-h-0" aria-label="Main navigation">
+      <nav
+        className="flex-1 py-3 px-1.5 flex flex-col gap-0.5 overflow-y-auto min-h-0"
+        aria-label="Main navigation"
+      >
         {NAV_ITEMS.map(({ href, label, icon: Icon, enabled }) => {
-          const active = pathname === href || (href !== "/" && pathname.startsWith(href))
+          const active = pathname === href || (href !== '/' && pathname.startsWith(href))
           return (
             <NavItem
               key={href}
@@ -84,20 +87,22 @@ export function Sidebar() {
       <div className="px-1.5 pb-3 border-t border-sidebar-border pt-3 space-y-2 shrink-0">
         <div
           className={cn(
-            "flex items-center gap-2.5 px-2 py-2 rounded-sm",
-            collapsed ? "justify-center" : ""
+            'flex items-center gap-2.5 px-2 py-2 rounded-sm',
+            collapsed ? 'justify-center' : ''
           )}
         >
           <div className="w-7 h-7 rounded-sm bg-primary/15 border border-primary/20 flex items-center justify-center shrink-0">
-            <span className="text-[11px] font-semibold text-primary font-mono">{user?.avatar || "?"}</span>
+            <span className="text-[11px] font-semibold text-primary font-mono">
+              {user?.avatar || '?'}
+            </span>
           </div>
           {!collapsed && (
             <div className="min-w-0 flex-1">
               <p className="text-xs font-medium text-sidebar-foreground truncate leading-tight">
-                {user?.name || "Guest"}
+                {user?.name || 'Guest'}
               </p>
               <p className="text-[10px] text-muted-foreground truncate leading-tight font-mono">
-                {user?.org || ""}
+                {user?.org || ''}
               </p>
             </div>
           )}
@@ -106,8 +111,8 @@ export function Sidebar() {
         <button
           onClick={signOut}
           className={cn(
-            "flex items-center gap-2.5 w-full px-2 py-2 rounded-sm text-sm text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors",
-            collapsed ? "justify-center" : ""
+            'flex items-center gap-2.5 w-full px-2 py-2 rounded-sm text-sm text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors',
+            collapsed ? 'justify-center' : ''
           )}
         >
           <LogOut className="w-4 h-4 shrink-0" />
@@ -118,7 +123,7 @@ export function Sidebar() {
       {/* Collapse toggle */}
       <button
         onClick={toggle}
-        aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+        aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         className="absolute -right-3 top-[68px] w-6 h-6 rounded-full bg-sidebar border border-sidebar-border flex items-center justify-center hover:bg-secondary transition-colors z-10"
       >
         {collapsed ? (
@@ -147,13 +152,13 @@ function NavItem({
   collapsed: boolean
 }) {
   const base = cn(
-    "relative flex items-center gap-2.5 px-2 py-2 rounded-sm text-sm transition-colors duration-100",
-    collapsed ? "justify-center" : "",
+    'relative flex items-center gap-2.5 px-2 py-2 rounded-sm text-sm transition-colors duration-100',
+    collapsed ? 'justify-center' : '',
     active
-      ? "bg-sidebar-accent text-primary"
+      ? 'bg-sidebar-accent text-primary'
       : enabled
-        ? "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground cursor-pointer"
-        : "text-muted-foreground/30 cursor-not-allowed pointer-events-none"
+        ? 'text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground cursor-pointer'
+        : 'text-muted-foreground/30 cursor-not-allowed pointer-events-none'
   )
 
   return (
@@ -162,7 +167,7 @@ function NavItem({
         <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-primary rounded-r-full" />
       )}
       {enabled ? (
-        <Link href={href} className={base} aria-current={active ? "page" : undefined}>
+        <Link href={href} className={base} aria-current={active ? 'page' : undefined}>
           {icon}
           {!collapsed && <span className="truncate font-medium">{label}</span>}
         </Link>

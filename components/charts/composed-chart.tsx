@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import {
   ResponsiveContainer,
@@ -10,8 +10,8 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-} from "recharts"
-import type { ComposedPoint } from "@/lib/types"
+} from 'recharts'
+import type { ComposedPoint } from '@/lib/types'
 
 export function IncidentsVsDeployedChart({ data }: { data: ComposedPoint[] }) {
   return (
@@ -20,39 +20,39 @@ export function IncidentsVsDeployedChart({ data }: { data: ComposedPoint[] }) {
         <CartesianGrid strokeDasharray="2 4" stroke="var(--border)" vertical={false} />
         <XAxis
           dataKey="month"
-          tick={{ fill: "var(--muted-foreground)", fontSize: 10, fontFamily: "var(--font-mono)" }}
+          tick={{ fill: 'var(--muted-foreground)', fontSize: 10, fontFamily: 'var(--font-mono)' }}
           tickLine={false}
           axisLine={false}
         />
         <YAxis
           yAxisId="left"
-          tick={{ fill: "var(--muted-foreground)", fontSize: 10, fontFamily: "var(--font-mono)" }}
+          tick={{ fill: 'var(--muted-foreground)', fontSize: 10, fontFamily: 'var(--font-mono)' }}
           tickLine={false}
           axisLine={false}
         />
         <YAxis
           yAxisId="right"
           orientation="right"
-          tick={{ fill: "var(--muted-foreground)", fontSize: 10, fontFamily: "var(--font-mono)" }}
+          tick={{ fill: 'var(--muted-foreground)', fontSize: 10, fontFamily: 'var(--font-mono)' }}
           tickLine={false}
           axisLine={false}
         />
         <Tooltip
           contentStyle={{
-            background: "var(--card)",
-            border: "1px solid var(--border)",
-            borderRadius: "var(--radius)",
+            background: 'var(--card)',
+            border: '1px solid var(--border)',
+            borderRadius: 'var(--radius)',
             fontSize: 11,
-            fontFamily: "var(--font-mono)",
-            color: "var(--foreground)",
+            fontFamily: 'var(--font-mono)',
+            color: 'var(--foreground)',
           }}
-          cursor={{ fill: "var(--muted)", opacity: 0.3 }}
+          cursor={{ fill: 'var(--muted)', opacity: 0.3 }}
         />
         <Legend
           wrapperStyle={{
             fontSize: 10,
-            fontFamily: "var(--font-sans)",
-            color: "var(--muted-foreground)",
+            fontFamily: 'var(--font-sans)',
+            color: 'var(--muted-foreground)',
           }}
         />
         <Bar
@@ -72,7 +72,7 @@ export function IncidentsVsDeployedChart({ data }: { data: ComposedPoint[] }) {
           name="Deployed"
           stroke="var(--chart-3)"
           strokeWidth={2}
-          dot={{ r: 3, fill: "var(--chart-3)" }}
+          dot={{ r: 3, fill: 'var(--chart-3)' }}
           activeDot={{ r: 4 }}
         />
       </ComposedChart>

@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import {
   ResponsiveContainer,
@@ -7,24 +7,26 @@ import {
   PolarGrid,
   PolarAngleAxis,
   Tooltip,
-} from "recharts"
-import type { DistrictRadar } from "@/lib/types"
+} from 'recharts'
+import type { DistrictRadar } from '@/lib/types'
 
-const DIMENSIONS = ["fire", "flood", "crime", "medical", "infrastructure"]
+const DIMENSIONS = ['fire', 'flood', 'crime', 'medical', 'infrastructure']
 const DISTRICT_COLORS = [
-  "var(--chart-1)",
-  "var(--chart-2)",
-  "var(--chart-3)",
-  "var(--chart-4)",
-  "var(--chart-5)",
-  "var(--chart-6)",
+  'var(--chart-1)',
+  'var(--chart-2)',
+  'var(--chart-3)',
+  'var(--chart-4)',
+  'var(--chart-5)',
+  'var(--chart-6)',
 ]
 
 export function DistrictRadarChart({ data }: { data: DistrictRadar[] }) {
   // Reshape for recharts radar
   const chartData = DIMENSIONS.map(dim => ({
     subject: dim.charAt(0).toUpperCase() + dim.slice(1),
-    ...Object.fromEntries(data.map(d => [d.district, (d as Record<string, unknown>)[dim] as number])),
+    ...Object.fromEntries(
+      data.map(d => [d.district, (d as unknown as Record<string, unknown>)[dim] as number])
+    ),
   }))
 
   return (
@@ -33,16 +35,16 @@ export function DistrictRadarChart({ data }: { data: DistrictRadar[] }) {
         <PolarGrid stroke="var(--border)" />
         <PolarAngleAxis
           dataKey="subject"
-          tick={{ fill: "var(--muted-foreground)", fontSize: 10, fontFamily: "var(--font-sans)" }}
+          tick={{ fill: 'var(--muted-foreground)', fontSize: 10, fontFamily: 'var(--font-sans)' }}
         />
         <Tooltip
           contentStyle={{
-            background: "var(--card)",
-            border: "1px solid var(--border)",
-            borderRadius: "var(--radius)",
+            background: 'var(--card)',
+            border: '1px solid var(--border)',
+            borderRadius: 'var(--radius)',
             fontSize: 11,
-            fontFamily: "var(--font-mono)",
-            color: "var(--foreground)",
+            fontFamily: 'var(--font-mono)',
+            color: 'var(--foreground)',
           }}
         />
         {data.map((d, i) => (

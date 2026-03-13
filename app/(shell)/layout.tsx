@@ -1,11 +1,11 @@
-"use client"
+'use client'
 
-import { useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { Sidebar } from "@/components/shell/sidebar"
-import { Topbar } from "@/components/shell/topbar"
-import { AuthProvider, useAuth } from "@/lib/auth"
-import { initTheme } from "@/lib/theme"
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { Sidebar } from '@/components/shell/sidebar'
+import { Topbar } from '@/components/shell/topbar'
+import { AuthProvider, useAuth } from '@/lib/auth'
+import { initTheme } from '@/lib/theme'
 
 function ShellContent({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuth()
@@ -17,7 +17,7 @@ function ShellContent({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!isLoading && !user) {
-      router.push("/login")
+      router.push('/login')
     }
   }, [user, isLoading, router])
 
@@ -38,9 +38,7 @@ function ShellContent({ children }: { children: React.ReactNode }) {
       <Sidebar />
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
         <Topbar />
-        <main className="flex-1 overflow-y-auto p-4">
-          {children}
-        </main>
+        <main className="flex-1 overflow-y-auto p-4">{children}</main>
       </div>
     </div>
   )

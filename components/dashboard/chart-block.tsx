@@ -1,11 +1,11 @@
-"use client"
+'use client'
 
-import { useState, useRef, useEffect } from "react"
-import { GripVertical, MoreHorizontal, Expand, Maximize2, Trash2, Download } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { useSortable } from "@dnd-kit/sortable"
-import { CSS } from "@dnd-kit/utilities"
-import { createPortal } from "react-dom"
+import { useState, useRef, useEffect } from 'react'
+import { GripVertical, MoreHorizontal, Expand, Maximize2, Trash2, Download } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+import { createPortal } from 'react-dom'
 
 export type ColSpan = 1 | 2 | 3
 export type RowSpan = 1 | 2
@@ -60,13 +60,19 @@ export function ChartBlock({
   readOnly = false,
 }: ChartBlockProps) {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [resizePreview, setResizePreview] = useState<{ col: ColSpan; row: RowSpan; rect: DOMRect } | null>(null)
+  const [resizePreview, setResizePreview] = useState<{
+    col: ColSpan
+    row: RowSpan
+    rect: DOMRect
+  } | null>(null)
   const blockRef = useRef<HTMLDivElement>(null)
   const pendingResizeRef = useRef<{ col: ColSpan; row: RowSpan } | null>(null)
   const [mounted, setMounted] = useState(false)
 
-  useEffect(() => { setMounted(true) }, [])
-  
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   // Handle pending resize updates after render cycle completes
   useEffect(() => {
     if (pendingResizeRef.current) {
@@ -77,8 +83,10 @@ export function ChartBlock({
     }
   })
 
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-    useSortable({ id, disabled: readOnly })
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id,
+    disabled: readOnly,
+  })
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -108,19 +116,29 @@ export function ChartBlock({
     function handleMove(me: PointerEvent) {
       const deltaX = me.clientX - startX
       const deltaY = me.clientY - startY
-      const newColSpan = Math.max(1, Math.min(3, startColSpan + Math.round(deltaX / COL_STEP))) as ColSpan
-      const newRowSpan = Math.max(1, Math.min(2, startRowSpan + Math.round(deltaY / ROW_STEP))) as RowSpan
+      const newColSpan = Math.max(
+        1,
+        Math.min(3, startColSpan + Math.round(deltaX / COL_STEP))
+      ) as ColSpan
+      const newRowSpan = Math.max(
+        1,
+        Math.min(2, startRowSpan + Math.round(deltaY / ROW_STEP))
+      ) as RowSpan
 
-      setResizePreview(prev => prev ? {
-        ...prev,
-        col: newColSpan,
-        row: newRowSpan,
-        rect: {
-          ...prev.rect,
-          width: rect.width + (newColSpan - startColSpan) * COL_STEP,
-          height: rect.height + (newRowSpan - startRowSpan) * ROW_STEP,
-        } as DOMRect,
-      } : null)
+      setResizePreview(prev =>
+        prev
+          ? {
+              ...prev,
+              col: newColSpan,
+              row: newRowSpan,
+              rect: {
+                ...prev.rect,
+                width: rect.width + (newColSpan - startColSpan) * COL_STEP,
+                height: rect.height + (newRowSpan - startRowSpan) * ROW_STEP,
+              } as DOMRect,
+            }
+          : null
+      )
     }
 
     function handleEnd() {
@@ -131,12 +149,12 @@ export function ChartBlock({
         }
         return null
       })
-      document.removeEventListener("pointermove", handleMove)
-      document.removeEventListener("pointerup", handleEnd)
+      document.removeEventListener('pointermove', handleMove)
+      document.removeEventListener('pointerup', handleEnd)
     }
 
-    document.addEventListener("pointermove", handleMove)
-    document.addEventListener("pointerup", handleEnd)
+    document.addEventListener('pointermove', handleMove)
+    document.addEventListener('pointerup', handleEnd)
   }
 
   const mergedRef = (node: HTMLDivElement | null) => {
@@ -150,9 +168,9 @@ export function ChartBlock({
         ref={mergedRef}
         style={style}
         className={cn(
-          "flex flex-col bg-card border border-border rounded-sm min-h-[220px] transition-all relative group",
-          isDragging && "opacity-50 scale-[0.97] shadow-lg ring-1 ring-primary/40",
-          resizePreview && "ring-1 ring-primary/60"
+          'flex flex-col bg-card border border-border rounded-sm min-h-[220px] transition-all relative group',
+          isDragging && 'opacity-50 scale-[0.97] shadow-lg ring-1 ring-primary/40',
+          resizePreview && 'ring-1 ring-primary/60'
         )}
       >
         {/* Header */}
@@ -173,7 +191,9 @@ export function ChartBlock({
           <div className="flex-1 min-w-0">
             <p className="text-xs font-semibold text-foreground truncate leading-tight">{title}</p>
             {subtitle && (
-              <p className="text-[10px] text-muted-foreground truncate leading-tight font-mono">{subtitle}</p>
+              <p className="text-[10px] text-muted-foreground truncate leading-tight font-mono">
+                {subtitle}
+              </p>
             )}
           </div>
 
@@ -202,19 +222,26 @@ export function ChartBlock({
               <>
                 <div className="fixed inset-0 z-40" onClick={() => setMenuOpen(false)} />
                 <div className="absolute right-0 top-7 z-50 w-36 bg-popover border border-border rounded-sm shadow-lg py-1">
-                  {!readOnly && SIZE_CYCLE.map(s => (
-                    <button
-                      key={`${s.col}-${s.row}`}
-                      onClick={() => { onColSpanChange(id, s.col); if (onRowSpanChange) onRowSpanChange(id, s.row); setMenuOpen(false) }}
-                      className={cn(
-                        "w-full px-3 py-1.5 text-left text-xs hover:bg-secondary flex items-center gap-2",
-                        s.col === colSpan && s.row === rowSpan ? "text-primary" : "text-foreground"
-                      )}
-                    >
-                      <Maximize2 className="w-3 h-3" />
-                      {s.col}×{s.row}
-                    </button>
-                  ))}
+                  {!readOnly &&
+                    SIZE_CYCLE.map(s => (
+                      <button
+                        key={`${s.col}-${s.row}`}
+                        onClick={() => {
+                          onColSpanChange(id, s.col)
+                          if (onRowSpanChange) onRowSpanChange(id, s.row)
+                          setMenuOpen(false)
+                        }}
+                        className={cn(
+                          'w-full px-3 py-1.5 text-left text-xs hover:bg-secondary flex items-center gap-2',
+                          s.col === colSpan && s.row === rowSpan
+                            ? 'text-primary'
+                            : 'text-foreground'
+                        )}
+                      >
+                        <Maximize2 className="w-3 h-3" />
+                        {s.col}×{s.row}
+                      </button>
+                    ))}
                   {!readOnly && <div className="my-1 border-t border-border" />}
                   <button
                     className="w-full px-3 py-1.5 text-left text-xs text-muted-foreground hover:bg-secondary flex items-center gap-2"
@@ -225,7 +252,10 @@ export function ChartBlock({
                   </button>
                   {!readOnly && (
                     <button
-                      onClick={() => { onRemove(id); setMenuOpen(false) }}
+                      onClick={() => {
+                        onRemove(id)
+                        setMenuOpen(false)
+                      }}
                       className="w-full px-3 py-1.5 text-left text-xs text-destructive hover:bg-secondary flex items-center gap-2"
                     >
                       <Trash2 className="w-3 h-3" />
@@ -239,46 +269,78 @@ export function ChartBlock({
         </div>
 
         {/* Chart area */}
-        <div className="flex-1 min-h-0 p-3">
-          {children}
-        </div>
+        <div className="flex-1 min-h-0 p-3">{children}</div>
 
         {/* Corner resize handle */}
         {!readOnly && (
           <div
             onPointerDown={handleResizeStart}
             className="absolute bottom-0 right-0 w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity cursor-nwse-resize"
-            style={{ touchAction: "none" }}
+            style={{ touchAction: 'none' }}
           >
-            <svg className="w-full h-full" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <line x1="4" y1="16" x2="16" y2="4" stroke="currentColor" strokeWidth="1.5" className="text-muted-foreground" opacity="0.4" />
-              <line x1="8" y1="16" x2="16" y2="8" stroke="currentColor" strokeWidth="1.5" className="text-muted-foreground" opacity="0.4" />
-              <line x1="12" y1="16" x2="16" y2="12" stroke="currentColor" strokeWidth="1.5" className="text-muted-foreground" opacity="0.4" />
+            <svg
+              className="w-full h-full"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <line
+                x1="4"
+                y1="16"
+                x2="16"
+                y2="4"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                className="text-muted-foreground"
+                opacity="0.4"
+              />
+              <line
+                x1="8"
+                y1="16"
+                x2="16"
+                y2="8"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                className="text-muted-foreground"
+                opacity="0.4"
+              />
+              <line
+                x1="12"
+                y1="16"
+                x2="16"
+                y2="12"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                className="text-muted-foreground"
+                opacity="0.4"
+              />
             </svg>
           </div>
         )}
       </div>
 
       {/* Resize preview ghost — rendered via portal */}
-      {mounted && resizePreview && createPortal(
-        <div
-          className="fixed pointer-events-none z-50 border-2 border-dashed border-primary/60 rounded-sm bg-primary/10 backdrop-blur-sm"
-          style={{
-            left: resizePreview.rect.left,
-            top: resizePreview.rect.top,
-            width: resizePreview.rect.width,
-            height: resizePreview.rect.height,
-            transition: "width 80ms ease-out, height 80ms ease-out",
-          }}
-        >
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-xs font-mono text-primary bg-card/80 px-2 py-1 rounded-sm border border-primary/30">
-              {resizePreview.col}×{resizePreview.row}
-            </span>
-          </div>
-        </div>,
-        document.body
-      )}
+      {mounted &&
+        resizePreview &&
+        createPortal(
+          <div
+            className="fixed pointer-events-none z-50 border-2 border-dashed border-primary/60 rounded-sm bg-primary/10 backdrop-blur-sm"
+            style={{
+              left: resizePreview.rect.left,
+              top: resizePreview.rect.top,
+              width: resizePreview.rect.width,
+              height: resizePreview.rect.height,
+              transition: 'width 80ms ease-out, height 80ms ease-out',
+            }}
+          >
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-xs font-mono text-primary bg-card/80 px-2 py-1 rounded-sm border border-primary/30">
+                {resizePreview.col}×{resizePreview.row}
+              </span>
+            </div>
+          </div>,
+          document.body
+        )}
     </>
   )
 }

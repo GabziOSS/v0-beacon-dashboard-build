@@ -1,13 +1,7 @@
-export type IncidentType =
-  | "Fire"
-  | "Flood"
-  | "Crime"
-  | "Medical"
-  | "Infrastructure"
-  | "Typhoon"
+export type IncidentType = 'Fire' | 'Flood' | 'Crime' | 'Medical' | 'Infrastructure' | 'Typhoon'
 
-export type Severity = "Critical" | "High" | "Medium" | "Low"
-export type IncidentStatus = "Active" | "Responding" | "Contained" | "Resolved"
+export type Severity = 'Critical' | 'High' | 'Medium' | 'Low'
+export type IncidentStatus = 'Active' | 'Responding' | 'Contained' | 'Resolved'
 
 export interface Incident {
   id: string
@@ -74,11 +68,11 @@ export interface ScatterZone {
   population: number
   incidents: number
   area: number
-  risk: "Critical" | "High" | "Medium" | "Low"
+  risk: 'Critical' | 'High' | 'Medium' | 'Low'
 }
 
 export interface HeatmapCell {
-  day: number  // 0-29
+  day: number // 0-29
   category: IncidentType
   count: number
 }
@@ -102,4 +96,71 @@ export interface BulletData {
   acceptable: number
   good: number
   max: number
+}
+
+// Weather station types
+export type WeatherCondition =
+  | 'sunny'
+  | 'partly-cloudy'
+  | 'cloudy'
+  | 'rain'
+  | 'showers'
+  | 'snow'
+  | 'thunderstorm'
+  | 'windy'
+
+export interface ForecastData {
+  period: string
+  condition: WeatherCondition
+  temp: number
+  humidity: number
+  description: string
+}
+
+export interface SunriseSunsetData {
+  sunrise: string
+  sunset: string
+}
+
+export type MoonPhaseName =
+  | 'New Moon'
+  | 'Waxing Crescent'
+  | 'First Quarter'
+  | 'Waxing Gibbous'
+  | 'Full Moon'
+  | 'Waning Gibbous'
+  | 'Last Quarter'
+  | 'Waning Crescent'
+
+export interface MoonPhaseData {
+  phase: MoonPhaseName
+  illumination?: number
+}
+
+export interface TempHumidityData {
+  temperature: number
+  humidity: number
+  tempMin: number
+  tempMax: number
+  humMin: number
+  humMax: number
+}
+
+export interface MultiTempData {
+  outsideTemp: number
+  heatIndex: number
+  wetBulb: number
+  min: number
+  max: number
+}
+
+export interface RainBarData {
+  values: Array<{ label: string; value: number }>
+  unit: string
+  max: number
+}
+
+export interface BarometerPoint {
+  time: string
+  pressure: number
 }

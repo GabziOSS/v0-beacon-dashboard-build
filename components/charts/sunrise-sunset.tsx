@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import { Sun, Moon } from "lucide-react"
+import { Sun, Moon } from 'lucide-react'
 
 function polarToCartesian(cx: number, cy: number, r: number, angleDeg: number) {
   const rad = ((angleDeg - 90) * Math.PI) / 180
@@ -18,8 +18,8 @@ function arcPath(cx: number, cy: number, r: number, startDeg: number, endDeg: nu
 }
 
 export interface SunriseSunsetData {
-  sunrise: string  // "5:54 AM"
-  sunset: string   // "5:52 PM"
+  sunrise: string // "5:54 AM"
+  sunset: string // "5:52 PM"
   currentTime?: Date
 }
 
@@ -30,11 +30,11 @@ export function SunriseSunset({ data }: { data: SunriseSunsetData }) {
 
   // Parse times to calculate sun position
   function parseTime(timeStr: string): number {
-    const [time, period] = timeStr.split(" ")
-    const [hours, minutes] = time.split(":").map(Number)
+    const [time, period] = timeStr.split(' ')
+    const [hours, minutes] = time.split(':').map(Number)
     let h = hours
-    if (period === "PM" && hours !== 12) h += 12
-    if (period === "AM" && hours === 12) h = 0
+    if (period === 'PM' && hours !== 12) h += 12
+    if (period === 'AM' && hours === 12) h = 0
     return h * 60 + minutes
   }
 
@@ -55,8 +55,15 @@ export function SunriseSunset({ data }: { data: SunriseSunsetData }) {
     <div className="flex flex-col items-center justify-center h-full gap-1">
       <svg viewBox="0 0 200 100" className="w-full max-w-[220px]" aria-hidden>
         {/* Horizon line */}
-        <line x1={CX - R - 10} y1={CY} x2={CX + R + 10} y2={CY} stroke="var(--border)" strokeWidth={1} />
-        
+        <line
+          x1={CX - R - 10}
+          y1={CY}
+          x2={CX + R + 10}
+          y2={CY}
+          stroke="var(--border)"
+          strokeWidth={1}
+        />
+
         {/* Arc path - daytime arc */}
         <path
           d={arcPath(CX, CY, R, 180, 360)}

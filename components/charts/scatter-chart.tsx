@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import {
   ResponsiveContainer,
@@ -9,14 +9,14 @@ import {
   CartesianGrid,
   Tooltip,
   ReferenceLine,
-} from "recharts"
-import type { ScatterZone } from "@/lib/types"
+} from 'recharts'
+import type { ScatterZone } from '@/lib/types'
 
 const RISK_COLORS: Record<string, string> = {
-  Critical: "var(--destructive)",
-  High:     "var(--warning)",
-  Medium:   "var(--chart-1)",
-  Low:      "var(--success)",
+  Critical: 'var(--destructive)',
+  High: 'var(--warning)',
+  Medium: 'var(--chart-1)',
+  Low: 'var(--success)',
 }
 
 const CustomDot = (props: { cx?: number; cy?: number; payload?: ScatterZone }) => {
@@ -36,7 +36,13 @@ const CustomDot = (props: { cx?: number; cy?: number; payload?: ScatterZone }) =
   )
 }
 
-function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<{ payload: ScatterZone }> }) {
+function CustomTooltip({
+  active,
+  payload,
+}: {
+  active?: boolean
+  payload?: Array<{ payload: ScatterZone }>
+}) {
   if (!active || !payload?.length) return null
   const d = payload[0].payload
   return (
@@ -61,7 +67,7 @@ export function DensityScatterChart({ data }: { data: ScatterZone[] }) {
           type="number"
           dataKey="population"
           name="Population"
-          tick={{ fill: "var(--muted-foreground)", fontSize: 10, fontFamily: "var(--font-mono)" }}
+          tick={{ fill: 'var(--muted-foreground)', fontSize: 10, fontFamily: 'var(--font-mono)' }}
           tickLine={false}
           axisLine={false}
           tickFormatter={v => `${(v / 1000).toFixed(0)}k`}
@@ -70,17 +76,17 @@ export function DensityScatterChart({ data }: { data: ScatterZone[] }) {
           type="number"
           dataKey="incidents"
           name="Incidents"
-          tick={{ fill: "var(--muted-foreground)", fontSize: 10, fontFamily: "var(--font-mono)" }}
+          tick={{ fill: 'var(--muted-foreground)', fontSize: 10, fontFamily: 'var(--font-mono)' }}
           tickLine={false}
           axisLine={false}
         />
         <ReferenceLine x={avgPop} stroke="var(--border)" strokeDasharray="3 3" />
         <ReferenceLine y={avgInc} stroke="var(--border)" strokeDasharray="3 3" />
-        <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: "2 2", stroke: "var(--border)" }} />
-        <Scatter
-          data={data}
-          shape={<CustomDot />}
+        <Tooltip
+          content={<CustomTooltip />}
+          cursor={{ strokeDasharray: '2 2', stroke: 'var(--border)' }}
         />
+        <Scatter data={data} shape={<CustomDot />} />
       </ScatterChart>
     </ResponsiveContainer>
   )

@@ -1,18 +1,18 @@
-"use client"
+'use client'
 
-type MoonPhaseName = 
-  | "New Moon"
-  | "Waxing Crescent"
-  | "First Quarter"
-  | "Waxing Gibbous"
-  | "Full Moon"
-  | "Waning Gibbous"
-  | "Last Quarter"
-  | "Waning Crescent"
+type MoonPhaseName =
+  | 'New Moon'
+  | 'Waxing Crescent'
+  | 'First Quarter'
+  | 'Waxing Gibbous'
+  | 'Full Moon'
+  | 'Waning Gibbous'
+  | 'Last Quarter'
+  | 'Waning Crescent'
 
 export interface MoonPhaseData {
   phase: MoonPhaseName
-  illumination?: number  // 0-100
+  illumination?: number // 0-100
 }
 
 // SVG moon phase visualization
@@ -24,19 +24,28 @@ function MoonIcon({ phase }: { phase: MoonPhaseName }) {
   // Calculate shadow based on phase
   const getPhaseOffset = () => {
     switch (phase) {
-      case "New Moon": return 0
-      case "Waxing Crescent": return 0.25
-      case "First Quarter": return 0.5
-      case "Waxing Gibbous": return 0.75
-      case "Full Moon": return 1
-      case "Waning Gibbous": return 0.75
-      case "Last Quarter": return 0.5
-      case "Waning Crescent": return 0.25
-      default: return 0.5
+      case 'New Moon':
+        return 0
+      case 'Waxing Crescent':
+        return 0.25
+      case 'First Quarter':
+        return 0.5
+      case 'Waxing Gibbous':
+        return 0.75
+      case 'Full Moon':
+        return 1
+      case 'Waning Gibbous':
+        return 0.75
+      case 'Last Quarter':
+        return 0.5
+      case 'Waning Crescent':
+        return 0.25
+      default:
+        return 0.5
     }
   }
 
-  const isWaning = phase.startsWith("Waning") || phase === "Last Quarter"
+  const isWaning = phase.startsWith('Waning') || phase === 'Last Quarter'
   const illuminationFactor = getPhaseOffset()
 
   // For crescent/gibbous, we use an ellipse to create the terminator
@@ -58,14 +67,14 @@ function MoonIcon({ phase }: { phase: MoonPhaseName }) {
       <circle cx={CX} cy={CY} r={R} fill="var(--muted)" stroke="var(--border)" strokeWidth={1} />
 
       {/* Illuminated portion */}
-      {phase === "Full Moon" ? (
+      {phase === 'Full Moon' ? (
         <circle cx={CX} cy={CY} r={R - 1} fill="var(--foreground)" opacity={0.9} />
-      ) : phase === "New Moon" ? null : (
+      ) : phase === 'New Moon' ? null : (
         <g clipPath="url(#moonClip)">
           {/* For waxing phases, light is on right; for waning, on left */}
           {isWaning ? (
             <ellipse
-              cx={CX - R + (R * illuminationFactor)}
+              cx={CX - R + R * illuminationFactor}
               cy={CY}
               rx={R * illuminationFactor}
               ry={R}
@@ -74,7 +83,7 @@ function MoonIcon({ phase }: { phase: MoonPhaseName }) {
             />
           ) : (
             <ellipse
-              cx={CX + R - (R * illuminationFactor)}
+              cx={CX + R - R * illuminationFactor}
               cy={CY}
               rx={R * illuminationFactor}
               ry={R}

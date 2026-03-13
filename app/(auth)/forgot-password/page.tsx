@@ -1,22 +1,22 @@
-"use client"
+'use client'
 
-import { useState, useTransition } from "react"
-import Link from "next/link"
-import { ArrowLeft, Loader2, CheckCircle2 } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { useState, useTransition } from 'react'
+import Link from 'next/link'
+import { ArrowLeft, Loader2, CheckCircle2 } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState("")
+  const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
-  const [error, setError] = useState("")
+  const [error, setError] = useState('')
   const [isPending, startTransition] = useTransition()
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setError("")
+    setError('')
 
-    if (!email.includes("@")) {
-      setError("Please enter a valid email address")
+    if (!email.includes('@')) {
+      setError('Please enter a valid email address')
       return
     }
 
@@ -44,7 +44,8 @@ export default function ForgotPasswordPage() {
             </div>
             <h2 className="text-xl font-semibold text-foreground">Check your inbox</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              We&apos;ve sent password reset instructions to <strong className="text-foreground">{email}</strong>
+              We&apos;ve sent password reset instructions to{' '}
+              <strong className="text-foreground">{email}</strong>
             </p>
             <Link
               href="/login"
@@ -76,17 +77,15 @@ export default function ForgotPasswordPage() {
                 />
               </div>
 
-              {error && (
-                <p className="text-sm text-destructive">{error}</p>
-              )}
+              {error && <p className="text-sm text-destructive">{error}</p>}
 
               <button
                 type="submit"
                 disabled={isPending}
                 className={cn(
-                  "w-full h-10 flex items-center justify-center gap-2 text-sm font-medium rounded-sm transition-colors",
-                  "bg-primary text-primary-foreground hover:bg-primary/90",
-                  "disabled:opacity-50 disabled:cursor-not-allowed"
+                  'w-full h-10 flex items-center justify-center gap-2 text-sm font-medium rounded-sm transition-colors',
+                  'bg-primary text-primary-foreground hover:bg-primary/90',
+                  'disabled:opacity-50 disabled:cursor-not-allowed'
                 )}
               >
                 {isPending ? (
@@ -95,7 +94,7 @@ export default function ForgotPasswordPage() {
                     Sending...
                   </>
                 ) : (
-                  "Send reset link"
+                  'Send reset link'
                 )}
               </button>
             </form>

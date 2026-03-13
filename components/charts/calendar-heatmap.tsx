@@ -1,11 +1,11 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import type { CalendarCell } from "@/lib/types"
-import { cn } from "@/lib/utils"
+import { useState } from 'react'
+import type { CalendarCell } from '@/lib/types'
+import { cn } from '@/lib/utils'
 
-const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-const DAYS_SHORT = ["M","T","W","T","F","S","S"]
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const DAYS_SHORT = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
 
 export function CalendarHeatmap({ data }: { data: CalendarCell[] }) {
   const [selected, setSelected] = useState<string | null>(null)
@@ -31,12 +31,12 @@ export function CalendarHeatmap({ data }: { data: CalendarCell[] }) {
   })
 
   function cellColor(count: number) {
-    if (count === 0) return "var(--muted)"
+    if (count === 0) return 'var(--muted)'
     const pct = count / maxCount
-    if (pct < 0.25) return "oklch(0.72 0.155 210 / 0.3)"
-    if (pct < 0.5)  return "oklch(0.72 0.155 210 / 0.55)"
-    if (pct < 0.75) return "oklch(0.72 0.155 210 / 0.75)"
-    return "var(--chart-1)"
+    if (pct < 0.25) return 'oklch(0.72 0.155 210 / 0.3)'
+    if (pct < 0.5) return 'oklch(0.72 0.155 210 / 0.55)'
+    if (pct < 0.75) return 'oklch(0.72 0.155 210 / 0.75)'
+    return 'var(--chart-1)'
   }
 
   return (
@@ -50,7 +50,7 @@ export function CalendarHeatmap({ data }: { data: CalendarCell[] }) {
               key={i}
               className="w-2.5 h-2.5 flex items-center justify-center text-[7px] text-muted-foreground font-mono"
             >
-              {i % 2 === 0 ? d : ""}
+              {i % 2 === 0 ? d : ''}
             </div>
           ))}
         </div>
@@ -70,11 +70,12 @@ export function CalendarHeatmap({ data }: { data: CalendarCell[] }) {
               <button
                 key={cell.date}
                 className={cn(
-                  "w-2.5 h-2.5 rounded-[1px] transition-transform hover:scale-125 focus:outline-none",
-                  selected === cell.date && "ring-1 ring-primary ring-offset-1 ring-offset-background"
+                  'w-2.5 h-2.5 rounded-[1px] transition-transform hover:scale-125 focus:outline-none',
+                  selected === cell.date &&
+                    'ring-1 ring-primary ring-offset-1 ring-offset-background'
                 )}
                 style={{ background: cellColor(cell.count) }}
-                onClick={() => setSelected(prev => prev === cell.date ? null : cell.date)}
+                onClick={() => setSelected(prev => (prev === cell.date ? null : cell.date))}
                 title={`${cell.date}: ${cell.count} incidents`}
                 aria-label={`${cell.date}: ${cell.count} incidents`}
               />
@@ -86,7 +87,7 @@ export function CalendarHeatmap({ data }: { data: CalendarCell[] }) {
       {selected && (
         <p className="text-[10px] text-muted-foreground font-mono">
           <span className="text-foreground font-semibold">{selected}</span>
-          {" — "}
+          {' — '}
           {data.find(c => c.date === selected)?.count ?? 0} incidents
         </p>
       )}

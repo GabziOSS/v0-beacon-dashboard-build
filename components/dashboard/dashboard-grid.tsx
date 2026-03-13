@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import { useState, useEffect, useReducer } from "react"
+import { useState, useEffect, useReducer } from 'react'
 import {
   DndContext,
   DragOverlay,
@@ -8,35 +8,36 @@ import {
   useSensor,
   useSensors,
   closestCenter,
-} from "@dnd-kit/core"
+} from '@dnd-kit/core'
+import { SortableContext, arrayMove, rectSortingStrategy } from '@dnd-kit/sortable'
 import {
-  SortableContext,
-  arrayMove,
-  rectSortingStrategy,
-} from "@dnd-kit/sortable"
-import { ChartBlock, type ColSpan, type RowSpan, type ChartBlock as ChartBlockType } from "./chart-block"
-import { StatCard } from "@/components/charts/stat-card"
-import { IncidentTrendChart } from "@/components/charts/line-chart"
-import { GaugeArc } from "@/components/charts/gauge-arc"
-import { WindRoseChart } from "@/components/charts/wind-rose"
-import { CategoryBarChart } from "@/components/charts/bar-chart"
-import { DistrictRadarChart } from "@/components/charts/radar-chart"
-import { ResponseTimeChart } from "@/components/charts/area-chart"
-import { TimelineHeatmap } from "@/components/charts/timeline-heatmap"
-import { ResolutionRadialChart } from "@/components/charts/radial-chart"
-import { IncidentsVsDeployedChart } from "@/components/charts/composed-chart"
-import { CompassChart } from "@/components/charts/compass"
-import { CalendarHeatmap } from "@/components/charts/calendar-heatmap"
-import { DensityScatterChart } from "@/components/charts/scatter-chart"
-import { BulletChart } from "@/components/charts/bullet-chart"
-import { SparkBarChart } from "@/components/charts/spark-bar"
+  ChartBlock,
+  type ColSpan,
+  type RowSpan,
+  type ChartBlock as ChartBlockType,
+} from './chart-block'
+import { StatCard } from '@/components/charts/stat-card'
+import { IncidentTrendChart } from '@/components/charts/line-chart'
+import { GaugeArc } from '@/components/charts/gauge-arc'
+import { WindRoseChart } from '@/components/charts/wind-rose'
+import { CategoryBarChart } from '@/components/charts/bar-chart'
+import { DistrictRadarChart } from '@/components/charts/radar-chart'
+import { ResponseTimeChart } from '@/components/charts/area-chart'
+import { TimelineHeatmap } from '@/components/charts/timeline-heatmap'
+import { ResolutionRadialChart } from '@/components/charts/radial-chart'
+import { IncidentsVsDeployedChart } from '@/components/charts/composed-chart'
+import { CompassChart } from '@/components/charts/compass'
+import { CalendarHeatmap } from '@/components/charts/calendar-heatmap'
+import { DensityScatterChart } from '@/components/charts/scatter-chart'
+import { BulletChart } from '@/components/charts/bullet-chart'
+import { SparkBarChart } from '@/components/charts/spark-bar'
 // Weather station charts
-import { LocalForecast } from "@/components/charts/local-forecast"
-import { SunriseSunset } from "@/components/charts/sunrise-sunset"
-import { MoonPhase } from "@/components/charts/moon-phase"
-import { TempHumidityBar } from "@/components/charts/temp-humidity-bar"
-import { MultiTempBar } from "@/components/charts/multi-temp-bar"
-import { RainBar } from "@/components/charts/rain-bar"
+import { LocalForecast } from '@/components/charts/local-forecast'
+import { SunriseSunset } from '@/components/charts/sunrise-sunset'
+import { MoonPhase } from '@/components/charts/moon-phase'
+import { TempHumidityBar } from '@/components/charts/temp-humidity-bar'
+import { MultiTempBar } from '@/components/charts/multi-temp-bar'
+import { RainBar } from '@/components/charts/rain-bar'
 import {
   useStatCards,
   useIncidentTrend,
@@ -65,28 +66,28 @@ import {
   useWindSpeed,
   useHumidity,
   useTHWIndex,
-} from "@/lib/hooks"
-import { PRESETS, type PresetId, getStoredPreset, savePreset } from "@/lib/presets"
+} from '@/lib/hooks'
+import { PRESETS, type PresetId, getStoredPreset, savePreset } from '@/lib/presets'
 
 type BlocksAction =
-  | { type: "SET_BLOCKS"; blocks: ChartBlockType[] }
-  | { type: "REORDER"; oldIndex: number; newIndex: number }
-  | { type: "REMOVE"; id: string }
-  | { type: "SET_COL_SPAN"; id: string; span: ColSpan }
-  | { type: "SET_ROW_SPAN"; id: string; span: RowSpan }
+  | { type: 'SET_BLOCKS'; blocks: ChartBlockType[] }
+  | { type: 'REORDER'; oldIndex: number; newIndex: number }
+  | { type: 'REMOVE'; id: string }
+  | { type: 'SET_COL_SPAN'; id: string; span: ColSpan }
+  | { type: 'SET_ROW_SPAN'; id: string; span: RowSpan }
 
 function blocksReducer(blocks: ChartBlockType[], action: BlocksAction): ChartBlockType[] {
   switch (action.type) {
-    case "SET_BLOCKS":
+    case 'SET_BLOCKS':
       return action.blocks
-    case "REORDER":
+    case 'REORDER':
       return arrayMove(blocks, action.oldIndex, action.newIndex)
-    case "REMOVE":
-      return blocks.filter((b) => b.id !== action.id)
-    case "SET_COL_SPAN":
-      return blocks.map((b) => (b.id === action.id ? { ...b, colSpan: action.span } : b))
-    case "SET_ROW_SPAN":
-      return blocks.map((b) => (b.id === action.id ? { ...b, rowSpan: action.span } : b))
+    case 'REMOVE':
+      return blocks.filter(b => b.id !== action.id)
+    case 'SET_COL_SPAN':
+      return blocks.map(b => (b.id === action.id ? { ...b, colSpan: action.span } : b))
+    case 'SET_ROW_SPAN':
+      return blocks.map(b => (b.id === action.id ? { ...b, rowSpan: action.span } : b))
     default:
       return blocks
   }
@@ -96,7 +97,7 @@ interface DashboardGridProps {
   initialPreset?: PresetId
 }
 
-export function DashboardGrid({ initialPreset = "overview" }: DashboardGridProps) {
+export function DashboardGrid({ initialPreset = 'overview' }: DashboardGridProps) {
   const [blocks, dispatch] = useReducer(blocksReducer, [])
   const [activeId, setActiveId] = useState<string | null>(null)
   const [mounted, setMounted] = useState(false)
@@ -106,21 +107,19 @@ export function DashboardGrid({ initialPreset = "overview" }: DashboardGridProps
     const preset = PRESETS[initialPreset] || PRESETS.overview
     const storageKey = `beacon_blocks_${preset.id}`
     const stored = localStorage.getItem(storageKey)
-    
+
     if (stored) {
       try {
-        dispatch({ type: "SET_BLOCKS", blocks: JSON.parse(stored) })
+        dispatch({ type: 'SET_BLOCKS', blocks: JSON.parse(stored) })
       } catch {
-        dispatch({ type: "SET_BLOCKS", blocks: preset.blocks })
+        dispatch({ type: 'SET_BLOCKS', blocks: preset.blocks })
       }
     } else {
-      dispatch({ type: "SET_BLOCKS", blocks: preset.blocks })
+      dispatch({ type: 'SET_BLOCKS', blocks: preset.blocks })
     }
   }, [initialPreset])
 
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
-  )
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }))
 
   useEffect(() => {
     if (!mounted) return
@@ -157,84 +156,137 @@ export function DashboardGrid({ initialPreset = "overview" }: DashboardGridProps
   const { data: humidityData } = useHumidity()
   const { data: thwIndexData } = useTHWIndex()
 
-  function handleDragEnd(event: { active: { id: string | number }; over: { id: string | number } | null }) {
+  function handleDragEnd(event: {
+    active: { id: string | number }
+    over: { id: string | number } | null
+  }) {
     const { active, over } = event
     setActiveId(null)
     if (!over || active.id === over.id) return
     const from = blocks.findIndex(b => b.id === active.id)
     const to = blocks.findIndex(b => b.id === over.id)
-    dispatch({ type: "REORDER", oldIndex: from, newIndex: to })
+    dispatch({ type: 'REORDER', oldIndex: from, newIndex: to })
   }
 
   function handleColSpanChange(id: string, span: ColSpan) {
-    dispatch({ type: "SET_COL_SPAN", id, span })
+    dispatch({ type: 'SET_COL_SPAN', id, span })
   }
 
   function handleRowSpanChange(id: string, span: RowSpan) {
-    dispatch({ type: "SET_ROW_SPAN", id, span })
+    dispatch({ type: 'SET_ROW_SPAN', id, span })
   }
 
   function handleRemove(id: string) {
-    dispatch({ type: "REMOVE", id })
+    dispatch({ type: 'REMOVE', id })
   }
 
   function renderContent(id: string, type?: string) {
     // Match by ID first for specific blocks
     switch (id) {
-      case "stat-1": return <StatCard data={statCards[0]} />
-      case "stat-2": return <StatCard data={statCards[1]} />
-      case "stat-3": return <StatCard data={statCards[2]} />
-      case "stat-4": return <StatCard data={statCards[3]} />
-      case "w-rain": return <RainBar data={currentRainData} />
-      case "w-total-rain": return <RainBar data={totalRainData} />
-      case "w-sunrise": return <SunriseSunset data={sunriseSunsetData} />
-      case "w-moon": return <MoonPhase data={moonPhaseData} />
-      case "w-forecast": return <LocalForecast data={forecastData} />
-      case "trend":  return <IncidentTrendChart data={trendData} />
-      case "risk":   return <GaugeArc value={riskScore.value} label={riskScore.label} />
-      case "rose":   return <WindRoseChart data={windData} />
-      case "w-rose": return <WindRoseChart data={windData} />
-      case "w-wind": return <GaugeArc value={windSpeedData.value} label={windSpeedData.unit} />
-      case "w-thw":  return <GaugeArc value={thwIndexData.value} label={thwIndexData.unit} />
-      case "cat":    return <CategoryBarChart data={catData} />
-      case "radar":  return <DistrictRadarChart data={radarData} />
-      case "area":   return <ResponseTimeChart data={responseTime} />
-      case "ready":  return <GaugeArc value={readiness.value} label={readiness.label} />
-      case "heat":   return <TimelineHeatmap data={heatmapData} />
-      case "resol":  return <ResolutionRadialChart value={resolution.value} />
-      case "comp":   return <IncidentsVsDeployedChart data={composedData} />
-      case "comp2":  return <CompassChart bearing={riskVector.bearing} label={riskVector.label} />
-      case "w-compass": return <CompassChart bearing={135} label="SE" />
-      case "w-baro": return <IncidentTrendChart data={trendData} />
-      case "w-temp-gauge": return <TempHumidityBar data={insideTempHumData} />
-      case "w-temp-trend": return <MultiTempBar data={multiTempData} />
-      case "w-humidity": return <GaugeArc value={humidityData.value} label="%" />
-      case "cal":    return <CalendarHeatmap data={calData} />
-      case "w-calendar": return <CalendarHeatmap data={calData} />
-      case "w-rain-bullet": return <BulletChart data={bulletData} />
-      case "scatter":return <DensityScatterChart data={scatterData} />
-      case "bullet": return <BulletChart data={bulletData} />
-      case "spark":  return <SparkBarChart data={sparkData} />
+      case 'stat-1':
+        return <StatCard data={statCards[0]} />
+      case 'stat-2':
+        return <StatCard data={statCards[1]} />
+      case 'stat-3':
+        return <StatCard data={statCards[2]} />
+      case 'stat-4':
+        return <StatCard data={statCards[3]} />
+      case 'w-rain':
+        return <RainBar data={currentRainData} />
+      case 'w-total-rain':
+        return <RainBar data={totalRainData} />
+      case 'w-sunrise':
+        return <SunriseSunset data={sunriseSunsetData} />
+      case 'w-moon':
+        return <MoonPhase data={moonPhaseData} />
+      case 'w-forecast':
+        return <LocalForecast data={forecastData} />
+      case 'trend':
+        return <IncidentTrendChart data={trendData} />
+      case 'risk':
+        return <GaugeArc value={riskScore.value} label={riskScore.label} />
+      case 'rose':
+        return <WindRoseChart data={windData} />
+      case 'w-rose':
+        return <WindRoseChart data={windData} />
+      case 'w-wind':
+        return <GaugeArc value={windSpeedData.value} label={windSpeedData.unit} />
+      case 'w-thw':
+        return <GaugeArc value={thwIndexData.value} label={thwIndexData.unit} />
+      case 'cat':
+        return <CategoryBarChart data={catData} />
+      case 'radar':
+        return <DistrictRadarChart data={radarData} />
+      case 'area':
+        return <ResponseTimeChart data={responseTime} />
+      case 'ready':
+        return <GaugeArc value={readiness.value} label={readiness.label} />
+      case 'heat':
+        return <TimelineHeatmap data={heatmapData} />
+      case 'resol':
+        return <ResolutionRadialChart value={resolution.value} />
+      case 'comp':
+        return <IncidentsVsDeployedChart data={composedData} />
+      case 'comp2':
+        return <CompassChart bearing={riskVector.bearing} label={riskVector.label} />
+      case 'w-compass':
+        return <CompassChart bearing={135} label="SE" />
+      case 'w-baro':
+        return <IncidentTrendChart data={trendData} />
+      case 'w-temp-gauge':
+        return <TempHumidityBar data={insideTempHumData} />
+      case 'w-temp-trend':
+        return <MultiTempBar data={multiTempData} />
+      case 'w-humidity':
+        return <GaugeArc value={humidityData.value} label="%" />
+      case 'cal':
+        return <CalendarHeatmap data={calData} />
+      case 'w-calendar':
+        return <CalendarHeatmap data={calData} />
+      case 'w-rain-bullet':
+        return <BulletChart data={bulletData} />
+      case 'scatter':
+        return <DensityScatterChart data={scatterData} />
+      case 'bullet':
+        return <BulletChart data={bulletData} />
+      case 'spark':
+        return <SparkBarChart data={sparkData} />
     }
     // Fallback by type for category dashboards — use id hash for deterministic values
-    const idHash = id.split("").reduce((a, c) => a + c.charCodeAt(0), 0)
+    const idHash = id.split('').reduce((a, c) => a + c.charCodeAt(0), 0)
     switch (type) {
-      case "stat":     return <StatCard data={statCards[idHash % 4]} />
-      case "line":     return <IncidentTrendChart data={trendData} />
-      case "gauge":    return <GaugeArc value={50 + (idHash % 40)} label="%" />
-      case "windrose": return <WindRoseChart data={windData} />
-      case "bar":      return <CategoryBarChart data={catData} />
-      case "radar":    return <DistrictRadarChart data={radarData} />
-      case "area":     return <ResponseTimeChart data={responseTime} />
-      case "heatmap":  return <TimelineHeatmap data={heatmapData} />
-      case "radial":   return <ResolutionRadialChart value={resolution.value} />
-      case "composed": return <IncidentsVsDeployedChart data={composedData} />
-      case "compass":  return <CompassChart bearing={riskVector.bearing} label={riskVector.label} />
-      case "calendar": return <CalendarHeatmap data={calData} />
-      case "scatter":  return <DensityScatterChart data={scatterData} />
-      case "bullet":   return <BulletChart data={bulletData} />
-      case "spark":    return <SparkBarChart data={sparkData} />
-      default:         return null
+      case 'stat':
+        return <StatCard data={statCards[idHash % 4]} />
+      case 'line':
+        return <IncidentTrendChart data={trendData} />
+      case 'gauge':
+        return <GaugeArc value={50 + (idHash % 40)} label="%" />
+      case 'windrose':
+        return <WindRoseChart data={windData} />
+      case 'bar':
+        return <CategoryBarChart data={catData} />
+      case 'radar':
+        return <DistrictRadarChart data={radarData} />
+      case 'area':
+        return <ResponseTimeChart data={responseTime} />
+      case 'heatmap':
+        return <TimelineHeatmap data={heatmapData} />
+      case 'radial':
+        return <ResolutionRadialChart value={resolution.value} />
+      case 'composed':
+        return <IncidentsVsDeployedChart data={composedData} />
+      case 'compass':
+        return <CompassChart bearing={riskVector.bearing} label={riskVector.label} />
+      case 'calendar':
+        return <CalendarHeatmap data={calData} />
+      case 'scatter':
+        return <DensityScatterChart data={scatterData} />
+      case 'bullet':
+        return <BulletChart data={bulletData} />
+      case 'spark':
+        return <SparkBarChart data={sparkData} />
+      default:
+        return null
     }
   }
 
@@ -251,7 +303,7 @@ export function DashboardGrid({ initialPreset = "overview" }: DashboardGridProps
       <SortableContext items={blocks.map(b => b.id)} strategy={rectSortingStrategy}>
         <div
           className="grid gap-4"
-          style={{ gridTemplateColumns: "repeat(3, 1fr)", gridAutoRows: "minmax(220px, auto)" }}
+          style={{ gridTemplateColumns: 'repeat(3, 1fr)', gridAutoRows: 'minmax(220px, auto)' }}
         >
           {blocks.map(block => (
             <ChartBlock

@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 export interface RainBarData {
   values: Array<{ label: string; value: number }>
@@ -7,17 +7,17 @@ export interface RainBarData {
 }
 
 export function RainBar({ data }: { data: RainBarData }) {
-  const unit = data.unit ?? "mm"
+  const unit = data.unit ?? 'mm'
   const maxValue = data.max ?? Math.max(...data.values.map(v => v.value), 1)
 
   // Color gradient based on value intensity
   const getColor = (value: number, index: number) => {
     const colors = [
-      "var(--chart-1)",
-      "var(--chart-2)",
-      "var(--chart-3)",
-      "var(--chart-4)",
-      "var(--chart-5)",
+      'var(--chart-1)',
+      'var(--chart-2)',
+      'var(--chart-3)',
+      'var(--chart-4)',
+      'var(--chart-5)',
     ]
     return colors[index % colors.length]
   }
@@ -26,7 +26,9 @@ export function RainBar({ data }: { data: RainBarData }) {
     <div className="flex flex-col h-full justify-between px-3 py-2">
       {/* Y-axis max label */}
       <div className="flex justify-between text-[9px] text-muted-foreground font-mono">
-        <span>{maxValue.toLocaleString()} {unit}</span>
+        <span>
+          {maxValue.toLocaleString()} {unit}
+        </span>
       </div>
 
       {/* Bars container */}
@@ -40,22 +42,20 @@ export function RainBar({ data }: { data: RainBarData }) {
               <span className="text-[10px] font-medium text-foreground font-mono">
                 {item.value.toLocaleString()}
               </span>
-              
+
               {/* Bar */}
               <div className="relative w-full h-20 bg-muted rounded-sm overflow-hidden">
-                <div 
+                <div
                   className="absolute bottom-0 w-full rounded-sm transition-all duration-500"
-                  style={{ 
+                  style={{
                     height: `${Math.max(pct, 2)}%`,
                     background: getColor(item.value, i),
                   }}
                 />
               </div>
-              
+
               {/* Label */}
-              <span className="text-[9px] text-muted-foreground text-center">
-                {item.label}
-              </span>
+              <span className="text-[9px] text-muted-foreground text-center">{item.label}</span>
             </div>
           )
         })}

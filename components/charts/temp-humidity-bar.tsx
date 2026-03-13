@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
 export interface TempHumidityData {
-  temperature: number  // °C
-  humidity: number     // %
+  temperature: number // °C
+  humidity: number // %
   tempMin?: number
   tempMax?: number
   humMin?: number
@@ -19,11 +19,12 @@ export function TempHumidityBar({ data }: { data: TempHumidityData }) {
   const humPct = ((data.humidity - humMin) / (humMax - humMin)) * 100
 
   // Temperature color based on value
-  const tempColor = data.temperature < 15 
-    ? "var(--chart-1)" 
-    : data.temperature < 30 
-      ? "var(--chart-2)" 
-      : "var(--destructive)"
+  const tempColor =
+    data.temperature < 15
+      ? 'var(--chart-1)'
+      : data.temperature < 30
+        ? 'var(--chart-2)'
+        : 'var(--destructive)'
 
   return (
     <div className="flex flex-col h-full justify-center px-4 py-2">
@@ -41,9 +42,9 @@ export function TempHumidityBar({ data }: { data: TempHumidityData }) {
           {/* Temperature bar */}
           <div className="flex flex-col items-center gap-2">
             <div className="relative w-12 h-32 bg-muted rounded-sm overflow-hidden">
-              <div 
+              <div
                 className="absolute bottom-0 w-full rounded-sm transition-all duration-500"
-                style={{ 
+                style={{
                   height: `${tempPct}%`,
                   background: tempColor,
                 }}
@@ -61,11 +62,11 @@ export function TempHumidityBar({ data }: { data: TempHumidityData }) {
           {/* Humidity bar */}
           <div className="flex flex-col items-center gap-2">
             <div className="relative w-12 h-32 bg-muted rounded-sm overflow-hidden">
-              <div 
+              <div
                 className="absolute bottom-0 w-full rounded-sm transition-all duration-500"
-                style={{ 
+                style={{
                   height: `${humPct}%`,
-                  background: "var(--chart-1)",
+                  background: 'var(--chart-1)',
                 }}
               />
               {/* Value label inside bar */}

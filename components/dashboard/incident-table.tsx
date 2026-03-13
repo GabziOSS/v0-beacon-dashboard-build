@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import React, { useState, useMemo, useTransition } from "react"
+import React, { useState, useMemo, useTransition } from 'react'
 import {
   ChevronDown,
   ChevronUp,
@@ -20,40 +20,40 @@ import {
   AlertTriangle,
   Edit,
   UserPlus,
-} from "lucide-react"
-import { cn } from "@/lib/utils"
-import { useIncidents } from "@/lib/hooks"
-import type { Incident, IncidentType, Severity, IncidentStatus } from "@/lib/types"
-import { format } from "date-fns"
+} from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { useIncidents } from '@/lib/hooks'
+import type { Incident, IncidentType, Severity, IncidentStatus } from '@/lib/types'
+import { format } from 'date-fns'
 
 const TYPE_COLORS: Record<IncidentType, string> = {
-  Fire:           "bg-chart-5/15 text-chart-5 border-chart-5/20",
-  Flood:          "bg-chart-6/15 text-chart-6 border-chart-6/20",
-  Crime:          "bg-chart-2/15 text-chart-2 border-chart-2/20",
-  Medical:        "bg-chart-1/15 text-chart-1 border-chart-1/20",
-  Infrastructure: "bg-chart-4/15 text-chart-4 border-chart-4/20",
-  Typhoon:        "bg-chart-7/15 text-chart-7 border-chart-7/20",
+  Fire: 'bg-chart-5/15 text-chart-5 border-chart-5/20',
+  Flood: 'bg-chart-6/15 text-chart-6 border-chart-6/20',
+  Crime: 'bg-chart-2/15 text-chart-2 border-chart-2/20',
+  Medical: 'bg-chart-1/15 text-chart-1 border-chart-1/20',
+  Infrastructure: 'bg-chart-4/15 text-chart-4 border-chart-4/20',
+  Typhoon: 'bg-chart-7/15 text-chart-7 border-chart-7/20',
 }
 
 const SEVERITY_COLORS: Record<Severity, string> = {
-  Critical: "bg-destructive/10 text-destructive border-destructive/20",
-  High:     "bg-warning/10 text-warning border-warning/20",
-  Medium:   "bg-chart-1/10 text-chart-1 border-chart-1/20",
-  Low:      "bg-success/10 text-success border-success/20",
+  Critical: 'bg-destructive/10 text-destructive border-destructive/20',
+  High: 'bg-warning/10 text-warning border-warning/20',
+  Medium: 'bg-chart-1/10 text-chart-1 border-chart-1/20',
+  Low: 'bg-success/10 text-success border-success/20',
 }
 
 const STATUS_COLORS: Record<IncidentStatus, string> = {
-  Active:     "bg-destructive/10 text-destructive border-destructive/20",
-  Responding: "bg-warning/10 text-warning border-warning/20",
-  Contained:  "bg-chart-6/10 text-chart-6 border-chart-6/20",
-  Resolved:   "bg-success/10 text-success border-success/20",
+  Active: 'bg-destructive/10 text-destructive border-destructive/20',
+  Responding: 'bg-warning/10 text-warning border-warning/20',
+  Contained: 'bg-chart-6/10 text-chart-6 border-chart-6/20',
+  Resolved: 'bg-success/10 text-success border-success/20',
 }
 
 function Badge({ label, className }: { label: string; className: string }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center px-1.5 py-0.5 rounded-sm text-[10px] font-medium font-mono border",
+        'inline-flex items-center px-1.5 py-0.5 rounded-sm text-[10px] font-medium font-mono border',
         className
       )}
     >
@@ -63,24 +63,24 @@ function Badge({ label, className }: { label: string; className: string }) {
 }
 
 const COLUMNS = [
-  { key: "expand",     label: "",              visible: true,  toggleable: false },
-  { key: "id",         label: "ID",            visible: true,  toggleable: false },
-  { key: "type",       label: "Type",          visible: true,  toggleable: true  },
-  { key: "severity",   label: "Severity",      visible: true,  toggleable: true  },
-  { key: "zone",       label: "Zone",          visible: true,  toggleable: true  },
-  { key: "barangay",   label: "Barangay",      visible: true,  toggleable: true  },
-  { key: "status",     label: "Status",        visible: true,  toggleable: true  },
-  { key: "timestamp",  label: "Timestamp",     visible: true,  toggleable: true  },
-  { key: "responders", label: "Resp.",         visible: true,  toggleable: true  },
-  { key: "duration",   label: "Duration",      visible: true,  toggleable: true  },
+  { key: 'expand', label: '', visible: true, toggleable: false },
+  { key: 'id', label: 'ID', visible: true, toggleable: false },
+  { key: 'type', label: 'Type', visible: true, toggleable: true },
+  { key: 'severity', label: 'Severity', visible: true, toggleable: true },
+  { key: 'zone', label: 'Zone', visible: true, toggleable: true },
+  { key: 'barangay', label: 'Barangay', visible: true, toggleable: true },
+  { key: 'status', label: 'Status', visible: true, toggleable: true },
+  { key: 'timestamp', label: 'Timestamp', visible: true, toggleable: true },
+  { key: 'responders', label: 'Resp.', visible: true, toggleable: true },
+  { key: 'duration', label: 'Duration', visible: true, toggleable: true },
 ]
 
 export function IncidentTable() {
   const { data: incidents } = useIncidents()
-  const [search, setSearch] = useState("")
-  const [typeFilter, setTypeFilter] = useState<IncidentType | "All">("All")
-  const [severityFilter, setSeverityFilter] = useState<Severity | "All">("All")
-  const [statusFilter, setStatusFilter] = useState<IncidentStatus | "All">("All")
+  const [search, setSearch] = useState('')
+  const [typeFilter, setTypeFilter] = useState<IncidentType | 'All'>('All')
+  const [severityFilter, setSeverityFilter] = useState<Severity | 'All'>('All')
+  const [statusFilter, setStatusFilter] = useState<IncidentStatus | 'All'>('All')
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [page, setPage] = useState(0)
   const [pageSize, setPageSize] = useState(5)
@@ -92,13 +92,14 @@ export function IncidentTable() {
 
   const filtered = useMemo(() => {
     return incidents.filter(inc => {
-      const matchSearch = search === "" ||
+      const matchSearch =
+        search === '' ||
         inc.id.toLowerCase().includes(search.toLowerCase()) ||
         inc.zone.toLowerCase().includes(search.toLowerCase()) ||
         inc.barangay.toLowerCase().includes(search.toLowerCase())
-      const matchType = typeFilter === "All" || inc.type === typeFilter
-      const matchSev = severityFilter === "All" || inc.severity === severityFilter
-      const matchSt = statusFilter === "All" || inc.status === statusFilter
+      const matchType = typeFilter === 'All' || inc.type === typeFilter
+      const matchSev = severityFilter === 'All' || inc.severity === severityFilter
+      const matchSt = statusFilter === 'All' || inc.status === statusFilter
       return matchSearch && matchType && matchSev && matchSt
     })
   }, [incidents, search, typeFilter, severityFilter, statusFilter])
@@ -121,7 +122,12 @@ export function IncidentTable() {
           <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
           <input
             value={search}
-            onChange={e => { startTransition(() => { setSearch(e.target.value); setPage(0) }) }}
+            onChange={e => {
+              startTransition(() => {
+                setSearch(e.target.value)
+                setPage(0)
+              })
+            }}
             placeholder="Search ID, zone, barangay..."
             className="w-full pl-8 pr-3 py-1.5 bg-input border border-border rounded-sm text-xs font-mono text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50"
           />
@@ -130,20 +136,35 @@ export function IncidentTable() {
         {/* Type filter */}
         <FilterSelect
           value={typeFilter}
-          onChange={v => { startTransition(() => { setTypeFilter(v as IncidentType | "All"); setPage(0) }) }}
-          options={["All", "Fire", "Flood", "Crime", "Medical", "Infrastructure", "Typhoon"]}
+          onChange={v => {
+            startTransition(() => {
+              setTypeFilter(v as IncidentType | 'All')
+              setPage(0)
+            })
+          }}
+          options={['All', 'Fire', 'Flood', 'Crime', 'Medical', 'Infrastructure', 'Typhoon']}
           label="Type"
         />
         <FilterSelect
           value={severityFilter}
-          onChange={v => { startTransition(() => { setSeverityFilter(v as Severity | "All"); setPage(0) }) }}
-          options={["All", "Critical", "High", "Medium", "Low"]}
+          onChange={v => {
+            startTransition(() => {
+              setSeverityFilter(v as Severity | 'All')
+              setPage(0)
+            })
+          }}
+          options={['All', 'Critical', 'High', 'Medium', 'Low']}
           label="Severity"
         />
         <FilterSelect
           value={statusFilter}
-          onChange={v => { startTransition(() => { setStatusFilter(v as IncidentStatus | "All"); setPage(0) }) }}
-          options={["All", "Active", "Responding", "Contained", "Resolved"]}
+          onChange={v => {
+            startTransition(() => {
+              setStatusFilter(v as IncidentStatus | 'All')
+              setPage(0)
+            })
+          }}
+          options={['All', 'Active', 'Responding', 'Contained', 'Resolved']}
           label="Status"
         />
 
@@ -202,49 +223,54 @@ export function IncidentTable() {
               {paged.map((inc, ri) => (
                 <React.Fragment key={inc.id}>
                   <tr
-                    onClick={() => setExpandedId(prev => prev === inc.id ? null : inc.id)}
+                    onClick={() => setExpandedId(prev => (prev === inc.id ? null : inc.id))}
                     className={cn(
-                      "border-b border-border cursor-pointer transition-colors",
-                      ri % 2 === 0 ? "bg-card" : "bg-card-nested/50",
-                      "hover:bg-secondary/50"
+                      'border-b border-border cursor-pointer transition-colors',
+                      ri % 2 === 0 ? 'bg-card' : 'bg-card-nested/50',
+                      'hover:bg-secondary/50'
                     )}
                   >
                     {visibleCols.map(col => (
                       <td key={col.key} className="px-3 py-2 whitespace-nowrap">
-                        {col.key === "expand" && (
-                          expandedId === inc.id
-                            ? <ChevronUp className="w-3.5 h-3.5 text-muted-foreground" />
-                            : <ChevronDown className="w-3.5 h-3.5 text-muted-foreground" />
-                        )}
-                        {col.key === "id" && (
+                        {col.key === 'expand' &&
+                          (expandedId === inc.id ? (
+                            <ChevronUp className="w-3.5 h-3.5 text-muted-foreground" />
+                          ) : (
+                            <ChevronDown className="w-3.5 h-3.5 text-muted-foreground" />
+                          ))}
+                        {col.key === 'id' && (
                           <span className="text-[11px] font-mono text-muted-foreground">
                             {inc.id}
                           </span>
                         )}
-                        {col.key === "type" && (
+                        {col.key === 'type' && (
                           <Badge label={inc.type} className={TYPE_COLORS[inc.type]} />
                         )}
-                        {col.key === "severity" && (
+                        {col.key === 'severity' && (
                           <Badge label={inc.severity} className={SEVERITY_COLORS[inc.severity]} />
                         )}
-                        {col.key === "zone" && (
+                        {col.key === 'zone' && (
                           <span className="text-xs text-foreground">{inc.zone}</span>
                         )}
-                        {col.key === "barangay" && (
-                          <span className="text-xs text-muted-foreground max-w-[160px] truncate block">{inc.barangay}</span>
-                        )}
-                        {col.key === "status" && (
-                          <Badge label={inc.status} className={STATUS_COLORS[inc.status]} />
-                        )}
-                        {col.key === "timestamp" && (
-                          <span className="text-[11px] font-mono text-muted-foreground">
-                            {format(new Date(inc.timestamp), "MM/dd HH:mm")}
+                        {col.key === 'barangay' && (
+                          <span className="text-xs text-muted-foreground max-w-[160px] truncate block">
+                            {inc.barangay}
                           </span>
                         )}
-                        {col.key === "responders" && (
-                          <span className="text-[11px] font-mono text-foreground">{inc.responders}</span>
+                        {col.key === 'status' && (
+                          <Badge label={inc.status} className={STATUS_COLORS[inc.status]} />
                         )}
-                        {col.key === "duration" && (
+                        {col.key === 'timestamp' && (
+                          <span className="text-[11px] font-mono text-muted-foreground">
+                            {format(new Date(inc.timestamp), 'MM/dd HH:mm')}
+                          </span>
+                        )}
+                        {col.key === 'responders' && (
+                          <span className="text-[11px] font-mono text-foreground">
+                            {inc.responders}
+                          </span>
+                        )}
+                        {col.key === 'duration' && (
                           <span className="text-[11px] font-mono text-muted-foreground">
                             {inc.duration}m
                           </span>
@@ -255,16 +281,23 @@ export function IncidentTable() {
 
                   {/* Expanded row */}
                   {expandedId === inc.id && (
-                    <tr key={`${inc.id}-detail`} className="bg-card-nested/30 border-b border-border">
+                    <tr
+                      key={`${inc.id}-detail`}
+                      className="bg-card-nested/30 border-b border-border"
+                    >
                       <td colSpan={visibleCols.length} className="px-4 py-4">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           {/* Zone info */}
                           <div className="space-y-2">
-                            <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">Location</p>
+                            <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">
+                              Location
+                            </p>
                             <div className="flex items-start gap-1.5">
                               <MapPin className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
                               <div>
-                                <p className="text-xs font-medium text-foreground">{inc.barangay}</p>
+                                <p className="text-xs font-medium text-foreground">
+                                  {inc.barangay}
+                                </p>
                                 <p className="text-[10px] font-mono text-muted-foreground">
                                   {inc.coordinates[0].toFixed(4)}, {inc.coordinates[1].toFixed(4)}
                                 </p>
@@ -274,29 +307,37 @@ export function IncidentTable() {
 
                           {/* Status timeline */}
                           <div className="space-y-2">
-                            <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">Timeline</p>
+                            <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">
+                              Timeline
+                            </p>
                             <div className="space-y-1.5">
                               {[
-                                { label: "Reported", time: inc.timestamp, done: true },
+                                { label: 'Reported', time: inc.timestamp, done: true },
                                 {
-                                  label: "Dispatched",
-                                  time: new Date(new Date(inc.timestamp).getTime() + 3 * 60000).toISOString(),
-                                  done: inc.status !== "Active"
+                                  label: 'Dispatched',
+                                  time: new Date(
+                                    new Date(inc.timestamp).getTime() + 3 * 60000
+                                  ).toISOString(),
+                                  done: inc.status !== 'Active',
                                 },
                                 {
-                                  label: "Resolved",
-                                  time: new Date(new Date(inc.timestamp).getTime() + (inc.duration) * 60000).toISOString(),
-                                  done: inc.status === "Resolved"
+                                  label: 'Resolved',
+                                  time: new Date(
+                                    new Date(inc.timestamp).getTime() + inc.duration * 60000
+                                  ).toISOString(),
+                                  done: inc.status === 'Resolved',
                                 },
                               ].map(step => (
                                 <div key={step.label} className="flex items-center gap-2">
-                                  <div className={cn(
-                                    "w-1.5 h-1.5 rounded-full shrink-0",
-                                    step.done ? "bg-success" : "bg-border"
-                                  )} />
+                                  <div
+                                    className={cn(
+                                      'w-1.5 h-1.5 rounded-full shrink-0',
+                                      step.done ? 'bg-success' : 'bg-border'
+                                    )}
+                                  />
                                   <span className="text-[10px] text-foreground">{step.label}</span>
                                   <span className="text-[10px] font-mono text-muted-foreground ml-auto">
-                                    {format(new Date(step.time), "HH:mm")}
+                                    {format(new Date(step.time), 'HH:mm')}
                                   </span>
                                 </div>
                               ))}
@@ -305,12 +346,20 @@ export function IncidentTable() {
 
                           {/* Description + actions */}
                           <div className="space-y-2">
-                            <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">Description</p>
-                            <p className="text-xs text-foreground leading-relaxed line-clamp-3">{inc.description}</p>
+                            <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">
+                              Description
+                            </p>
+                            <p className="text-xs text-foreground leading-relaxed line-clamp-3">
+                              {inc.description}
+                            </p>
                             <div className="flex gap-1.5 flex-wrap pt-1">
                               <ActionBtn icon={<Edit className="w-3 h-3" />} label="Edit" />
                               <ActionBtn icon={<UserPlus className="w-3 h-3" />} label="Assign" />
-                              <ActionBtn icon={<CheckCircle className="w-3 h-3" />} label="Resolve" accent />
+                              <ActionBtn
+                                icon={<CheckCircle className="w-3 h-3" />}
+                                label="Resolve"
+                                accent
+                              />
                               <ActionBtn icon={<MapPin className="w-3 h-3" />} label="Map" />
                             </div>
                           </div>
@@ -329,31 +378,50 @@ export function IncidentTable() {
       <div className="flex items-center justify-between text-xs text-muted-foreground">
         <span className="font-mono">
           {filtered.length === 0
-            ? "No results"
+            ? 'No results'
             : `${page * pageSize + 1}–${Math.min((page + 1) * pageSize, filtered.length)} of ${filtered.length}`}
         </span>
         <div className="flex items-center gap-1">
           <PaginationBtn onClick={() => setPage(0)} disabled={page === 0} aria-label="First page">
             <ChevronsLeft className="w-3.5 h-3.5" />
           </PaginationBtn>
-          <PaginationBtn onClick={() => setPage(p => p - 1)} disabled={page === 0} aria-label="Previous page">
+          <PaginationBtn
+            onClick={() => setPage(p => p - 1)}
+            disabled={page === 0}
+            aria-label="Previous page"
+          >
             <ChevronLeft className="w-3.5 h-3.5" />
           </PaginationBtn>
-          <span className="px-2 font-mono text-foreground">{page + 1} / {totalPages || 1}</span>
-          <PaginationBtn onClick={() => setPage(p => p + 1)} disabled={page >= totalPages - 1} aria-label="Next page">
+          <span className="px-2 font-mono text-foreground">
+            {page + 1} / {totalPages || 1}
+          </span>
+          <PaginationBtn
+            onClick={() => setPage(p => p + 1)}
+            disabled={page >= totalPages - 1}
+            aria-label="Next page"
+          >
             <ChevronRight className="w-3.5 h-3.5" />
           </PaginationBtn>
-          <PaginationBtn onClick={() => setPage(totalPages - 1)} disabled={page >= totalPages - 1} aria-label="Last page">
+          <PaginationBtn
+            onClick={() => setPage(totalPages - 1)}
+            disabled={page >= totalPages - 1}
+            aria-label="Last page"
+          >
             <ChevronsRight className="w-3.5 h-3.5" />
           </PaginationBtn>
 
           <select
             value={pageSize}
-            onChange={e => { setPageSize(Number(e.target.value)); setPage(0) }}
+            onChange={e => {
+              setPageSize(Number(e.target.value))
+              setPage(0)
+            }}
             className="ml-2 bg-input border border-border rounded-sm text-xs font-mono text-foreground px-1.5 py-1 focus:outline-none focus:ring-1 focus:ring-primary/50"
           >
             {[5, 10, 20].map(n => (
-              <option key={n} value={n}>{n} / page</option>
+              <option key={n} value={n}>
+                {n} / page
+              </option>
             ))}
           </select>
         </div>
@@ -363,7 +431,10 @@ export function IncidentTable() {
 }
 
 function FilterSelect({
-  value, onChange, options, label,
+  value,
+  onChange,
+  options,
+  label,
 }: {
   value: string
   onChange: (v: string) => void
@@ -378,19 +449,24 @@ function FilterSelect({
       aria-label={`Filter by ${label}`}
     >
       {options.map(o => (
-        <option key={o} value={o}>{o === "All" ? `All ${label}s` : o}</option>
+        <option key={o} value={o}>
+          {o === 'All' ? `All ${label}s` : o}
+        </option>
       ))}
     </select>
   )
 }
 
 function PaginationBtn({
-  onClick, disabled, children, "aria-label": ariaLabel,
+  onClick,
+  disabled,
+  children,
+  'aria-label': ariaLabel,
 }: {
   onClick: () => void
   disabled: boolean
   children: React.ReactNode
-  "aria-label": string
+  'aria-label': string
 }) {
   return (
     <button
@@ -405,7 +481,9 @@ function PaginationBtn({
 }
 
 function ActionBtn({
-  icon, label, accent = false,
+  icon,
+  label,
+  accent = false,
 }: {
   icon: React.ReactNode
   label: string
@@ -414,10 +492,10 @@ function ActionBtn({
   return (
     <button
       className={cn(
-        "inline-flex items-center gap-1 px-2 py-1 rounded-sm text-[10px] font-medium border transition-colors",
+        'inline-flex items-center gap-1 px-2 py-1 rounded-sm text-[10px] font-medium border transition-colors',
         accent
-          ? "border-success/30 text-success bg-success/10 hover:bg-success/20"
-          : "border-border text-muted-foreground bg-card hover:bg-secondary hover:text-foreground"
+          ? 'border-success/30 text-success bg-success/10 hover:bg-success/20'
+          : 'border-border text-muted-foreground bg-card hover:bg-secondary hover:text-foreground'
       )}
     >
       {icon}

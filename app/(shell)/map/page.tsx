@@ -1,38 +1,38 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { CityMap, ZONES } from "@/components/map/city-map"
-import { MapLegend } from "@/components/map/map-legend"
-import { ZoneSheet } from "@/components/map/zone-sheet"
-import type { RiskLevel } from "@/components/map/city-map"
-import { AlertTriangle, MapPin, Activity, Users } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { useState } from 'react'
+import { CityMap, ZONES } from '@/components/map/city-map'
+import { MapLegend } from '@/components/map/map-legend'
+import { ZoneSheet } from '@/components/map/zone-sheet'
+import type { RiskLevel } from '@/components/map/city-map'
+import { AlertTriangle, MapPin, Activity, Users } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 const RISK_TEXT: Record<RiskLevel, string> = {
-  Critical: "text-destructive",
-  High:     "text-warning",
-  Medium:   "text-chart-1",
-  Low:      "text-success",
-  Minimal:  "text-muted-foreground",
+  Critical: 'text-destructive',
+  High: 'text-warning',
+  Medium: 'text-chart-1',
+  Low: 'text-success',
+  Minimal: 'text-muted-foreground',
 }
 
 const RISK_BADGE: Record<RiskLevel, string> = {
-  Critical: "bg-destructive/10 text-destructive border-destructive/20",
-  High:     "bg-warning/10 text-warning border-warning/20",
-  Medium:   "bg-chart-1/10 text-chart-1 border-chart-1/20",
-  Low:      "bg-success/10 text-success border-success/20",
-  Minimal:  "bg-muted text-muted-foreground border-border",
+  Critical: 'bg-destructive/10 text-destructive border-destructive/20',
+  High: 'bg-warning/10 text-warning border-warning/20',
+  Medium: 'bg-chart-1/10 text-chart-1 border-chart-1/20',
+  Low: 'bg-success/10 text-success border-success/20',
+  Minimal: 'bg-muted text-muted-foreground border-border',
 }
 
 export default function MapPage() {
   const [selectedZoneId, setSelectedZoneId] = useState<string | null>(null)
-  const [filterRisk, setFilterRisk] = useState<RiskLevel | "All">("All")
+  const [filterRisk, setFilterRisk] = useState<RiskLevel | 'All'>('All')
 
   const selectedZone = ZONES.find(z => z.id === selectedZoneId) ?? null
 
   const totalActive = ZONES.reduce((s, z) => s + z.activeIncidents, 0)
-  const criticalCount = ZONES.filter(z => z.risk === "Critical").length
-  const highCount = ZONES.filter(z => z.risk === "High").length
+  const criticalCount = ZONES.filter(z => z.risk === 'Critical').length
+  const highCount = ZONES.filter(z => z.risk === 'High').length
 
   return (
     <div className="flex flex-col gap-4 h-full">
@@ -71,16 +71,18 @@ export default function MapPage() {
 
           <div className="bg-card border border-border rounded-sm overflow-hidden">
             <div className="px-3 py-2 border-b border-border">
-              <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest">Zones</p>
+              <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest">
+                Zones
+              </p>
             </div>
             <div className="divide-y divide-border">
               {ZONES.map(zone => (
                 <button
                   key={zone.id}
-                  onClick={() => setSelectedZoneId(prev => prev === zone.id ? null : zone.id)}
+                  onClick={() => setSelectedZoneId(prev => (prev === zone.id ? null : zone.id))}
                   className={cn(
-                    "w-full px-3 py-2.5 text-left transition-colors hover:bg-secondary/60",
-                    selectedZoneId === zone.id && "bg-secondary"
+                    'w-full px-3 py-2.5 text-left transition-colors hover:bg-secondary/60',
+                    selectedZoneId === zone.id && 'bg-secondary'
                   )}
                 >
                   <div className="flex items-center justify-between gap-1.5 mb-0.5">
@@ -94,8 +96,15 @@ export default function MapPage() {
                     )}
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-muted-foreground font-mono truncate">{zone.district}</span>
-                    <span className={cn("text-[9px] font-mono font-semibold shrink-0", RISK_TEXT[zone.risk])}>
+                    <span className="text-[10px] text-muted-foreground font-mono truncate">
+                      {zone.district}
+                    </span>
+                    <span
+                      className={cn(
+                        'text-[9px] font-mono font-semibold shrink-0',
+                        RISK_TEXT[zone.risk]
+                      )}
+                    >
                       {zone.risk}
                     </span>
                   </div>
@@ -139,7 +148,12 @@ function Chip({
   className?: string
 }) {
   return (
-    <div className={cn("flex items-center gap-1.5 px-2.5 py-1.5 rounded-sm border text-[11px] font-mono", className)}>
+    <div
+      className={cn(
+        'flex items-center gap-1.5 px-2.5 py-1.5 rounded-sm border text-[11px] font-mono',
+        className
+      )}
+    >
       {icon}
       {label}
     </div>

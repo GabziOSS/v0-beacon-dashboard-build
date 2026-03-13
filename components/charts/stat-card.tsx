@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import { useEffect, useRef, useState } from "react"
-import { TrendingDown, TrendingUp } from "lucide-react"
-import { cn } from "@/lib/utils"
-import type { StatCardData } from "@/lib/types"
+import { useEffect, useRef, useState } from 'react'
+import { TrendingDown, TrendingUp } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import type { StatCardData } from '@/lib/types'
 
 function useCountUp(target: number, duration = 1200) {
   const [value, setValue] = useState(0)
@@ -26,7 +26,7 @@ export function StatCard({ data }: { data: StatCardData }) {
   const displayed = useCountUp(data.value)
   const isNegativeTrend = data.delta < 0
   // For response time, lower is better — flip color logic
-  const isResponseTime = data.unit === "min"
+  const isResponseTime = data.unit === 'min'
   const isBad = isResponseTime ? data.delta > 0 : data.delta < 0
   const isGood = isResponseTime ? data.delta < 0 : data.delta > 0
 
@@ -35,8 +35,8 @@ export function StatCard({ data }: { data: StatCardData }) {
   return (
     <div
       className={cn(
-        "flex flex-col h-full p-3.5 gap-2 relative",
-        isBad && "shadow-[var(--glow-destructive)]"
+        'flex flex-col h-full p-3.5 gap-2 relative',
+        isBad && 'shadow-[var(--glow-destructive)]'
       )}
     >
       {/* Header label */}
@@ -48,12 +48,12 @@ export function StatCard({ data }: { data: StatCardData }) {
       <div className="flex-1 flex flex-col justify-center py-2">
         <div className="flex items-baseline gap-1">
           <span className="text-5xl font-semibold font-mono tabular-nums text-foreground leading-none tracking-tight">
-            {data.unit === "min"
-              ? displayed.toFixed(1)
-              : Math.round(displayed).toLocaleString()}
+            {data.unit === 'min' ? displayed.toFixed(1) : Math.round(displayed).toLocaleString()}
           </span>
           {data.unit && (
-            <span className="text-xs text-muted-foreground font-mono self-baseline">{data.unit}</span>
+            <span className="text-xs text-muted-foreground font-mono self-baseline">
+              {data.unit}
+            </span>
           )}
         </div>
       </div>
@@ -62,12 +62,12 @@ export function StatCard({ data }: { data: StatCardData }) {
       <div className="flex items-center gap-1">
         <span
           className={cn(
-            "inline-flex items-center gap-0.5 text-xs font-medium font-mono px-1 py-0.5 rounded-sm shrink-0",
+            'inline-flex items-center gap-0.5 text-xs font-medium font-mono px-1 py-0.5 rounded-sm shrink-0',
             isGood
-              ? "bg-success-dim text-success"
+              ? 'bg-success-dim text-success'
               : isBad
-                ? "bg-destructive-dim text-destructive"
-                : "bg-muted text-muted-foreground"
+                ? 'bg-destructive-dim text-destructive'
+                : 'bg-muted text-muted-foreground'
           )}
         >
           {isGood ? (
@@ -86,8 +86,8 @@ export function StatCard({ data }: { data: StatCardData }) {
           <div
             key={i}
             className={cn(
-              "flex-1 transition-all",
-              i === data.sparkline.length - 1 ? "bg-primary" : "bg-primary/35"
+              'flex-1 transition-all',
+              i === data.sparkline.length - 1 ? 'bg-primary' : 'bg-primary/35'
             )}
             style={{ height: `${Math.max(2, (v / max) * 100)}%` }}
           />

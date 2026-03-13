@@ -5,6 +5,7 @@
 Based on the NwSSU-AWS weather station dashboard reference:
 
 ### Charts Identified
+
 1. **Barometer** - Line chart (pressure over time)
 2. **Wind Speed** - Gauge (7 km/h)
 3. **Wind Direction** - Compass indicator
@@ -22,6 +23,7 @@ Based on the NwSSU-AWS weather station dashboard reference:
 ## Implementation Status
 
 ### Chart Components Created
+
 - [x] `/components/charts/local-forecast.tsx` - Weather condition card
 - [x] `/components/charts/sunrise-sunset.tsx` - Sun arc visualization
 - [x] `/components/charts/moon-phase.tsx` - Moon phase display
@@ -30,12 +32,14 @@ Based on the NwSSU-AWS weather station dashboard reference:
 - [x] `/components/charts/rain-bar.tsx` - Rain totals bar chart
 
 ### Existing Charts (Reused)
+
 - [x] `/components/charts/gauge-arc.tsx` - For Wind Speed, Humidity, THW Index
 - [x] `/components/charts/wind-rose.tsx` - Wind distribution
 - [x] `/components/charts/compass.tsx` - Wind Direction
 - [x] `/components/charts/line-chart.tsx` - Barometer (reusing IncidentTrendChart)
 
 ### Data Hooks Added (lib/hooks.ts)
+
 - [x] `useBarometer()` - Pressure over time data
 - [x] `useWindSpeed()` - Current wind speed
 - [x] `useHumidity()` - Current humidity %
@@ -49,6 +53,7 @@ Based on the NwSSU-AWS weather station dashboard reference:
 - [x] `useCurrentRain()` - Daily/storm rain rate
 
 ### Types Added (lib/types.ts)
+
 - [x] `WeatherCondition` - Weather condition enum
 - [x] `MoonPhaseName` - Moon phase names
 - [x] `ForecastData` - Forecast structure
@@ -60,6 +65,7 @@ Based on the NwSSU-AWS weather station dashboard reference:
 - [x] `BarometerPoint` - Barometer data point
 
 ### Dashboard Integration
+
 - [x] Updated presets.ts with weather_station preset
 - [x] Updated dashboard-grid.tsx with new chart imports
 - [x] Wired renderContent() with all weather chart cases
@@ -67,6 +73,7 @@ Based on the NwSSU-AWS weather station dashboard reference:
 ## Remaining Work
 
 ### Verify Chart Rendering (Requires browser testing)
+
 - [ ] Test LocalForecast with different weather conditions
 - [ ] Test SunriseSunset arc positioning
 - [ ] Test MoonPhase illumination display
@@ -77,12 +84,14 @@ Based on the NwSSU-AWS weather station dashboard reference:
 **Status:** All components implemented and wired. Ready for visual testing in browser.
 
 ### Enhancements (Future)
+
 - [ ] Add real-time data connection (API integration)
 - [ ] Add chart refresh intervals
 - [ ] Add chart export functionality
 - [ ] Add chart zoom/pan for time-series
 
 ## Files Modified
+
 1. `/components/charts/local-forecast.tsx` - New
 2. `/components/charts/sunrise-sunset.tsx` - New
 3. `/components/charts/moon-phase.tsx` - New

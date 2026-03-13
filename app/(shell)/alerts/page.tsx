@@ -1,11 +1,25 @@
-"use client"
+'use client'
 
-import { useState, useOptimistic, useTransition } from "react"
-import { Search, Filter, MoreHorizontal, Flame, Droplets, Shield, AlertTriangle, Wrench, Thermometer, MapPin, Check, ArrowUp, X } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { useState, useOptimistic, useTransition } from 'react'
+import {
+  Search,
+  Filter,
+  MoreHorizontal,
+  Flame,
+  Droplets,
+  Shield,
+  AlertTriangle,
+  Wrench,
+  Thermometer,
+  MapPin,
+  Check,
+  ArrowUp,
+  X,
+} from 'lucide-react'
+import { cn } from '@/lib/utils'
 
-type Severity = "critical" | "high" | "medium" | "low"
-type IncidentType = "fire" | "flood" | "crime" | "medical" | "infrastructure" | "weather"
+type Severity = 'critical' | 'high' | 'medium' | 'low'
+type IncidentType = 'fire' | 'flood' | 'crime' | 'medical' | 'infrastructure' | 'weather'
 
 interface Alert {
   id: string
@@ -29,45 +43,205 @@ const TYPE_ICONS: Record<IncidentType, React.ReactNode> = {
 }
 
 const TYPE_LABELS: Record<IncidentType, string> = {
-  fire: "Fire",
-  flood: "Flood",
-  crime: "Crime",
-  medical: "Medical",
-  infrastructure: "Infrastructure",
-  weather: "Weather",
+  fire: 'Fire',
+  flood: 'Flood',
+  crime: 'Crime',
+  medical: 'Medical',
+  infrastructure: 'Infrastructure',
+  weather: 'Weather',
 }
 
 const SEVERITY_COLORS: Record<Severity, string> = {
-  critical: "text-destructive",
-  high: "text-warning",
-  medium: "text-accent",
-  low: "text-muted-foreground",
+  critical: 'text-destructive',
+  high: 'text-warning',
+  medium: 'text-accent',
+  low: 'text-muted-foreground',
 }
 
 const SEVERITY_BG: Record<Severity, string> = {
-  critical: "bg-destructive-dim",
-  high: "bg-warning-dim",
-  medium: "bg-accent-dim",
-  low: "bg-muted",
+  critical: 'bg-destructive-dim',
+  high: 'bg-warning-dim',
+  medium: 'bg-accent-dim',
+  low: 'bg-muted',
 }
 
 const MOCK_ALERTS: Alert[] = [
-  { id: "a01", severity: "critical", type: "fire", title: "Structure fire reported", description: "Active fire in residential building. Multiple occupants reported inside.", zone: "z02", barangay: "Barangay Bagacay", responders: 6, timestamp: new Date(Date.now() - 2 * 60000) },
-  { id: "a02", severity: "critical", type: "flood", title: "Flash flood warning", description: "Water levels rising rapidly at Calbayog River. Evacuation recommended.", zone: "z03", barangay: "Calbayog Port Area", responders: 8, timestamp: new Date(Date.now() - 5 * 60000) },
-  { id: "a03", severity: "high", type: "crime", title: "Armed robbery in progress", description: "Suspects armed with bladed weapons. Police units en route.", zone: "z01", barangay: "Barangay Poblacion", responders: 4, timestamp: new Date(Date.now() - 12 * 60000) },
-  { id: "a04", severity: "high", type: "medical", title: "Mass casualty incident", description: "Vehicle collision with multiple injuries. Ambulances dispatched.", zone: "z04", barangay: "Barangay Nijaga", responders: 5, timestamp: new Date(Date.now() - 18 * 60000) },
-  { id: "a05", severity: "high", type: "fire", title: "Grass fire spreading", description: "Fire spreading toward residential area. Wind conditions unfavorable.", zone: "z02", barangay: "Barangay Rawis", responders: 4, timestamp: new Date(Date.now() - 25 * 60000) },
-  { id: "a06", severity: "medium", type: "infrastructure", title: "Power line down", description: "Fallen power line blocking road. Area secured by responders.", zone: "z01", barangay: "Barangay Central", responders: 2, timestamp: new Date(Date.now() - 32 * 60000) },
-  { id: "a07", severity: "medium", type: "flood", title: "Road flooding reported", description: "Low-lying areas experiencing water accumulation. Traffic advisory issued.", zone: "z03", barangay: "Barangay Obrero", responders: 3, timestamp: new Date(Date.now() - 45 * 60000) },
-  { id: "a08", severity: "medium", type: "crime", title: "Theft reported", description: "Breaking and entering at commercial establishment. Investigation underway.", zone: "z01", barangay: "Barangay Trinidad", responders: 2, timestamp: new Date(Date.now() - 58 * 60000) },
-  { id: "a09", severity: "medium", type: "weather", title: "Severe weather alert", description: "Thunderstorm warning issued. Possible hail and strong winds.", zone: "z04", barangay: "San Policarpo Area", responders: 0, timestamp: new Date(Date.now() - 65 * 60000) },
-  { id: "a10", severity: "low", type: "medical", title: "Minor injury reported", description: "Slip and fall at public market. First aid administered.", zone: "z01", barangay: "Barangay Balud", responders: 1, timestamp: new Date(Date.now() - 72 * 60000) },
-  { id: "a11", severity: "low", type: "infrastructure", title: "Water main leak", description: "Minor leak detected. Repair crew dispatched.", zone: "z02", barangay: "Barangay Dagum", responders: 2, timestamp: new Date(Date.now() - 85 * 60000) },
-  { id: "a12", severity: "low", type: "fire", title: "Smoke investigation", description: "Smoke reported, no fire found. Likely controlled burning.", zone: "z04", barangay: "Barangay Tinambacan", responders: 2, timestamp: new Date(Date.now() - 95 * 60000) },
-  { id: "a13", severity: "low", type: "crime", title: "Noise complaint", description: "Loud music reported. Patrol unit responding.", zone: "z01", barangay: "Barangay Capoocan", responders: 1, timestamp: new Date(Date.now() - 110 * 60000) },
-  { id: "a14", severity: "low", type: "flood", title: "Minor drainage issue", description: "Clogged drain causing pooling. Maintenance notified.", zone: "z03", barangay: "Barangay Hamorawon", responders: 1, timestamp: new Date(Date.now() - 125 * 60000) },
-  { id: "a15", severity: "low", type: "medical", title: "Wellness check requested", description: "Family member requesting welfare check on elderly resident.", zone: "z02", barangay: "Barangay Matobato", responders: 1, timestamp: new Date(Date.now() - 140 * 60000) },
-  { id: "a16", severity: "low", type: "infrastructure", title: "Streetlight out", description: "Multiple streetlights reported non-functional. Work order created.", zone: "z04", barangay: "Barangay Cagmanaba", responders: 0, timestamp: new Date(Date.now() - 155 * 60000) },
+  {
+    id: 'a01',
+    severity: 'critical',
+    type: 'fire',
+    title: 'Structure fire reported',
+    description: 'Active fire in residential building. Multiple occupants reported inside.',
+    zone: 'z02',
+    barangay: 'Barangay Bagacay',
+    responders: 6,
+    timestamp: new Date(Date.now() - 2 * 60000),
+  },
+  {
+    id: 'a02',
+    severity: 'critical',
+    type: 'flood',
+    title: 'Flash flood warning',
+    description: 'Water levels rising rapidly at Calbayog River. Evacuation recommended.',
+    zone: 'z03',
+    barangay: 'Calbayog Port Area',
+    responders: 8,
+    timestamp: new Date(Date.now() - 5 * 60000),
+  },
+  {
+    id: 'a03',
+    severity: 'high',
+    type: 'crime',
+    title: 'Armed robbery in progress',
+    description: 'Suspects armed with bladed weapons. Police units en route.',
+    zone: 'z01',
+    barangay: 'Barangay Poblacion',
+    responders: 4,
+    timestamp: new Date(Date.now() - 12 * 60000),
+  },
+  {
+    id: 'a04',
+    severity: 'high',
+    type: 'medical',
+    title: 'Mass casualty incident',
+    description: 'Vehicle collision with multiple injuries. Ambulances dispatched.',
+    zone: 'z04',
+    barangay: 'Barangay Nijaga',
+    responders: 5,
+    timestamp: new Date(Date.now() - 18 * 60000),
+  },
+  {
+    id: 'a05',
+    severity: 'high',
+    type: 'fire',
+    title: 'Grass fire spreading',
+    description: 'Fire spreading toward residential area. Wind conditions unfavorable.',
+    zone: 'z02',
+    barangay: 'Barangay Rawis',
+    responders: 4,
+    timestamp: new Date(Date.now() - 25 * 60000),
+  },
+  {
+    id: 'a06',
+    severity: 'medium',
+    type: 'infrastructure',
+    title: 'Power line down',
+    description: 'Fallen power line blocking road. Area secured by responders.',
+    zone: 'z01',
+    barangay: 'Barangay Central',
+    responders: 2,
+    timestamp: new Date(Date.now() - 32 * 60000),
+  },
+  {
+    id: 'a07',
+    severity: 'medium',
+    type: 'flood',
+    title: 'Road flooding reported',
+    description: 'Low-lying areas experiencing water accumulation. Traffic advisory issued.',
+    zone: 'z03',
+    barangay: 'Barangay Obrero',
+    responders: 3,
+    timestamp: new Date(Date.now() - 45 * 60000),
+  },
+  {
+    id: 'a08',
+    severity: 'medium',
+    type: 'crime',
+    title: 'Theft reported',
+    description: 'Breaking and entering at commercial establishment. Investigation underway.',
+    zone: 'z01',
+    barangay: 'Barangay Trinidad',
+    responders: 2,
+    timestamp: new Date(Date.now() - 58 * 60000),
+  },
+  {
+    id: 'a09',
+    severity: 'medium',
+    type: 'weather',
+    title: 'Severe weather alert',
+    description: 'Thunderstorm warning issued. Possible hail and strong winds.',
+    zone: 'z04',
+    barangay: 'San Policarpo Area',
+    responders: 0,
+    timestamp: new Date(Date.now() - 65 * 60000),
+  },
+  {
+    id: 'a10',
+    severity: 'low',
+    type: 'medical',
+    title: 'Minor injury reported',
+    description: 'Slip and fall at public market. First aid administered.',
+    zone: 'z01',
+    barangay: 'Barangay Balud',
+    responders: 1,
+    timestamp: new Date(Date.now() - 72 * 60000),
+  },
+  {
+    id: 'a11',
+    severity: 'low',
+    type: 'infrastructure',
+    title: 'Water main leak',
+    description: 'Minor leak detected. Repair crew dispatched.',
+    zone: 'z02',
+    barangay: 'Barangay Dagum',
+    responders: 2,
+    timestamp: new Date(Date.now() - 85 * 60000),
+  },
+  {
+    id: 'a12',
+    severity: 'low',
+    type: 'fire',
+    title: 'Smoke investigation',
+    description: 'Smoke reported, no fire found. Likely controlled burning.',
+    zone: 'z04',
+    barangay: 'Barangay Tinambacan',
+    responders: 2,
+    timestamp: new Date(Date.now() - 95 * 60000),
+  },
+  {
+    id: 'a13',
+    severity: 'low',
+    type: 'crime',
+    title: 'Noise complaint',
+    description: 'Loud music reported. Patrol unit responding.',
+    zone: 'z01',
+    barangay: 'Barangay Capoocan',
+    responders: 1,
+    timestamp: new Date(Date.now() - 110 * 60000),
+  },
+  {
+    id: 'a14',
+    severity: 'low',
+    type: 'flood',
+    title: 'Minor drainage issue',
+    description: 'Clogged drain causing pooling. Maintenance notified.',
+    zone: 'z03',
+    barangay: 'Barangay Hamorawon',
+    responders: 1,
+    timestamp: new Date(Date.now() - 125 * 60000),
+  },
+  {
+    id: 'a15',
+    severity: 'low',
+    type: 'medical',
+    title: 'Wellness check requested',
+    description: 'Family member requesting welfare check on elderly resident.',
+    zone: 'z02',
+    barangay: 'Barangay Matobato',
+    responders: 1,
+    timestamp: new Date(Date.now() - 140 * 60000),
+  },
+  {
+    id: 'a16',
+    severity: 'low',
+    type: 'infrastructure',
+    title: 'Streetlight out',
+    description: 'Multiple streetlights reported non-functional. Work order created.',
+    zone: 'z04',
+    barangay: 'Barangay Cagmanaba',
+    responders: 0,
+    timestamp: new Date(Date.now() - 155 * 60000),
+  },
 ]
 
 function formatRelativeTime(date: Date): string {
@@ -81,8 +255,8 @@ function formatRelativeTime(date: Date): string {
 
 export default function AlertsPage() {
   const [acknowledged, setAcknowledged] = useState<Set<string>>(new Set())
-  const [filter, setFilter] = useState<Severity | "all">("all")
-  const [search, setSearch] = useState("")
+  const [filter, setFilter] = useState<Severity | 'all'>('all')
+  const [search, setSearch] = useState('')
   const [showCount, setShowCount] = useState(10)
   const [, startTransition] = useTransition()
 
@@ -103,12 +277,15 @@ export default function AlertsPage() {
     setAcknowledged(new Set(ids))
   }
 
-  const filtered = MOCK_ALERTS
-    .filter(a => filter === "all" || a.severity === filter)
+  const filtered = MOCK_ALERTS.filter(a => filter === 'all' || a.severity === filter)
     .filter(a => {
       if (!search) return true
       const q = search.toLowerCase()
-      return a.title.toLowerCase().includes(q) || a.barangay.toLowerCase().includes(q) || a.zone.toLowerCase().includes(q)
+      return (
+        a.title.toLowerCase().includes(q) ||
+        a.barangay.toLowerCase().includes(q) ||
+        a.zone.toLowerCase().includes(q)
+      )
     })
     .sort((a, b) => {
       const aAck = optimisticAcknowledged.has(a.id)
@@ -119,10 +296,14 @@ export default function AlertsPage() {
 
   const paged = filtered.slice(0, showCount)
   const counts = {
-    critical: MOCK_ALERTS.filter(a => a.severity === "critical" && !optimisticAcknowledged.has(a.id)).length,
-    high: MOCK_ALERTS.filter(a => a.severity === "high" && !optimisticAcknowledged.has(a.id)).length,
-    medium: MOCK_ALERTS.filter(a => a.severity === "medium" && !optimisticAcknowledged.has(a.id)).length,
-    low: MOCK_ALERTS.filter(a => a.severity === "low" && !optimisticAcknowledged.has(a.id)).length,
+    critical: MOCK_ALERTS.filter(
+      a => a.severity === 'critical' && !optimisticAcknowledged.has(a.id)
+    ).length,
+    high: MOCK_ALERTS.filter(a => a.severity === 'high' && !optimisticAcknowledged.has(a.id))
+      .length,
+    medium: MOCK_ALERTS.filter(a => a.severity === 'medium' && !optimisticAcknowledged.has(a.id))
+      .length,
+    low: MOCK_ALERTS.filter(a => a.severity === 'low' && !optimisticAcknowledged.has(a.id)).length,
   }
 
   return (
@@ -131,17 +312,27 @@ export default function AlertsPage() {
 
       {/* Severity summary */}
       <div className="flex flex-wrap gap-2">
-        {(["critical", "high", "medium", "low"] as Severity[]).map(sev => (
+        {(['critical', 'high', 'medium', 'low'] as Severity[]).map(sev => (
           <button
             key={sev}
-            onClick={() => setFilter(filter === sev ? "all" : sev)}
+            onClick={() => setFilter(filter === sev ? 'all' : sev)}
             className={cn(
-              "flex items-center gap-1.5 px-3 py-1.5 rounded-sm text-xs font-medium transition-colors border",
-              filter === sev ? "border-primary bg-primary/10" : "border-border bg-card hover:bg-secondary"
+              'flex items-center gap-1.5 px-3 py-1.5 rounded-sm text-xs font-medium transition-colors border',
+              filter === sev
+                ? 'border-primary bg-primary/10'
+                : 'border-border bg-card hover:bg-secondary'
             )}
           >
-            <span className={cn("w-2 h-2 rounded-full", SEVERITY_BG[sev], (sev === "critical" || sev === "high") && counts[sev] > 0 && "animate-pulse")} />
-            <span className={cn("capitalize", SEVERITY_COLORS[sev])}>{counts[sev]} {sev}</span>
+            <span
+              className={cn(
+                'w-2 h-2 rounded-full',
+                SEVERITY_BG[sev],
+                (sev === 'critical' || sev === 'high') && counts[sev] > 0 && 'animate-pulse'
+              )}
+            />
+            <span className={cn('capitalize', SEVERITY_COLORS[sev])}>
+              {counts[sev]} {sev}
+            </span>
           </button>
         ))}
       </div>
@@ -213,8 +404,8 @@ function AlertCard({
   return (
     <div
       className={cn(
-        "bg-card border border-border rounded-sm p-4 transition-opacity",
-        acknowledged && "opacity-50"
+        'bg-card border border-border rounded-sm p-4 transition-opacity',
+        acknowledged && 'opacity-50'
       )}
     >
       {/* Header */}
@@ -222,12 +413,19 @@ function AlertCard({
         <div className="flex items-center gap-2">
           <span
             className={cn(
-              "w-2 h-2 rounded-full",
+              'w-2 h-2 rounded-full',
               SEVERITY_BG[alert.severity],
-              !acknowledged && (alert.severity === "critical" || alert.severity === "high") && "animate-pulse"
+              !acknowledged &&
+                (alert.severity === 'critical' || alert.severity === 'high') &&
+                'animate-pulse'
             )}
           />
-          <span className={cn("text-[10px] font-semibold uppercase tracking-wide", SEVERITY_COLORS[alert.severity])}>
+          <span
+            className={cn(
+              'text-[10px] font-semibold uppercase tracking-wide',
+              SEVERITY_COLORS[alert.severity]
+            )}
+          >
             {alert.severity}
           </span>
           <span className="flex items-center gap-1 text-xs text-muted-foreground">
@@ -236,7 +434,9 @@ function AlertCard({
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-[10px] text-muted-foreground">{formatRelativeTime(alert.timestamp)}</span>
+          <span className="text-[10px] text-muted-foreground">
+            {formatRelativeTime(alert.timestamp)}
+          </span>
           <div className="relative">
             <button
               onClick={() => setMenuOpen(v => !v)}
@@ -249,7 +449,10 @@ function AlertCard({
                 <div className="fixed inset-0 z-40" onClick={() => setMenuOpen(false)} />
                 <div className="absolute right-0 top-7 z-50 w-32 bg-popover border border-border rounded-sm shadow-lg py-1">
                   <button
-                    onClick={() => { onAcknowledge(); setMenuOpen(false) }}
+                    onClick={() => {
+                      onAcknowledge()
+                      setMenuOpen(false)
+                    }}
                     className="w-full px-3 py-1.5 text-left text-xs text-foreground hover:bg-secondary flex items-center gap-2"
                   >
                     <Check className="w-3 h-3" />
@@ -278,9 +481,7 @@ function AlertCard({
           <MapPin className="w-3 h-3" />
           {alert.barangay}
         </span>
-        {alert.responders > 0 && (
-          <span>{alert.responders} responders dispatched</span>
-        )}
+        {alert.responders > 0 && <span>{alert.responders} responders dispatched</span>}
       </div>
 
       {/* Actions */}
@@ -289,13 +490,13 @@ function AlertCard({
           onClick={onAcknowledge}
           disabled={acknowledged}
           className={cn(
-            "h-7 px-3 text-[11px] font-medium rounded-sm transition-colors",
+            'h-7 px-3 text-[11px] font-medium rounded-sm transition-colors',
             acknowledged
-              ? "bg-muted text-muted-foreground cursor-not-allowed"
-              : "bg-primary text-primary-foreground hover:bg-primary/90"
+              ? 'bg-muted text-muted-foreground cursor-not-allowed'
+              : 'bg-primary text-primary-foreground hover:bg-primary/90'
           )}
         >
-          {acknowledged ? "Acknowledged" : "Acknowledge"}
+          {acknowledged ? 'Acknowledged' : 'Acknowledge'}
         </button>
         <button className="h-7 px-3 text-[11px] font-medium rounded-sm border border-border bg-card text-foreground hover:bg-secondary transition-colors">
           View on Map

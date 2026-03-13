@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 export interface MultiTempData {
   outsideTemp: number
@@ -9,9 +9,9 @@ export interface MultiTempData {
 }
 
 const LABELS = [
-  { key: "outsideTemp", label: "Outside\nTemp", color: "var(--chart-1)" },
-  { key: "heatIndex", label: "Heat\nIndex", color: "var(--chart-2)" },
-  { key: "wetBulb", label: "Wet\nBulb", color: "var(--chart-3)" },
+  { key: 'outsideTemp', label: 'Outside\nTemp', color: 'var(--chart-1)' },
+  { key: 'heatIndex', label: 'Heat\nIndex', color: 'var(--chart-2)' },
+  { key: 'wetBulb', label: 'Wet\nBulb', color: 'var(--chart-3)' },
 ] as const
 
 export function MultiTempBar({ data }: { data: MultiTempData }) {
@@ -36,18 +36,18 @@ export function MultiTempBar({ data }: { data: MultiTempData }) {
             <div key={key} className="flex flex-col items-center gap-1.5 flex-1 max-w-[50px]">
               {/* Value above bar */}
               <span className="text-xs font-semibold text-foreground font-mono">{value}</span>
-              
+
               {/* Bar */}
               <div className="relative w-full h-24 bg-muted rounded-sm overflow-hidden">
-                <div 
+                <div
                   className="absolute bottom-0 w-full rounded-sm transition-all duration-500"
-                  style={{ 
+                  style={{
                     height: `${pct}%`,
                     background: color,
                   }}
                 />
               </div>
-              
+
               {/* Label */}
               <span className="text-[9px] text-muted-foreground text-center whitespace-pre-line leading-tight">
                 {label}

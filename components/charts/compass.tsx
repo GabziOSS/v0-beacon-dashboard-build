@@ -1,13 +1,13 @@
-"use client"
+'use client'
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from 'react'
 
 const CX = 80
 const CY = 80
 const RING_R = 70
 
 function bearingToCardinal(deg: number) {
-  const dirs = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+  const dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
   return dirs[Math.round(deg / 45) % 8]
 }
 
@@ -42,10 +42,10 @@ export function CompassChart({ bearing, label }: { bearing: number; label: strin
     v => !MAJOR_TICKS.includes(v)
   )
   const CARDINALS = [
-    { label: "N", angle: 0 },
-    { label: "E", angle: 90 },
-    { label: "S", angle: 180 },
-    { label: "W", angle: 270 },
+    { label: 'N', angle: 0 },
+    { label: 'E', angle: 90 },
+    { label: 'S', angle: 180 },
+    { label: 'W', angle: 270 },
   ]
 
   return (
@@ -53,7 +53,15 @@ export function CompassChart({ bearing, label }: { bearing: number; label: strin
       <svg viewBox="0 0 160 160" className="w-full max-w-[180px]" aria-hidden>
         {/* Outer ring */}
         <circle cx={CX} cy={CY} r={RING_R} fill="none" stroke="var(--border)" strokeWidth={1} />
-        <circle cx={CX} cy={CY} r={RING_R - 10} fill="none" stroke="var(--border)" strokeWidth={0.5} strokeDasharray="1 3" />
+        <circle
+          cx={CX}
+          cy={CY}
+          r={RING_R - 10}
+          fill="none"
+          stroke="var(--border)"
+          strokeWidth={0.5}
+          strokeDasharray="1 3"
+        />
 
         {/* Major ticks */}
         {MAJOR_TICKS.map(angle => {
@@ -62,8 +70,10 @@ export function CompassChart({ bearing, label }: { bearing: number; label: strin
           return (
             <line
               key={angle}
-              x1={outer.x} y1={outer.y}
-              x2={inner.x} y2={inner.y}
+              x1={outer.x}
+              y1={outer.y}
+              x2={inner.x}
+              y2={inner.y}
               stroke="var(--muted-foreground)"
               strokeWidth={1}
             />
@@ -77,8 +87,10 @@ export function CompassChart({ bearing, label }: { bearing: number; label: strin
           return (
             <line
               key={angle}
-              x1={outer.x} y1={outer.y}
-              x2={inner.x} y2={inner.y}
+              x1={outer.x}
+              y1={outer.y}
+              x2={inner.x}
+              y2={inner.y}
               stroke="var(--border)"
               strokeWidth={0.75}
             />
@@ -95,10 +107,10 @@ export function CompassChart({ bearing, label }: { bearing: number; label: strin
               y={p.y}
               textAnchor="middle"
               dominantBaseline="central"
-              fill={c.label === "N" ? "var(--primary)" : "var(--muted-foreground)"}
+              fill={c.label === 'N' ? 'var(--primary)' : 'var(--muted-foreground)'}
               fontSize={9}
               fontFamily="var(--font-mono)"
-              fontWeight={c.label === "N" ? 700 : 400}
+              fontWeight={c.label === 'N' ? 700 : 400}
             >
               {c.label}
             </text>
@@ -122,7 +134,14 @@ export function CompassChart({ bearing, label }: { bearing: number; label: strin
         </g>
 
         {/* Center */}
-        <circle cx={CX} cy={CY} r={4} fill="var(--card-nested)" stroke="var(--primary)" strokeWidth={1.5} />
+        <circle
+          cx={CX}
+          cy={CY}
+          r={4}
+          fill="var(--card-nested)"
+          stroke="var(--primary)"
+          strokeWidth={1.5}
+        />
       </svg>
 
       <div className="text-center">
