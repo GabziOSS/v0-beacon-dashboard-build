@@ -61,17 +61,21 @@ export default $config({
 
     // Create the NextJS site with stage-based configuration
     const site = new sst.aws.Nextjs('CivicPulseAlpha', {
-      domain:
-        $app.stage === 'production'
-          ? {
-              name: 'montz.qzz.io',
-              redirects: ['www.montz.qzz.io'],
-              dns: sst.cloudflare.dns(),
-            }
-          : {
-              name: `${$app.stage}.montz.qzz.io`,
-              dns: sst.cloudflare.dns(),
-            },
+      domain: {
+        name: `civicpulse-${$app.stage}.montz.qzz.io`,
+        dns: sst.cloudflare.dns(),
+      },
+      // domain:
+      //   $app.stage === 'production'
+      //     ? {
+      //         name: 'montz.qzz.io',
+      //         redirects: ['www.montz.qzz.io'],
+      //         dns: sst.cloudflare.dns(),
+      //       }
+      //     : {
+      //         name: `${$app.stage}.montz.qzz.io`,
+      //         dns: sst.cloudflare.dns(),
+      //       },
 
       // Stage-specific environment variables
       environment: getEnvironmentConfig($app.stage),
