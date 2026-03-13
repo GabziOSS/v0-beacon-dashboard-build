@@ -56,7 +56,7 @@ export function Sidebar() {
           </div>
           {!collapsed && (
             <span className="font-semibold text-[15px] tracking-tight text-sidebar-foreground truncate">
-              Beacon
+              CivicPulse
             </span>
           )}
         </div>

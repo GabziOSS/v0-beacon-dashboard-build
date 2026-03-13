@@ -7,16 +7,17 @@ import { cn } from "@/lib/utils";
 
 const BREADCRUMBS: Record<string, string[]> = {
   "/": ["CivicPulse", "Dashboard"],
-  "/map": ["Beacon", "Map"],
-  "/alerts": ["Beacon", "Alerts"],
-  "/users": ["Beacon", "Users"],
-  "/settings": ["Beacon", "Settings"],
+  "/map": ["CivicPulse", "Map"],
+  "/alerts": ["CivicPulse", "Alerts"],
+  "/users": ["CivicPulse", "Users"],
+  "/settings": ["CivicPulse", "Settings"],
 };
 
 export function Topbar() {
   const pathname = usePathname();
   const crumbs = BREADCRUMBS[pathname] ?? ["CivicPulse"];
-  const [time, setTime] = useState("");
+  // Initialize with null to avoid hydration mismatch, then set on client
+  const [time, setTime] = useState<string | null>(null);
 
   useEffect(() => {
     function tick() {
@@ -64,7 +65,7 @@ export function Topbar() {
       <div className="hidden md:flex flex-1 justify-center">
         <div className="flex flex-col items-center">
           <span className="text-sm font-medium text-foreground font-mono tabular-nums tracking-wider">
-            {time}
+            {time ?? "--:--:--"}
           </span>
           <span className="text-[10px] text-muted-foreground font-medium tracking-widest uppercase leading-none hidden lg:block">
             Calbayog City
