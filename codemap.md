@@ -64,6 +64,10 @@ A Next.js 16 App Router application providing a multi-dashboard civic monitoring
 - **Deployment**: SST (AWS)
 - **Package Manager**: pnpm
 
+## Monorepo Routing
+
+For NX monorepo integration, see [codemap.nx.md](codemap.nx.md) — a dedicated agent navigation map with quick lookup tables, suggested project structure, and import patterns.
+
 ## Integration Points
 
 - **Vercel Analytics**: Integrated via `@vercel/analytics`
