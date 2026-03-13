@@ -208,10 +208,37 @@ export function applyTheme(themeId: ThemeId, mode: ThemeMode): void {
   document.documentElement.setAttribute("data-theme", dataTheme);
   localStorage.setItem("beacon_theme", themeId);
   localStorage.setItem("beacon_mode", mode);
+  
+  // Also save user-specific theme preference
+  const userJson = localStorage.getItem("beacon_user");
+  if (userJson) {
+    try {
+      const user = JSON.parse(userJson);
+      localStorage.setItem(`beacon_theme_${user.id}`, themeId);
+    } catch {
+      // Ignore parse errors
+    }
+  }
 }
 
 export function getStoredTheme(): ThemeId {
   if (typeof window === "undefined") return "civicpulse";
+  
+  // Check for user-specific theme preference first
+  const userJson = localStorage.getItem("beacon_user");
+  if (userJson) {
+    try {
+      const user = JSON.parse(userJson);
+      const userThemeKey = `beacon_theme_${user.id}`;
+      const userTheme = localStorage.getItem(userThemeKey);
+      if (userTheme && userTheme in THEMES) {
+        return userTheme as ThemeId;
+      }
+    } catch {
+      // Ignore parse errors
+    }
+  }
+  
   const stored = localStorage.getItem("beacon_theme");
   if (stored && stored in THEMES) {
     return stored as ThemeId;

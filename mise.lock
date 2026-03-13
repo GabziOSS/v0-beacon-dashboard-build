@@ -16,7 +16,15 @@ url = "https://github.com/fish-shell/fish-shell/releases/download/4.5.0/fish-4.5
 checksum = "sha256:a78d17517a6772a616d214a63f163ba8281c70834b71eeae9d1a37267e9e46d3"
 url = "https://github.com/fish-shell/fish-shell/releases/download/4.5.0/fish-4.5.0-linux-x86_64.tar.xz"
 
+[tools."aqua:fish-shell/fish-shell"."platforms.linux-x64-baseline"]
+checksum = "sha256:a78d17517a6772a616d214a63f163ba8281c70834b71eeae9d1a37267e9e46d3"
+url = "https://github.com/fish-shell/fish-shell/releases/download/4.5.0/fish-4.5.0-linux-x86_64.tar.xz"
+
 [tools."aqua:fish-shell/fish-shell"."platforms.linux-x64-musl"]
+checksum = "sha256:a78d17517a6772a616d214a63f163ba8281c70834b71eeae9d1a37267e9e46d3"
+url = "https://github.com/fish-shell/fish-shell/releases/download/4.5.0/fish-4.5.0-linux-x86_64.tar.xz"
+
+[tools."aqua:fish-shell/fish-shell"."platforms.linux-x64-musl-baseline"]
 checksum = "sha256:a78d17517a6772a616d214a63f163ba8281c70834b71eeae9d1a37267e9e46d3"
 url = "https://github.com/fish-shell/fish-shell/releases/download/4.5.0/fish-4.5.0-linux-x86_64.tar.xz"
 
@@ -25,6 +33,10 @@ checksum = "sha256:c505f83de2ca91681f4ee595c128841eb3600363b7d0525674191ea1e86f5
 url = "https://github.com/fish-shell/fish-shell/releases/download/4.5.0/fish-4.5.0.pkg"
 
 [tools."aqua:fish-shell/fish-shell"."platforms.macos-x64"]
+checksum = "sha256:c505f83de2ca91681f4ee595c128841eb3600363b7d0525674191ea1e86f5d94"
+url = "https://github.com/fish-shell/fish-shell/releases/download/4.5.0/fish-4.5.0.pkg"
+
+[tools."aqua:fish-shell/fish-shell"."platforms.macos-x64-baseline"]
 checksum = "sha256:c505f83de2ca91681f4ee595c128841eb3600363b7d0525674191ea1e86f5d94"
 url = "https://github.com/fish-shell/fish-shell/releases/download/4.5.0/fish-4.5.0.pkg"
 
@@ -92,7 +104,15 @@ url = "https://github.com/schollz/croc/releases/download/v10.4.2/croc_v10.4.2_Li
 checksum = "sha256:80c7db50b96dfda1849142a3738921e30b9e8b89923717310d974979bfbc2a83"
 url = "https://github.com/schollz/croc/releases/download/v10.4.2/croc_v10.4.2_Linux-64bit.tar.gz"
 
+[tools.croc."platforms.linux-x64-baseline"]
+checksum = "sha256:80c7db50b96dfda1849142a3738921e30b9e8b89923717310d974979bfbc2a83"
+url = "https://github.com/schollz/croc/releases/download/v10.4.2/croc_v10.4.2_Linux-64bit.tar.gz"
+
 [tools.croc."platforms.linux-x64-musl"]
+checksum = "sha256:80c7db50b96dfda1849142a3738921e30b9e8b89923717310d974979bfbc2a83"
+url = "https://github.com/schollz/croc/releases/download/v10.4.2/croc_v10.4.2_Linux-64bit.tar.gz"
+
+[tools.croc."platforms.linux-x64-musl-baseline"]
 checksum = "sha256:80c7db50b96dfda1849142a3738921e30b9e8b89923717310d974979bfbc2a83"
 url = "https://github.com/schollz/croc/releases/download/v10.4.2/croc_v10.4.2_Linux-64bit.tar.gz"
 
@@ -104,7 +124,15 @@ url = "https://github.com/schollz/croc/releases/download/v10.4.2/croc_v10.4.2_ma
 checksum = "sha256:786af8c25939ba6131652568cb80e77bed0d317c41107bc90b19b0be2d5f4033"
 url = "https://github.com/schollz/croc/releases/download/v10.4.2/croc_v10.4.2_macOS-64bit.tar.gz"
 
+[tools.croc."platforms.macos-x64-baseline"]
+checksum = "sha256:786af8c25939ba6131652568cb80e77bed0d317c41107bc90b19b0be2d5f4033"
+url = "https://github.com/schollz/croc/releases/download/v10.4.2/croc_v10.4.2_macOS-64bit.tar.gz"
+
 [tools.croc."platforms.windows-x64"]
+checksum = "sha256:aac93803a887b0f10891f68f57edbf496c7d034d3cc721f9fc6cc193d0165386"
+url = "https://github.com/schollz/croc/releases/download/v10.4.2/croc_v10.4.2_Windows-64bit.zip"
+
+[tools.croc."platforms.windows-x64-baseline"]
 checksum = "sha256:aac93803a887b0f10891f68f57edbf496c7d034d3cc721f9fc6cc193d0165386"
 url = "https://github.com/schollz/croc/releases/download/v10.4.2/croc_v10.4.2_Windows-64bit.zip"
 
@@ -124,7 +152,15 @@ url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54
 checksum = "sha256:0f5343c4467d0b9f4a770801bebc92625f2999e1ea2aa3548c5cb145a1b3ed3a"
 url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54.1-linux-amd64.tar.gz"
 
+[tools.dotenvx."platforms.linux-x64-baseline"]
+checksum = "sha256:0f5343c4467d0b9f4a770801bebc92625f2999e1ea2aa3548c5cb145a1b3ed3a"
+url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54.1-linux-amd64.tar.gz"
+
 [tools.dotenvx."platforms.linux-x64-musl"]
+checksum = "sha256:0f5343c4467d0b9f4a770801bebc92625f2999e1ea2aa3548c5cb145a1b3ed3a"
+url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54.1-linux-amd64.tar.gz"
+
+[tools.dotenvx."platforms.linux-x64-musl-baseline"]
 checksum = "sha256:0f5343c4467d0b9f4a770801bebc92625f2999e1ea2aa3548c5cb145a1b3ed3a"
 url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54.1-linux-amd64.tar.gz"
 
@@ -136,7 +172,15 @@ url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54
 checksum = "sha256:c9dca9749113388ada78dfd267d9a5bb99bbbbf034f6c4282ad4566d74c951b7"
 url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54.1-darwin-amd64.tar.gz"
 
+[tools.dotenvx."platforms.macos-x64-baseline"]
+checksum = "sha256:c9dca9749113388ada78dfd267d9a5bb99bbbbf034f6c4282ad4566d74c951b7"
+url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54.1-darwin-amd64.tar.gz"
+
 [tools.dotenvx."platforms.windows-x64"]
+checksum = "sha256:23175ca44f2eb42761d5af04ab8079a6ab0ededc3e19363a77dcd04686a3caff"
+url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54.1-windows-amd64.tar.gz"
+
+[tools.dotenvx."platforms.windows-x64-baseline"]
 checksum = "sha256:23175ca44f2eb42761d5af04ab8079a6ab0ededc3e19363a77dcd04686a3caff"
 url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54.1-windows-amd64.tar.gz"
 
@@ -156,7 +200,15 @@ url = "https://github.com/jesseduffield/lazygit/releases/download/v0.60.0/lazygi
 checksum = "sha256:6252ca6cf98bc4fd3e0d927b54225910cfa57b065d0ad88263f14592f7f9ab15"
 url = "https://github.com/jesseduffield/lazygit/releases/download/v0.60.0/lazygit_0.60.0_linux_x86_64.tar.gz"
 
+[tools.lazygit."platforms.linux-x64-baseline"]
+checksum = "sha256:6252ca6cf98bc4fd3e0d927b54225910cfa57b065d0ad88263f14592f7f9ab15"
+url = "https://github.com/jesseduffield/lazygit/releases/download/v0.60.0/lazygit_0.60.0_linux_x86_64.tar.gz"
+
 [tools.lazygit."platforms.linux-x64-musl"]
+checksum = "sha256:6252ca6cf98bc4fd3e0d927b54225910cfa57b065d0ad88263f14592f7f9ab15"
+url = "https://github.com/jesseduffield/lazygit/releases/download/v0.60.0/lazygit_0.60.0_linux_x86_64.tar.gz"
+
+[tools.lazygit."platforms.linux-x64-musl-baseline"]
 checksum = "sha256:6252ca6cf98bc4fd3e0d927b54225910cfa57b065d0ad88263f14592f7f9ab15"
 url = "https://github.com/jesseduffield/lazygit/releases/download/v0.60.0/lazygit_0.60.0_linux_x86_64.tar.gz"
 
@@ -168,7 +220,15 @@ url = "https://github.com/jesseduffield/lazygit/releases/download/v0.60.0/lazygi
 checksum = "sha256:9210a8bd8bf18537f9d7747361c8eba62518e10e4d5fbfe915cf110635eaab78"
 url = "https://github.com/jesseduffield/lazygit/releases/download/v0.60.0/lazygit_0.60.0_darwin_x86_64.tar.gz"
 
+[tools.lazygit."platforms.macos-x64-baseline"]
+checksum = "sha256:9210a8bd8bf18537f9d7747361c8eba62518e10e4d5fbfe915cf110635eaab78"
+url = "https://github.com/jesseduffield/lazygit/releases/download/v0.60.0/lazygit_0.60.0_darwin_x86_64.tar.gz"
+
 [tools.lazygit."platforms.windows-x64"]
+checksum = "sha256:435b53165ff4604e201549b9317eb0b8bb5b3f6728be612656988e90c821a9b9"
+url = "https://github.com/jesseduffield/lazygit/releases/download/v0.60.0/lazygit_0.60.0_windows_x86_64.zip"
+
+[tools.lazygit."platforms.windows-x64-baseline"]
 checksum = "sha256:435b53165ff4604e201549b9317eb0b8bb5b3f6728be612656988e90c821a9b9"
 url = "https://github.com/jesseduffield/lazygit/releases/download/v0.60.0/lazygit_0.60.0_windows_x86_64.zip"
 
@@ -185,7 +245,13 @@ url = "https://github.com/neovim/neovim/releases/download/v0.11.6/nvim-linux-arm
 [tools.neovim."platforms.linux-x64"]
 url = "https://github.com/neovim/neovim/releases/download/v0.11.6/nvim-linux-x86_64.tar.gz"
 
+[tools.neovim."platforms.linux-x64-baseline"]
+url = "https://github.com/neovim/neovim/releases/download/v0.11.6/nvim-linux-x86_64.tar.gz"
+
 [tools.neovim."platforms.linux-x64-musl"]
+url = "https://github.com/neovim/neovim/releases/download/v0.11.6/nvim-linux-x86_64.tar.gz"
+
+[tools.neovim."platforms.linux-x64-musl-baseline"]
 url = "https://github.com/neovim/neovim/releases/download/v0.11.6/nvim-linux-x86_64.tar.gz"
 
 [tools.neovim."platforms.macos-arm64"]
@@ -194,7 +260,13 @@ url = "https://github.com/neovim/neovim/releases/download/v0.11.6/nvim-macos-arm
 [tools.neovim."platforms.macos-x64"]
 url = "https://github.com/neovim/neovim/releases/download/v0.11.6/nvim-macos-x86_64.tar.gz"
 
+[tools.neovim."platforms.macos-x64-baseline"]
+url = "https://github.com/neovim/neovim/releases/download/v0.11.6/nvim-macos-x86_64.tar.gz"
+
 [tools.neovim."platforms.windows-x64"]
+url = "https://github.com/neovim/neovim/releases/download/v0.11.6/nvim-win64.zip"
+
+[tools.neovim."platforms.windows-x64-baseline"]
 url = "https://github.com/neovim/neovim/releases/download/v0.11.6/nvim-win64.zip"
 
 [[tools."npm:ocx"]]
@@ -217,7 +289,15 @@ url = "https://github.com/anomalyco/opencode/releases/download/v1.2.24/opencode-
 checksum = "sha256:20644ef6b85975f0b49c3ea131c8d49cdee854419b3b8cfb24476e01787a871e"
 url = "https://github.com/anomalyco/opencode/releases/download/v1.2.24/opencode-linux-x64.tar.gz"
 
+[tools.opencode."platforms.linux-x64-baseline"]
+checksum = "sha256:20644ef6b85975f0b49c3ea131c8d49cdee854419b3b8cfb24476e01787a871e"
+url = "https://github.com/anomalyco/opencode/releases/download/v1.2.24/opencode-linux-x64.tar.gz"
+
 [tools.opencode."platforms.linux-x64-musl"]
+checksum = "sha256:20644ef6b85975f0b49c3ea131c8d49cdee854419b3b8cfb24476e01787a871e"
+url = "https://github.com/anomalyco/opencode/releases/download/v1.2.24/opencode-linux-x64.tar.gz"
+
+[tools.opencode."platforms.linux-x64-musl-baseline"]
 checksum = "sha256:20644ef6b85975f0b49c3ea131c8d49cdee854419b3b8cfb24476e01787a871e"
 url = "https://github.com/anomalyco/opencode/releases/download/v1.2.24/opencode-linux-x64.tar.gz"
 
@@ -229,6 +309,14 @@ url = "https://github.com/anomalyco/opencode/releases/download/v1.2.24/opencode-
 checksum = "sha256:4de4662d20a8834d8f93e45965ff5fabfbc0f69f15eb4bb33f0742eced54e203"
 url = "https://github.com/anomalyco/opencode/releases/download/v1.2.24/opencode-darwin-x64.zip"
 
+[tools.opencode."platforms.macos-x64-baseline"]
+checksum = "sha256:4de4662d20a8834d8f93e45965ff5fabfbc0f69f15eb4bb33f0742eced54e203"
+url = "https://github.com/anomalyco/opencode/releases/download/v1.2.24/opencode-darwin-x64.zip"
+
 [tools.opencode."platforms.windows-x64"]
+checksum = "sha256:654be595baed57b6ed7747cc8813f505d55daad84458fe1f744d592d937fa0d3"
+url = "https://github.com/anomalyco/opencode/releases/download/v1.2.24/opencode-windows-x64.zip"
+
+[tools.opencode."platforms.windows-x64-baseline"]
 checksum = "sha256:654be595baed57b6ed7747cc8813f505d55daad84458fe1f744d592d937fa0d3"
 url = "https://github.com/anomalyco/opencode/releases/download/v1.2.24/opencode-windows-x64.zip"

@@ -76,6 +76,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(MOCK_USER);
       localStorage.setItem("beacon_user", JSON.stringify(MOCK_USER));
       localStorage.setItem("beacon_last_login", new Date().toISOString());
+      // Set default theme for usr_000
+      localStorage.setItem("beacon_theme_usr_000", "nwssu-academic");
       return { success: true };
     }
 
