@@ -62,9 +62,20 @@ export function ChartBlock({
   const [menuOpen, setMenuOpen] = useState(false)
   const [resizePreview, setResizePreview] = useState<{ col: ColSpan; row: RowSpan; rect: DOMRect } | null>(null)
   const blockRef = useRef<HTMLDivElement>(null)
+  const pendingResizeRef = useRef<{ col: ColSpan; row: RowSpan } | null>(null)
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => { setMounted(true) }, [])
+  
+  // Handle pending resize updates after render cycle completes
+  useEffect(() => {
+    if (pendingResizeRef.current) {
+      const { col, row } = pendingResizeRef.current
+      pendingResizeRef.current = null
+      onColSpanChange(id, col)
+      if (onRowSpanChange) onRowSpanChange(id, row)
+    }
+  })
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({ id, disabled: readOnly })
@@ -113,14 +124,10 @@ export function ChartBlock({
     }
 
     function handleEnd() {
-      // Capture the current preview state before clearing it
+      // Capture the current preview state and store in ref for useEffect to handle
       setResizePreview(prev => {
-        // Schedule the parent state updates after this render cycle completes
         if (prev) {
-          queueMicrotask(() => {
-            onColSpanChange(id, prev.col)
-            if (onRowSpanChange) onRowSpanChange(id, prev.row)
-          })
+          pendingResizeRef.current = { col: prev.col, row: prev.row }
         }
         return null
       })
