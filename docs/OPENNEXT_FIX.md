@@ -1,36 +1,43 @@
 # OpenNext Build Fix
 
 ## Problem
+
 Error: "Could not load OpenNext output file at '.open-next/open-next.output.json'"
 
 ## Root Cause
+
 The `buildCommand` in `sst.config.ts` was running `pnpm run build` (Next.js build) instead of using OpenNext for SST deployment.
 
 ## Solution Applied
 
 ### 1. Created `open-next.config.ts`
+
 ```typescript
-import type { OpenNextConfig } from "@opennextjs/aws/types/open-next";
+import type { OpenNextConfig } from '@opennextjs/aws/types/open-next'
 
 const config: OpenNextConfig = {
   default: {},
-};
+}
 
-export default config;
+export default config
 ```
 
 ### 2. Updated `sst.config.ts`
+
 Changed:
+
 ```typescript
 buildCommand: 'mise exec -- pnpm run build',
 ```
 
 To:
+
 ```typescript
 buildCommand: 'pnpm run build:opennext',
 ```
 
 ### 3. Added `build:opennext` script to `package.json`
+
 ```json
 "build:opennext": "npx @opennextjs/aws build"
 ```
@@ -38,6 +45,7 @@ buildCommand: 'pnpm run build:opennext',
 ## How to Fix
 
 ### Option 1: Manual Build (Recommended for debugging)
+
 ```bash
 # Run OpenNext build manually
 npx @opennextjs/aws build
@@ -50,6 +58,7 @@ pnpx sst deploy
 ```
 
 ### Option 2: Use SST (Automatic)
+
 ```bash
 # This will now use OpenNext automatically
 pnpx sst deploy
@@ -62,6 +71,7 @@ pnpx sst deploy
    - SST v4 should handle this automatically
 
 2. **Verify build output:**
+
    ```bash
    npx @opennextjs/aws build
    cat .open-next/open-next.output.json
