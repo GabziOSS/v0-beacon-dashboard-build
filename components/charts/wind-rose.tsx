@@ -48,9 +48,9 @@ export function WindRoseChart({ data }: { data: WindRoseData[] }) {
   const maxTotal = Math.max(...data.map(d => d.low + d.mid + d.high))
 
   return (
-    <div className="flex flex-col items-center h-full gap-3">
-      <div className="flex-1 min-h-0 w-full flex items-center justify-center">
-        <svg viewBox="0 0 280 280" className="w-full max-w-[260px]" aria-hidden>
+    <div className="flex flex-col items-center h-full w-full gap-3">
+      <div className="flex-1 min-h-[180px] w-full flex items-center justify-center aspect-square max-h-[260px]">
+        <svg viewBox="0 0 280 280" className="w-full h-full drop-shadow-sm" aria-hidden>
           {/* Reference rings */}
           {RINGS.map(pct => (
             <circle
