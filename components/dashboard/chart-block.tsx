@@ -21,13 +21,29 @@ import {
   Maximize2,
   Trash2,
   Download,
+  ScreenShare,
 } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+} from '@/components/ui/dropdown-menu'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { createPortal } from 'react-dom'
+import { cn } from '@/lib/utils'
 
-export type ColSpan = 1 | 2 | 3
+export type ColSpan = 1 | 2 | 3 | 4
 export type RowSpan = 1 | 2
 
 export interface ChartBlock {
@@ -73,6 +89,64 @@ interface ResizePreview {
   col: ColSpan
   row: RowSpan
   rect: DOMRect
+}
+
+function GridcellSelector({
+  currentCol,
+  currentRow,
+  onChange,
+}: {
+  currentCol: number
+  currentRow: number
+  onChange: (col: ColSpan, row: RowSpan) => void
+}) {
+  const [hover, setHover] = useState<{ col: number; row: number } | null>(null)
+
+  return (
+    <div className="p-1">
+      <div 
+        className="grid grid-cols-4 gap-1.5"
+        onMouseLeave={() => setHover(null)}
+      >
+        {Array.from({ length: 8 }).map((_, i) => {
+          const r = Math.floor(i / 4) + 1
+          const c = (i % 4) + 1
+          const isActive = c === currentCol && r === currentRow
+          const isSelected = c <= currentCol && r <= currentRow
+          const isHovered = hover && c <= hover.col && r <= hover.row
+          
+          return (
+            <button
+              key={i}
+              onMouseEnter={() => setHover({ col: c, row: r })}
+              onClick={() => onChange(c as ColSpan, r as RowSpan)}
+              className={cn(
+                "w-7 h-7 border transition-all rounded-[3px] relative overflow-hidden group/cell",
+                isHovered 
+                  ? "bg-primary/40 border-primary ring-1 ring-primary/20" 
+                  : isSelected 
+                    ? "bg-primary/20 border-primary/40" 
+                    : "bg-secondary/20 border-border hover:border-muted-foreground/30",
+                isActive && "ring-2 ring-primary ring-offset-1 ring-offset-popover"
+              )}
+            >
+              {isActive && !hover && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-1 h-1 rounded-full bg-primary" />
+                </div>
+              )}
+            </button>
+          )
+        })}
+      </div>
+      <div className="mt-2.5 pt-2 border-t border-border flex items-center justify-between px-1">
+        <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Dimensions</span>
+        <span className="text-[10px] font-mono font-bold text-primary bg-primary/10 px-1.5 py-0.5 rounded">
+          {hover ? `${hover.col} × ${hover.row}` : `${currentCol} × ${currentRow}`}
+        </span>
+      </div>
+    </div>
+  )
 }
 
 export function ChartBlock({
@@ -124,6 +198,8 @@ export function ChartBlock({
     gridColumn: `span ${effectiveColSpan}`,
     gridRow: `span ${rowSpan}`,
     zIndex: isDragging ? 10 : undefined,
+    aspectRatio: `${effectiveColSpan} / ${rowSpan}`,
+    minHeight: rowSpan === 1 ? '240px' : '496px', // Matches auto-rows-fr + gap
   }
 
   const mergedRef = useCallback((node: HTMLDivElement | null) => {
@@ -131,11 +207,6 @@ export function ChartBlock({
     ;(blockRef as React.MutableRefObject<HTMLDivElement | null>).current = node
   }, [setNodeRef])
 
-  function cycleSize() {
-    const next = findNextSize(colSpan, rowSpan)
-    onColSpanChange(id, next.col)
-    if (onRowSpanChange) onRowSpanChange(id, next.row)
-  }
 
   function startResize(e: React.PointerEvent<HTMLDivElement>, edge: ResizeEdge) {
     if (!blockRef.current) return
@@ -197,11 +268,16 @@ export function ChartBlock({
         ref={mergedRef}
         style={style}
         className={cn(
-          'flex flex-col bg-card border border-border rounded-sm min-h-[280px] transition-all relative group',
+          'flex flex-col bg-card/60 backdrop-blur-md border border-border rounded-sm transition-all relative group overflow-hidden',
+          'hover:shadow-[0_0_30px_-5px_rgba(var(--primary),0.1)] hover:border-primary/20',
           isDragging && 'opacity-40 scale-[0.97] shadow-2xl ring-1 ring-primary/40',
           resizePreview && 'ring-1 ring-primary/60',
         )}
       >
+        {/* ── Technical Corner Accent ── */}
+        <div className="absolute top-0 right-0 w-8 h-8 pointer-events-none overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="absolute top-[-16px] right-[-16px] w-8 h-8 bg-primary/20 rotate-45" />
+        </div>
         {/* ── Header ── */}
         <div className="flex items-center gap-2 px-3 py-2.5 border-b border-border shrink-0">
           {!readOnly && (
@@ -215,25 +291,68 @@ export function ChartBlock({
             </button>
           )}
 
-          <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold text-foreground truncate leading-tight">{title}</p>
+          <div className="flex-1 min-w-0 mr-2">
+            <p className="text-xs font-semibold text-foreground truncate leading-tight" title={title}>{title}</p>
             {subtitle && (
-              <p className="text-[10px] text-muted-foreground truncate leading-tight font-mono">
+              <p className="text-[10px] text-muted-foreground truncate leading-tight font-mono" title={subtitle}>
                 {subtitle}
               </p>
             )}
           </div>
 
-          {!readOnly && (
-            <button
-              onClick={cycleSize}
-              className="w-6 h-6 flex items-center justify-center rounded-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
-              title={`Size: ${colSpan}×${rowSpan} — click to cycle`}
-              aria-label="Cycle block size"
-            >
-              <Expand className="w-3 h-3" />
-            </button>
-          )}
+          <div className="flex items-center gap-1">
+            {/* Fullscreen Toggle via shadcn Dialog */}
+            <Dialog>
+              <DialogTrigger asChild>
+                <button
+                  className="w-7 h-7 flex items-center justify-center rounded-sm text-muted-foreground/60 hover:text-foreground hover:bg-secondary transition-colors"
+                  title="Fullscreen view"
+                  aria-label="View fullscreen"
+                >
+                  <ScreenShare className="w-3.5 h-3.5" />
+                </button>
+              </DialogTrigger>
+              <DialogContent className="max-w-[95vw] w-full h-[90vh] flex flex-col p-1 gap-0 overflow-hidden bg-card border-border">
+                <DialogHeader className="p-4 border-b border-border space-y-0.5">
+                  <DialogTitle className="text-sm font-bold">{title}</DialogTitle>
+                  {subtitle && <p className="text-[11px] text-muted-foreground font-mono">{subtitle}</p>}
+                </DialogHeader>
+                <div className="flex-1 min-h-0 w-full p-6 overflow-auto">
+                  {children}
+                </div>
+              </DialogContent>
+            </Dialog>
+
+            {/* Word-style Gridcell Selector in Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="h-7 px-2 flex items-center gap-1.5 rounded-sm border border-border bg-background/50 text-[10px] font-mono font-bold text-muted-foreground hover:text-foreground hover:bg-secondary hover:border-muted-foreground/30 transition-all active:scale-95"
+                  title="Resize block"
+                  aria-label="Set block size"
+                >
+                  <Expand className="w-3 h-3" />
+                  {!(colSpan === 1 && rowSpan === 1) && (
+                    <span className="hidden xs:inline">{colSpan} × {rowSpan}</span>
+                  )}
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-[160px] p-2">
+                <DropdownMenuLabel className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground py-1.5 px-2">Select Layout</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <div className="p-1">
+                  <GridcellSelector 
+                    currentCol={colSpan}
+                    currentRow={rowSpan}
+                    onChange={(c, r) => {
+                      onColSpanChange(id, c)
+                      if (onRowSpanChange) onRowSpanChange(id, r)
+                    }}
+                  />
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
 
           {/* Kebab menu */}
           <div className="relative">
@@ -248,27 +367,6 @@ export function ChartBlock({
               <>
                 <div className="fixed inset-0 z-40" onClick={() => setMenuOpen(false)} />
                 <div className="absolute right-0 top-7 z-50 w-36 bg-popover border border-border rounded-sm shadow-lg py-1">
-                  {!readOnly &&
-                    SIZE_CYCLE.map(s => (
-                      <button
-                        key={`${s.col}-${s.row}`}
-                        onClick={() => {
-                          onColSpanChange(id, s.col)
-                          if (onRowSpanChange) onRowSpanChange(id, s.row)
-                          setMenuOpen(false)
-                        }}
-                        className={cn(
-                          'w-full px-3 py-1.5 text-left text-xs hover:bg-secondary flex items-center gap-2',
-                          s.col === colSpan && s.row === rowSpan
-                            ? 'text-primary'
-                            : 'text-foreground',
-                        )}
-                      >
-                        <Maximize2 className="w-3 h-3" />
-                        {s.col}×{s.row}
-                      </button>
-                    ))}
-                  {!readOnly && <div className="my-1 border-t border-border" />}
                   <button
                     className="w-full px-3 py-1.5 text-left text-xs text-muted-foreground hover:bg-secondary flex items-center gap-2"
                     onClick={() => setMenuOpen(false)}
@@ -279,7 +377,7 @@ export function ChartBlock({
                   {!readOnly && (
                     <button
                       onClick={() => { onRemove(id); setMenuOpen(false) }}
-                      className="w-full px-3 py-1.5 text-left text-xs text-destructive hover:bg-secondary flex items-center gap-2"
+                      className="w-full px-3 py-1.5 text-left text-xs text-destructive hover:bg-secondary flex items-center gap-2 text-red-500 hover:text-red-600"
                     >
                       <Trash2 className="w-3 h-3" />
                       Remove
@@ -292,7 +390,7 @@ export function ChartBlock({
         </div>
 
         {/* ── Chart area ── */}
-        <div className="flex-1 min-h-0 p-3">{children}</div>
+        <div className="flex-1 min-h-0 p-3 overflow-hidden">{children}</div>
 
         {/* ── Resize handles ── */}
         {!readOnly && (

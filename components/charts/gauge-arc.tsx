@@ -32,7 +32,7 @@ export function GaugeArc({
   }
 
   return (
-    <div className="flex flex-col items-center h-full justify-center w-full min-h-[160px]">
+    <div className="flex flex-col items-center h-full justify-center w-full min-h-0">
       <ChartContainer
         config={chartConfig}
         className="w-full h-full flex-1"

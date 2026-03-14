@@ -49,7 +49,7 @@ export function WindRoseChart({ data }: { data: WindRoseData[] }) {
 
   return (
     <div className="flex flex-col items-center h-full w-full gap-3">
-      <div className="flex-1 min-h-[180px] w-full flex items-center justify-center aspect-square">
+      <div className="flex-1 min-h-0 w-full flex items-center justify-center aspect-square">
         <svg viewBox="0 0 280 280" className="w-full h-full drop-shadow-sm max-w-[340px]" aria-hidden>
           {/* Reference rings */}
           {RINGS.map(pct => (
@@ -125,22 +125,48 @@ export function WindRoseChart({ data }: { data: WindRoseData[] }) {
         </svg>
       </div>
 
-      {/* Range pills */}
-      <div className="flex gap-1.5">
-        {(['Day', 'Week', 'Month'] as const).map(r => (
-          <button
-            key={r}
-            onClick={() => setRange(r)}
-            className={cn(
-              'text-[10px] font-mono px-2.5 py-1 rounded-sm border transition-colors',
-              range === r
-                ? 'border-primary text-primary bg-primary/10'
-                : 'border-border text-muted-foreground hover:text-foreground'
-            )}
-          >
-            {r}
-          </button>
-        ))}
+      {/* Range pills & Legend */}
+      <div className="flex flex-col items-center gap-4">
+        {/* Legendary Bins */}
+        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
+          {[
+            { label: '0 - 3 km/h', color: BIN_COLORS[0] },
+            { label: '3 - 6 km/h', color: BIN_COLORS[1] },
+            { label: '6 - 10 km/h', color: BIN_COLORS[2] },
+            { label: '10 - 13 km/h', color: 'var(--chart-2)' },
+            { label: '13 - 16 km/h', color: 'var(--chart-3)' },
+            { label: '16 - 32 km/h', color: 'var(--destructive)' },
+            { label: '> 32 km/h', color: 'var(--foreground)' },
+          ].map((bin, i) => (
+            <div key={i} className="flex items-center gap-1.5">
+              <div
+                className="w-4 h-2 rounded-[2px]"
+                style={{ backgroundColor: bin.color, opacity: 0.8 }}
+              />
+              <span className="text-[9px] font-mono text-muted-foreground whitespace-nowrap">
+                {bin.label}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* Temporal Tabs */}
+        <div className="flex gap-1.5">
+          {(['Day', 'Week', 'Month'] as const).map(r => (
+            <button
+              key={r}
+              onClick={() => setRange(r)}
+              className={cn(
+                'text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-sm border transition-colors',
+                range === r
+                  ? 'border-primary text-primary bg-primary/10'
+                  : 'border-border text-muted-foreground hover:text-foreground hover:bg-secondary/50'
+              )}
+            >
+              {r}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   )

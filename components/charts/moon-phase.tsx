@@ -105,7 +105,7 @@ function MoonIcon({ phase }: { phase: MoonPhaseName }) {
 export function MoonPhase({ data }: { data: MoonPhaseData }) {
   return (
     <div className="flex flex-col items-center justify-center h-full gap-4 p-2 w-full">
-      <div className="flex-1 w-full min-h-[120px] flex items-center justify-center aspect-square">
+      <div className="flex-1 w-full min-h-0 flex items-center justify-center aspect-square">
         <MoonIcon phase={data.phase} />
       </div>
       <div className="flex flex-col items-center text-center">

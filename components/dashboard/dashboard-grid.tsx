@@ -9,6 +9,16 @@ import {
   useSensors,
   closestCenter,
 } from '@dnd-kit/core'
+import { Plus } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { SortableContext, arrayMove, rectSortingStrategy } from '@dnd-kit/sortable'
 import {
   ChartBlock,
@@ -70,6 +80,7 @@ import {
   useBarometer,
 } from '@/lib/hooks'
 import { PRESETS, type PresetId, getStoredPreset, savePreset } from '@/lib/presets'
+import { cn } from '@/lib/utils'
 
 type BlocksAction =
   | { type: 'SET_BLOCKS'; blocks: ChartBlockType[] }
@@ -77,6 +88,9 @@ type BlocksAction =
   | { type: 'REMOVE'; id: string }
   | { type: 'SET_COL_SPAN'; id: string; span: ColSpan }
   | { type: 'SET_ROW_SPAN'; id: string; span: RowSpan }
+  | { type: 'ADD'; block: ChartBlockType }
+  | { type: 'ADD_BULK'; blocks: ChartBlockType[] }
+  | { type: 'REMOVE_ALL' }
 
 function blocksReducer(blocks: ChartBlockType[], action: BlocksAction): ChartBlockType[] {
   switch (action.type) {
@@ -90,6 +104,12 @@ function blocksReducer(blocks: ChartBlockType[], action: BlocksAction): ChartBlo
       return blocks.map(b => (b.id === action.id ? { ...b, colSpan: action.span } : b))
     case 'SET_ROW_SPAN':
       return blocks.map(b => (b.id === action.id ? { ...b, rowSpan: action.span } : b))
+    case 'ADD':
+      return [...blocks, action.block]
+    case 'ADD_BULK':
+      return [...blocks, ...action.blocks]
+    case 'REMOVE_ALL':
+      return []
     default:
       return blocks
   }
@@ -181,6 +201,18 @@ export function DashboardGrid({ initialPreset = 'overview' }: DashboardGridProps
 
   function handleRemove(id: string) {
     dispatch({ type: 'REMOVE', id })
+  }
+
+  function handleAdd(block: ChartBlockType) {
+    dispatch({ type: 'ADD', block })
+  }
+
+  function handleAddBulk(newBlocks: ChartBlockType[]) {
+    dispatch({ type: 'ADD_BULK', blocks: newBlocks })
+  }
+
+  function handleRemoveAll() {
+    dispatch({ type: 'REMOVE_ALL' })
   }
 
   function renderContent(id: string, type?: string) {
@@ -296,48 +328,127 @@ export function DashboardGrid({ initialPreset = 'overview' }: DashboardGridProps
   const activeBlock = blocks.find(b => b.id === activeId)
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragStart={e => setActiveId(e.active.id as string)}
-      onDragEnd={handleDragEnd}
-      onDragCancel={() => setActiveId(null)}
-    >
-      <SortableContext items={blocks.map(b => b.id)} strategy={rectSortingStrategy}>
-        <div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
-          style={{ gridAutoRows: 'minmax(280px, auto)' }}
-        >
-          {blocks.map(block => (
-            <ChartBlock
-              key={block.id}
-              id={block.id}
-              title={block.title}
-              subtitle={block.subtitle}
-              colSpan={block.colSpan}
-              rowSpan={block.rowSpan}
-              onColSpanChange={handleColSpanChange}
-              onRowSpanChange={handleRowSpanChange}
-              onRemove={handleRemove}
-            >
-              {renderContent(block.id, block.type)}
-            </ChartBlock>
-          ))}
+    <div className="space-y-6">
+      <div className="flex items-center justify-between px-1">
+        <div className="flex flex-col gap-0.5">
+          <h2 className="text-sm font-mono font-bold uppercase tracking-widest text-muted-foreground/80">
+            {PRESETS[initialPreset]?.label || 'Dashboard'}
+          </h2>
+          <p className="text-[10px] font-mono text-muted-foreground/60">
+            {blocks.length} active monitors
+          </p>
         </div>
-      </SortableContext>
 
-      <DragOverlay>
-        {activeBlock ? (
+        <div className="flex items-center gap-2">
+          {blocks.length > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleRemoveAll}
+              className="h-8 text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground/60 hover:text-destructive hover:bg-destructive/10"
+            >
+              Clear All
+            </Button>
+          )}
+          
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="h-8 border-dashed border-muted-foreground/30 hover:border-primary hover:bg-primary hover:text-primary-foreground text-[10px] font-mono font-bold uppercase tracking-wider gap-2 px-3 transition-all"
+              >
+                <Plus className="h-3.5 w-3.5" />
+                Add Component
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-[240px]">
+              <DropdownMenuLabel className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60 px-2 py-1.5">
+                Toggle Components
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <div className="max-h-[400px] overflow-auto py-1">
+                {(() => {
+                  const currentPreset = PRESETS[initialPreset]
+                  if (!currentPreset) return null
+                  
+                  return currentPreset.blocks.map(presetBlock => {
+                    const isActive = blocks.some(b => b.id === presetBlock.id)
+                    return (
+                      <DropdownMenuItem 
+                        key={presetBlock.id}
+                        onSelect={(e) => {
+                          e.preventDefault()
+                          if (isActive) {
+                            handleRemove(presetBlock.id)
+                          } else {
+                            handleAdd(presetBlock)
+                          }
+                        }}
+                        className="flex items-center gap-3 px-3 py-2 cursor-pointer focus:bg-primary/10"
+                      >
+                        <div className={cn(
+                          "w-3.5 h-3.5 rounded-sm border border-primary/40 flex items-center justify-center transition-colors",
+                          isActive ? "bg-primary border-primary" : "bg-transparent"
+                        )}>
+                          {isActive && <div className="w-1.5 h-1.5 bg-primary-foreground rounded-full" />}
+                        </div>
+                        <div className="flex flex-col gap-0.5">
+                          <span className="text-[11px] font-bold font-mono text-foreground leading-tight">{presetBlock.title}</span>
+                          <span className="text-[9px] font-mono text-muted-foreground leading-tight uppercase tracking-tighter">{presetBlock.subtitle}</span>
+                        </div>
+                      </DropdownMenuItem>
+                    )
+                  })
+                })()}
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
+
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={e => setActiveId(e.active.id as string)}
+        onDragEnd={handleDragEnd}
+        onDragCancel={() => setActiveId(null)}
+      >
+        <SortableContext items={blocks.map(b => b.id)} strategy={rectSortingStrategy}>
           <div
-            className="bg-card border border-primary/40 rounded-sm shadow-xl ring-1 ring-primary/30 opacity-90"
-            style={{ gridColumn: `span ${activeBlock.colSpan}`, minHeight: 220 }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-12 auto-rows-fr"
           >
-            <div className="p-3 border-b border-border">
-              <p className="text-xs font-semibold text-foreground">{activeBlock.title}</p>
-            </div>
+            {blocks.map(block => (
+              <ChartBlock
+                key={block.id}
+                id={block.id}
+                title={block.title}
+                subtitle={block.subtitle}
+                colSpan={block.colSpan}
+                rowSpan={block.rowSpan}
+                onColSpanChange={handleColSpanChange}
+                onRowSpanChange={handleRowSpanChange}
+                onRemove={handleRemove}
+              >
+                {renderContent(block.id, block.type)}
+              </ChartBlock>
+            ))}
           </div>
-        ) : null}
-      </DragOverlay>
-    </DndContext>
+        </SortableContext>
+
+        <DragOverlay>
+          {activeBlock ? (
+            <div
+              className="bg-card border border-primary/40 rounded-sm shadow-xl ring-1 ring-primary/30 opacity-90"
+              style={{ gridColumn: `span ${activeBlock.colSpan}`, minHeight: 220 }}
+            >
+              <div className="p-3 border-b border-border">
+                <p className="text-xs font-semibold text-foreground">{activeBlock.title}</p>
+              </div>
+            </div>
+          ) : null}
+        </DragOverlay>
+      </DndContext>
+    </div>
   )
 }
