@@ -38,6 +38,7 @@ import { MoonPhase } from '@/components/charts/moon-phase'
 import { TempHumidityBar } from '@/components/charts/temp-humidity-bar'
 import { MultiTempBar } from '@/components/charts/multi-temp-bar'
 import { RainBar } from '@/components/charts/rain-bar'
+import { BarometerChart } from '@/components/charts/barometer-chart'
 import {
   useStatCards,
   useIncidentTrend,
@@ -66,6 +67,7 @@ import {
   useWindSpeed,
   useHumidity,
   useTHWIndex,
+  useBarometer,
 } from '@/lib/hooks'
 import { PRESETS, type PresetId, getStoredPreset, savePreset } from '@/lib/presets'
 
@@ -155,6 +157,7 @@ export function DashboardGrid({ initialPreset = 'overview' }: DashboardGridProps
   const { data: windSpeedData } = useWindSpeed()
   const { data: humidityData } = useHumidity()
   const { data: thwIndexData } = useTHWIndex()
+  const { data: barometerData } = useBarometer()
 
   function handleDragEnd(event: {
     active: { id: string | number }
@@ -232,7 +235,7 @@ export function DashboardGrid({ initialPreset = 'overview' }: DashboardGridProps
       case 'w-compass':
         return <CompassChart bearing={135} label="SE" />
       case 'w-baro':
-        return <IncidentTrendChart data={trendData} />
+        return <BarometerChart data={barometerData} />
       case 'w-temp-gauge':
         return <TempHumidityBar data={insideTempHumData} />
       case 'w-temp-trend':
@@ -302,8 +305,8 @@ export function DashboardGrid({ initialPreset = 'overview' }: DashboardGridProps
     >
       <SortableContext items={blocks.map(b => b.id)} strategy={rectSortingStrategy}>
         <div
-          className="grid gap-4"
-          style={{ gridTemplateColumns: 'repeat(3, 1fr)', gridAutoRows: 'minmax(220px, auto)' }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+          style={{ gridAutoRows: 'minmax(280px, auto)' }}
         >
           {blocks.map(block => (
             <ChartBlock
@@ -317,7 +320,7 @@ export function DashboardGrid({ initialPreset = 'overview' }: DashboardGridProps
               onRowSpanChange={handleRowSpanChange}
               onRemove={handleRemove}
             >
-              {renderContent(block.id)}
+              {renderContent(block.id, block.type)}
             </ChartBlock>
           ))}
         </div>

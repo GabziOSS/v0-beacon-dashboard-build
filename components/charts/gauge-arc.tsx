@@ -1,27 +1,9 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-
-// Adjusted constants for better layout - value text positioned below arc
-const CX = 100
-const CY = 85 // Move center up
-const R = 70 // Adjust radius
-const STROKE_W = 12
-
-function polarToCartesian(cx: number, cy: number, r: number, angleDeg: number) {
-  const rad = ((angleDeg - 90) * Math.PI) / 180
-  return {
-    x: cx + r * Math.cos(rad),
-    y: cy + r * Math.sin(rad),
-  }
-}
-
-function arcPath(cx: number, cy: number, r: number, startDeg: number, endDeg: number) {
-  const s = polarToCartesian(cx, cy, r, startDeg)
-  const e = polarToCartesian(cx, cy, r, endDeg)
-  const large = endDeg - startDeg > 180 ? 1 : 0
-  return `M ${s.x} ${s.y} A ${r} ${r} 0 ${large} 1 ${e.x} ${e.y}`
-}
+import { useMemo } from 'react'
+import { RadialBarChart, RadialBar, PolarAngleAxis, PolarRadiusAxis, Label } from 'recharts'
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import { cn } from '@/lib/utils'
 
 export function GaugeArc({
   value,
@@ -32,112 +14,88 @@ export function GaugeArc({
   label: string
   max?: number
 }) {
-  const [animValue, setAnimValue] = useState(0)
-  const frame = useRef<number>(0)
+  // Determine semantic color based on value thresholds
+  const pct = value / max
+  const colorVar =
+    pct > 0.7 ? 'var(--destructive)' : pct > 0.4 ? 'var(--warning)' : 'var(--success)'
 
-  useEffect(() => {
-    const start = performance.now()
-    const duration = 800
-    function step(now: number) {
-      const t = Math.min((now - start) / duration, 1)
-      // spring-like cubic-bezier(0.34, 1.56, 0.64, 1)
-      const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
-      setAnimValue(eased * value)
-      if (t < 1) frame.current = requestAnimationFrame(step)
-    }
-    frame.current = requestAnimationFrame(step)
-    return () => cancelAnimationFrame(frame.current)
-  }, [value])
+  const chartData = useMemo(
+    () => [{ name: label, value: value, fill: colorVar }],
+    [value, label, colorVar]
+  )
 
-  // angle spans 180deg (left to right)
-  const pct = animValue / max
-  const needleAngle = 180 + pct * 180 // 180 = left, 360 = right
+  const chartConfig = {
+    value: {
+      label: label,
+      color: colorVar,
+    },
+  }
 
   return (
-    <div className="flex flex-col items-center h-full justify-center gap-2 min-h-[140px]">
-      <svg viewBox="0 0 200 150" className="w-full max-w-[220px]" aria-hidden>
-        {/* Background arc */}
-        <path
-          d={arcPath(CX, CY, R, 180, 360)}
-          fill="none"
-          stroke="var(--muted)"
-          strokeWidth={STROKE_W}
-          strokeLinecap="round"
-        />
-        {/* Success segment 0-40% */}
-        {pct > 0 && (
-          <path
-            d={arcPath(CX, CY, R, 180, 180 + Math.min(pct, 0.4) * 180)}
-            fill="none"
-            stroke="var(--success)"
-            strokeWidth={STROKE_W}
-            strokeLinecap="round"
-          />
-        )}
-        {/* Warning segment 40-70% */}
-        {pct > 0.4 && (
-          <path
-            d={arcPath(CX, CY, R, 180 + 0.4 * 180, 180 + Math.min(pct, 0.7) * 180)}
-            fill="none"
-            stroke="var(--warning)"
-            strokeWidth={STROKE_W}
-            strokeLinecap="round"
-          />
-        )}
-        {/* Destructive segment 70-100% */}
-        {pct > 0.7 && (
-          <path
-            d={arcPath(CX, CY, R, 180 + 0.7 * 180, 180 + pct * 180)}
-            fill="none"
-            stroke="var(--destructive)"
-            strokeWidth={STROKE_W}
-            strokeLinecap="round"
-          />
-        )}
-
-        {/* Needle - shortened to avoid overlapping value */}
-        <g transform={`rotate(${needleAngle - 180}, ${CX}, ${CY})`}>
-          <line
-            x1={CX}
-            y1={CY}
-            x2={CX}
-            y2={CY - R + 18}
-            stroke="var(--foreground)"
-            strokeWidth={2.5}
-            strokeLinecap="round"
-          />
-        </g>
-
-        {/* Center dot */}
-        <circle cx={CX} cy={CY} r={6} fill="var(--foreground)" />
-
-        {/* Value - positioned below arc baseline */}
-        <text
-          x={CX}
-          y={CY + 45}
-          textAnchor="middle"
-          fill="var(--foreground)"
-          fontSize={24}
-          fontFamily="var(--font-mono)"
-          fontWeight={600}
+    <div className="flex flex-col items-center h-full justify-center w-full min-h-[160px]">
+      <ChartContainer
+        config={chartConfig}
+        className="w-full h-full flex-1"
+      >
+        <RadialBarChart
+          data={chartData}
+          startAngle={180}
+          endAngle={0}
+          innerRadius="75%"
+          outerRadius="110%"
+          cx="50%"
+          cy="65%"
+          barSize={40}
         >
-          {Math.round(animValue)}
-        </text>
-
-        {/* Label inside SVG for better layout control */}
-        <text
-          x={CX}
-          y={CY + 56}
-          textAnchor="middle"
-          fill="var(--muted-foreground)"
-          fontSize={11}
-          fontWeight={500}
-          letterSpacing="0.1em"
-          style={{ textTransform: 'uppercase' }}
-        >
-          {label}
-        </text>
-      </svg>
+          {/* Background track (adapts to themes/soft mode via fill-muted) */}
+          <PolarAngleAxis
+            type="number"
+            domain={[0, max]}
+            angleAxisId={0}
+            tick={false}
+          />
+          <RadialBar
+            dataKey="value"
+            background={{ fill: 'var(--muted)' }}
+            cornerRadius={10}
+            isAnimationActive={true}
+            animationDuration={800}
+            animationEasing="ease-out"
+          />
+          <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
+            <Label
+              content={({ viewBox }) => {
+                if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
+                  return (
+                    <text
+                      x={viewBox.cx}
+                      y={viewBox.cy}
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                    >
+                      <tspan
+                        x={viewBox.cx}
+                        y={viewBox.cy}
+                        className="fill-foreground font-mono font-bold text-3xl"
+                      >
+                        {Math.round(value)}
+                      </tspan>
+                      <tspan
+                        x={viewBox.cx}
+                        y={(viewBox.cy || 0) + 20}
+                        className="fill-muted-foreground text-[11px] font-medium tracking-widest uppercase"
+                      >
+                        {label}
+                      </tspan>
+                    </text>
+                  )
+                }
+                return null
+              }}
+            />
+          </PolarRadiusAxis>
+        </RadialBarChart>
+      </ChartContainer>
     </div>
   )
 }

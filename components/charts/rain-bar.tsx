@@ -1,5 +1,8 @@
 'use client'
 
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts'
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+
 export interface RainBarData {
   values: Array<{ label: string; value: number }>
   unit?: string
@@ -8,63 +11,61 @@ export interface RainBarData {
 
 export function RainBar({ data }: { data: RainBarData }) {
   const unit = data.unit ?? 'mm'
-  const maxValue = data.max ?? Math.max(...data.values.map(v => v.value), 1)
 
-  // Color gradient based on value intensity
-  const getColor = (value: number, index: number) => {
-    const colors = [
-      'var(--chart-1)',
-      'var(--chart-2)',
-      'var(--chart-3)',
-      'var(--chart-4)',
-      'var(--chart-5)',
-    ]
-    return colors[index % colors.length]
+  // Prepare data with dynamic fill colors per item
+  const chartData = data.values.map((v, i) => ({
+    ...v,
+    fill: `var(--chart-${(i % 5) + 1})`,
+  }))
+
+  const chartConfig = {
+    value: {
+      label: unit,
+    },
+    ...chartData.reduce(
+      (acc, curr) => {
+        acc[curr.label.toLowerCase()] = { label: curr.label, color: curr.fill }
+        return acc
+      },
+      {} as Record<string, any>
+    ),
   }
 
   return (
-    <div className="flex flex-col h-full justify-between px-3 py-2">
-      {/* Y-axis max label */}
-      <div className="flex justify-between text-[9px] text-muted-foreground font-mono">
-        <span>
-          {maxValue.toLocaleString()} {unit}
-        </span>
-      </div>
-
-      {/* Bars container */}
-      <div className="flex-1 flex items-end justify-center gap-2 py-2">
-        {data.values.map((item, i) => {
-          const pct = (item.value / maxValue) * 100
-
-          return (
-            <div key={item.label} className="flex flex-col items-center gap-1 flex-1 max-w-[60px]">
-              {/* Value above bar */}
-              <span className="text-[10px] font-medium text-foreground font-mono">
-                {item.value.toLocaleString()}
-              </span>
-
-              {/* Bar */}
-              <div className="relative w-full h-20 bg-muted rounded-sm overflow-hidden">
-                <div
-                  className="absolute bottom-0 w-full rounded-sm transition-all duration-500"
-                  style={{
-                    height: `${Math.max(pct, 2)}%`,
-                    background: getColor(item.value, i),
-                  }}
-                />
-              </div>
-
-              {/* Label */}
-              <span className="text-[9px] text-muted-foreground text-center">{item.label}</span>
-            </div>
-          )
-        })}
-      </div>
-
-      {/* Y-axis min label */}
-      <div className="flex justify-between text-[9px] text-muted-foreground font-mono">
-        <span>0.0 {unit}</span>
-      </div>
+    <div className="flex flex-col h-full w-full justify-center">
+      <ChartContainer config={chartConfig} className="h-[200px] w-full">
+        <BarChart
+          data={chartData}
+          margin={{
+            top: 25,
+            right: 0,
+            left: 0,
+            bottom: 0,
+          }}
+        >
+          <CartesianGrid vertical={false} />
+          <XAxis
+            dataKey="label"
+            tickLine={false}
+            tickMargin={10}
+            axisLine={false}
+            tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }}
+          />
+          <YAxis 
+            hide 
+            domain={[0, data.max ?? 'auto']} 
+          />
+          <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+          <Bar dataKey="value" radius={4}>
+            <LabelList 
+              dataKey="value" 
+              position="top" 
+              className="fill-foreground font-mono" 
+              fontSize={12} 
+            />
+          </Bar>
+        </BarChart>
+      </ChartContainer>
     </div>
   )
 }
