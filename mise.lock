@@ -41,37 +41,36 @@ checksum = "sha256:c505f83de2ca91681f4ee595c128841eb3600363b7d0525674191ea1e86f5
 url = "https://github.com/fish-shell/fish-shell/releases/download/4.5.0/fish-4.5.0.pkg"
 
 [[tools.aws-cli]]
-version = "2.34.8"
+version = "2.34.9"
 backend = "aqua:aws/aws-cli"
 
 [tools.aws-cli."platforms.linux-arm64"]
-url = "https://awscli.amazonaws.com/awscli-exe-linux-aarch64-2.34.8.zip"
+url = "https://awscli.amazonaws.com/awscli-exe-linux-aarch64-2.34.9.zip"
 
 [tools.aws-cli."platforms.linux-arm64-musl"]
-url = "https://awscli.amazonaws.com/awscli-exe-linux-aarch64-2.34.8.zip"
+url = "https://awscli.amazonaws.com/awscli-exe-linux-aarch64-2.34.9.zip"
 
 [tools.aws-cli."platforms.linux-x64"]
-checksum = "blake3:815447414699d27b363c54f5910c0f8b1d001508ef90787d798ae05d5a38752e"
-url = "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.34.8.zip"
+url = "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.34.9.zip"
 
 [tools.aws-cli."platforms.linux-x64-baseline"]
-url = "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.34.8.zip"
+url = "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.34.9.zip"
 
 [tools.aws-cli."platforms.linux-x64-musl"]
-url = "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.34.8.zip"
+url = "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.34.9.zip"
 
 [tools.aws-cli."platforms.linux-x64-musl-baseline"]
-url = "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.34.8.zip"
+url = "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.34.9.zip"
 
 [tools.aws-cli."platforms.macos-arm64"]
-checksum = "blake3:b0654d52165eca8f384f1942a2435a019ac040a170f9d5503fe437e2722eed9a"
-url = "https://awscli.amazonaws.com/AWSCLIV2-2.34.8.pkg"
+checksum = "blake3:f58849c9ec094e9442e3d4e7f2d4b7d4821193f0deec90707ce962b4541836b5"
+url = "https://awscli.amazonaws.com/AWSCLIV2-2.34.9.pkg"
 
 [tools.aws-cli."platforms.macos-x64"]
-url = "https://awscli.amazonaws.com/AWSCLIV2-2.34.8.pkg"
+url = "https://awscli.amazonaws.com/AWSCLIV2-2.34.9.pkg"
 
 [tools.aws-cli."platforms.macos-x64-baseline"]
-url = "https://awscli.amazonaws.com/AWSCLIV2-2.34.8.pkg"
+url = "https://awscli.amazonaws.com/AWSCLIV2-2.34.9.pkg"
 
 [[tools.aws-vault]]
 version = "7.9.10"
@@ -218,52 +217,52 @@ checksum = "sha256:aac93803a887b0f10891f68f57edbf496c7d034d3cc721f9fc6cc193d0165
 url = "https://github.com/schollz/croc/releases/download/v10.4.2/croc_v10.4.2_Windows-64bit.zip"
 
 [[tools.dotenvx]]
-version = "1.54.1"
+version = "1.55.1"
 backend = "aqua:dotenvx/dotenvx"
 
 [tools.dotenvx."platforms.linux-arm64"]
-checksum = "sha256:83d2b90f25524f846069ea8813a21c222e963b120315cf7d9f3c1b8ea084e9fe"
-url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54.1-linux-aarch64.tar.gz"
+checksum = "sha256:69b870953a750424fe223d025bd63c9fad067d23b6fee65b88fbf93d524b02ba"
+url = "https://github.com/dotenvx/dotenvx/releases/download/v1.55.1/dotenvx-1.55.1-linux-aarch64.tar.gz"
 
 [tools.dotenvx."platforms.linux-arm64-musl"]
-checksum = "sha256:83d2b90f25524f846069ea8813a21c222e963b120315cf7d9f3c1b8ea084e9fe"
-url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54.1-linux-aarch64.tar.gz"
+checksum = "sha256:69b870953a750424fe223d025bd63c9fad067d23b6fee65b88fbf93d524b02ba"
+url = "https://github.com/dotenvx/dotenvx/releases/download/v1.55.1/dotenvx-1.55.1-linux-aarch64.tar.gz"
 
 [tools.dotenvx."platforms.linux-x64"]
-checksum = "sha256:0f5343c4467d0b9f4a770801bebc92625f2999e1ea2aa3548c5cb145a1b3ed3a"
-url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54.1-linux-amd64.tar.gz"
+checksum = "sha256:041023db421226aa6a040e518c962908b080b387a7dd21268c22f47ec4773a4e"
+url = "https://github.com/dotenvx/dotenvx/releases/download/v1.55.1/dotenvx-1.55.1-linux-amd64.tar.gz"
 
 [tools.dotenvx."platforms.linux-x64-baseline"]
-checksum = "sha256:0f5343c4467d0b9f4a770801bebc92625f2999e1ea2aa3548c5cb145a1b3ed3a"
-url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54.1-linux-amd64.tar.gz"
+checksum = "sha256:041023db421226aa6a040e518c962908b080b387a7dd21268c22f47ec4773a4e"
+url = "https://github.com/dotenvx/dotenvx/releases/download/v1.55.1/dotenvx-1.55.1-linux-amd64.tar.gz"
 
 [tools.dotenvx."platforms.linux-x64-musl"]
-checksum = "sha256:0f5343c4467d0b9f4a770801bebc92625f2999e1ea2aa3548c5cb145a1b3ed3a"
-url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54.1-linux-amd64.tar.gz"
+checksum = "sha256:041023db421226aa6a040e518c962908b080b387a7dd21268c22f47ec4773a4e"
+url = "https://github.com/dotenvx/dotenvx/releases/download/v1.55.1/dotenvx-1.55.1-linux-amd64.tar.gz"
 
 [tools.dotenvx."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:0f5343c4467d0b9f4a770801bebc92625f2999e1ea2aa3548c5cb145a1b3ed3a"
-url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54.1-linux-amd64.tar.gz"
+checksum = "sha256:041023db421226aa6a040e518c962908b080b387a7dd21268c22f47ec4773a4e"
+url = "https://github.com/dotenvx/dotenvx/releases/download/v1.55.1/dotenvx-1.55.1-linux-amd64.tar.gz"
 
 [tools.dotenvx."platforms.macos-arm64"]
-checksum = "sha256:f5bbaacf3800b6bb7a00362664e214cef5b75b084175f6f59562345faba36b8d"
-url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54.1-darwin-arm64.tar.gz"
+checksum = "sha256:c495472cca9dd7de2345e326665fec711fffc49357b5efe48bf2bf9ed9fffb00"
+url = "https://github.com/dotenvx/dotenvx/releases/download/v1.55.1/dotenvx-1.55.1-darwin-arm64.tar.gz"
 
 [tools.dotenvx."platforms.macos-x64"]
-checksum = "sha256:c9dca9749113388ada78dfd267d9a5bb99bbbbf034f6c4282ad4566d74c951b7"
-url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54.1-darwin-amd64.tar.gz"
+checksum = "sha256:8cbcfeec5f2c79bbd4e4a6a8fabd6079bdfcd7d94b5985d84cf126bc06c50d77"
+url = "https://github.com/dotenvx/dotenvx/releases/download/v1.55.1/dotenvx-1.55.1-darwin-amd64.tar.gz"
 
 [tools.dotenvx."platforms.macos-x64-baseline"]
-checksum = "sha256:c9dca9749113388ada78dfd267d9a5bb99bbbbf034f6c4282ad4566d74c951b7"
-url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54.1-darwin-amd64.tar.gz"
+checksum = "sha256:8cbcfeec5f2c79bbd4e4a6a8fabd6079bdfcd7d94b5985d84cf126bc06c50d77"
+url = "https://github.com/dotenvx/dotenvx/releases/download/v1.55.1/dotenvx-1.55.1-darwin-amd64.tar.gz"
 
 [tools.dotenvx."platforms.windows-x64"]
-checksum = "sha256:23175ca44f2eb42761d5af04ab8079a6ab0ededc3e19363a77dcd04686a3caff"
-url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54.1-windows-amd64.tar.gz"
+checksum = "sha256:51ee862c7f3579742b4d353d811eab217490141e0818609c56a9a618ca271ae3"
+url = "https://github.com/dotenvx/dotenvx/releases/download/v1.55.1/dotenvx-1.55.1-windows-amd64.tar.gz"
 
 [tools.dotenvx."platforms.windows-x64-baseline"]
-checksum = "sha256:23175ca44f2eb42761d5af04ab8079a6ab0ededc3e19363a77dcd04686a3caff"
-url = "https://github.com/dotenvx/dotenvx/releases/download/v1.54.1/dotenvx-1.54.1-windows-amd64.tar.gz"
+checksum = "sha256:51ee862c7f3579742b4d353d811eab217490141e0818609c56a9a618ca271ae3"
+url = "https://github.com/dotenvx/dotenvx/releases/download/v1.55.1/dotenvx-1.55.1-windows-amd64.tar.gz"
 
 [[tools.lazygit]]
 version = "0.60.0"
@@ -350,57 +349,105 @@ url = "https://github.com/neovim/neovim/releases/download/v0.11.6/nvim-win64.zip
 [tools.neovim."platforms.windows-x64-baseline"]
 url = "https://github.com/neovim/neovim/releases/download/v0.11.6/nvim-win64.zip"
 
+[[tools.node]]
+version = "24.14.0"
+backend = "core:node"
+
+[tools.node."platforms.linux-arm64"]
+checksum = "sha256:f44740cd218de8127f1c44c41510a3a740fa5c9c8d1cdce1c3bedada79f3cde7"
+url = "https://nodejs.org/dist/v24.14.0/node-v24.14.0-linux-arm64.tar.gz"
+
+[tools.node."platforms.linux-arm64-musl"]
+checksum = "sha256:f44740cd218de8127f1c44c41510a3a740fa5c9c8d1cdce1c3bedada79f3cde7"
+url = "https://nodejs.org/dist/v24.14.0/node-v24.14.0-linux-arm64.tar.gz"
+
+[tools.node."platforms.linux-x64"]
+checksum = "sha256:dbf5b8665dec15e59e6359a517fefb47b23fdb9152d8def975b9bca3dfc6d355"
+url = "https://nodejs.org/dist/v24.14.0/node-v24.14.0-linux-x64.tar.gz"
+
+[tools.node."platforms.linux-x64-baseline"]
+checksum = "sha256:dbf5b8665dec15e59e6359a517fefb47b23fdb9152d8def975b9bca3dfc6d355"
+url = "https://nodejs.org/dist/v24.14.0/node-v24.14.0-linux-x64.tar.gz"
+
+[tools.node."platforms.linux-x64-musl"]
+checksum = "sha256:dbf5b8665dec15e59e6359a517fefb47b23fdb9152d8def975b9bca3dfc6d355"
+url = "https://nodejs.org/dist/v24.14.0/node-v24.14.0-linux-x64.tar.gz"
+
+[tools.node."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:dbf5b8665dec15e59e6359a517fefb47b23fdb9152d8def975b9bca3dfc6d355"
+url = "https://nodejs.org/dist/v24.14.0/node-v24.14.0-linux-x64.tar.gz"
+
+[tools.node."platforms.macos-arm64"]
+checksum = "sha256:a1a54f46a750d2523d628d924aab61758a51c9dad3e0238beb14141be9615dd3"
+url = "https://nodejs.org/dist/v24.14.0/node-v24.14.0-darwin-arm64.tar.gz"
+
+[tools.node."platforms.macos-x64"]
+checksum = "sha256:f2879eb810e25993a0578e5d878930266fd2eafcffe9f2839b3d8db354d4879e"
+url = "https://nodejs.org/dist/v24.14.0/node-v24.14.0-darwin-x64.tar.gz"
+
+[tools.node."platforms.macos-x64-baseline"]
+checksum = "sha256:f2879eb810e25993a0578e5d878930266fd2eafcffe9f2839b3d8db354d4879e"
+url = "https://nodejs.org/dist/v24.14.0/node-v24.14.0-darwin-x64.tar.gz"
+
+[tools.node."platforms.windows-x64"]
+checksum = "sha256:313fa40c0d7b18575821de8cb17483031fe07d95de5994f6f435f3b345f85c66"
+url = "https://nodejs.org/dist/v24.14.0/node-v24.14.0-win-x64.zip"
+
+[tools.node."platforms.windows-x64-baseline"]
+checksum = "sha256:313fa40c0d7b18575821de8cb17483031fe07d95de5994f6f435f3b345f85c66"
+url = "https://nodejs.org/dist/v24.14.0/node-v24.14.0-win-x64.zip"
+
 [[tools."npm:ocx"]]
 version = "2.0.0"
 backend = "npm:ocx"
 
 [[tools.opencode]]
-version = "1.2.25"
+version = "1.2.26"
 backend = "aqua:anomalyco/opencode"
 
 [tools.opencode."platforms.linux-arm64"]
-checksum = "sha256:740865cf472bcab47d2e4d37f0e0abe4b3755731874839128fe788e99395a0a8"
-url = "https://github.com/anomalyco/opencode/releases/download/v1.2.25/opencode-linux-arm64.tar.gz"
+checksum = "sha256:c2f387dcef451379eedd51702c029b190667a9cf7069037d9d19f258b059a61c"
+url = "https://github.com/anomalyco/opencode/releases/download/v1.2.26/opencode-linux-arm64.tar.gz"
 
 [tools.opencode."platforms.linux-arm64-musl"]
-checksum = "sha256:740865cf472bcab47d2e4d37f0e0abe4b3755731874839128fe788e99395a0a8"
-url = "https://github.com/anomalyco/opencode/releases/download/v1.2.25/opencode-linux-arm64.tar.gz"
+checksum = "sha256:c2f387dcef451379eedd51702c029b190667a9cf7069037d9d19f258b059a61c"
+url = "https://github.com/anomalyco/opencode/releases/download/v1.2.26/opencode-linux-arm64.tar.gz"
 
 [tools.opencode."platforms.linux-x64"]
-checksum = "sha256:cab27bac5ae5f3706263e573c815cd724eafad54ef964867db36278181e64611"
-url = "https://github.com/anomalyco/opencode/releases/download/v1.2.25/opencode-linux-x64.tar.gz"
+checksum = "sha256:3c7a6dd1dc46e3e39a60e0e2f371176fbf3d9681e29b670991491f1172062454"
+url = "https://github.com/anomalyco/opencode/releases/download/v1.2.26/opencode-linux-x64.tar.gz"
 
 [tools.opencode."platforms.linux-x64-baseline"]
-checksum = "sha256:cab27bac5ae5f3706263e573c815cd724eafad54ef964867db36278181e64611"
-url = "https://github.com/anomalyco/opencode/releases/download/v1.2.25/opencode-linux-x64.tar.gz"
+checksum = "sha256:3c7a6dd1dc46e3e39a60e0e2f371176fbf3d9681e29b670991491f1172062454"
+url = "https://github.com/anomalyco/opencode/releases/download/v1.2.26/opencode-linux-x64.tar.gz"
 
 [tools.opencode."platforms.linux-x64-musl"]
-checksum = "sha256:cab27bac5ae5f3706263e573c815cd724eafad54ef964867db36278181e64611"
-url = "https://github.com/anomalyco/opencode/releases/download/v1.2.25/opencode-linux-x64.tar.gz"
+checksum = "sha256:3c7a6dd1dc46e3e39a60e0e2f371176fbf3d9681e29b670991491f1172062454"
+url = "https://github.com/anomalyco/opencode/releases/download/v1.2.26/opencode-linux-x64.tar.gz"
 
 [tools.opencode."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:cab27bac5ae5f3706263e573c815cd724eafad54ef964867db36278181e64611"
-url = "https://github.com/anomalyco/opencode/releases/download/v1.2.25/opencode-linux-x64.tar.gz"
+checksum = "sha256:3c7a6dd1dc46e3e39a60e0e2f371176fbf3d9681e29b670991491f1172062454"
+url = "https://github.com/anomalyco/opencode/releases/download/v1.2.26/opencode-linux-x64.tar.gz"
 
 [tools.opencode."platforms.macos-arm64"]
-checksum = "sha256:19d2bc2a6d60c42ad7daec8f042ccbc0a3987709e73dc5acb1cfcd8de7c80b86"
-url = "https://github.com/anomalyco/opencode/releases/download/v1.2.25/opencode-darwin-arm64.zip"
+checksum = "sha256:214b97f623f870478468aad2be159544ab312f3354b23402c75ae8853de3e821"
+url = "https://github.com/anomalyco/opencode/releases/download/v1.2.26/opencode-darwin-arm64.zip"
 
 [tools.opencode."platforms.macos-x64"]
-checksum = "sha256:11bc91dd12a4de4fd6162beb9cfa37071d42d0a21007f583bf09dedd72dd57ce"
-url = "https://github.com/anomalyco/opencode/releases/download/v1.2.25/opencode-darwin-x64.zip"
+checksum = "sha256:950c9918df4c923f6b9e9842f81974fd341bfbf793fda768119c4d17159cdc87"
+url = "https://github.com/anomalyco/opencode/releases/download/v1.2.26/opencode-darwin-x64.zip"
 
 [tools.opencode."platforms.macos-x64-baseline"]
-checksum = "sha256:11bc91dd12a4de4fd6162beb9cfa37071d42d0a21007f583bf09dedd72dd57ce"
-url = "https://github.com/anomalyco/opencode/releases/download/v1.2.25/opencode-darwin-x64.zip"
+checksum = "sha256:950c9918df4c923f6b9e9842f81974fd341bfbf793fda768119c4d17159cdc87"
+url = "https://github.com/anomalyco/opencode/releases/download/v1.2.26/opencode-darwin-x64.zip"
 
 [tools.opencode."platforms.windows-x64"]
-checksum = "sha256:cef63943ccd9791f3cf6457ef1b8ad03d9e7ebb8672418eb7fa59a815008509a"
-url = "https://github.com/anomalyco/opencode/releases/download/v1.2.25/opencode-windows-x64.zip"
+checksum = "sha256:4cdd79773a21a73847e1024ba689d305cdc96e8100729bd89bca4cf1fd5b8256"
+url = "https://github.com/anomalyco/opencode/releases/download/v1.2.26/opencode-windows-x64.zip"
 
 [tools.opencode."platforms.windows-x64-baseline"]
-checksum = "sha256:cef63943ccd9791f3cf6457ef1b8ad03d9e7ebb8672418eb7fa59a815008509a"
-url = "https://github.com/anomalyco/opencode/releases/download/v1.2.25/opencode-windows-x64.zip"
+checksum = "sha256:4cdd79773a21a73847e1024ba689d305cdc96e8100729bd89bca4cf1fd5b8256"
+url = "https://github.com/anomalyco/opencode/releases/download/v1.2.26/opencode-windows-x64.zip"
 
 [[tools.pnpm]]
 version = "10.32.1"

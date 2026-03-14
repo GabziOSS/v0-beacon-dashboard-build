@@ -1,25 +1,29 @@
+[tools]
+"aqua:fish-shell/fish-shell" = "latest"
+croc = "latest"
+neovim = "latest"
+lazygit = "latest"
+aws-vault = "latest"
+aws-cli = { version = "latest", symlink_bins = "true" }
+node = "lts/krypton"
+pnpm = "latest"
+bun = "latest"
+dotenvx = "latest"
+opencode = "latest"
+"npm:ocx" = "latest"
+
+
 [settings]
 experimental = true
 lockfile = true
 
-[tools]
-"aqua:fish-shell/fish-shell" = "latest"
-lazygit = "latest"
-croc = "latest"
-opencode = "latest"
-bun = "latest"
-neovim = "latest"
-"npm:ocx" = "latest"
-dotenvx = "latest"
-aws-vault = "latest"
-aws-cli = { version = "latest", symlink_bins = "true" }
-pnpm = "latest"
+[shell_alias]
+ms = "./bin/mise"
 
-[tasks]
-# GitHub container token tasks
-[tasks.fishing]
-description = "Initialize remote fish session"
-shell = "fish"
+[tasks.omo-setup]
 run = '''
-  fish_add_path ./bin/mise
+  bunx oh-my-opencode-slim install --no-tui '--skills=yes' '--tmux=no' \
+    '--opencode-free=yes' '--opencode-free-model=auto' \
+    '--kimi=no' '--openai=no' '--anthropic=yes' '--copilot=no' \
+    '--zai-plan=no' '--antigravity=no' '--chutes=no' 
 '''
