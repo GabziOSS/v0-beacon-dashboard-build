@@ -11,7 +11,7 @@ bun = "latest"
 dotenvx = "latest"
 opencode = "latest"
 "npm:ocx" = "latest"
-
+"npm:@vudovn/ag-kit" = "latest"
 
 [settings]
 experimental = true
