@@ -1,4 +1,4 @@
-# Beacon Dashboard - Claude Instructions
+# Beacon Scaffold - Claude Instructions
 
 ## Project Overview
 
@@ -9,10 +9,10 @@
 ## Key Commands
 
 ```bash
-npm run dev          # Development server
-npm run build        # Production build
-npm run lint         # ESLint fix
-npm run typecheck    # TypeScript check
+pnpm run dev          # Development server
+pnpm run build        # Production build
+pnpm run lint         # ESLint fix
+pnpm run typecheck    # TypeScript check
 ```
 
 ## Project Structure
@@ -69,11 +69,10 @@ Plans: `docs/plans/OC/BEACON_OC_*.md`
 
 ## Guidelines
 
-1. Always run `npm run typecheck` after changes
+1. Always run `pnpm run typecheck` after changes
 2. Use existing patterns from `components/charts/` and `components/dashboard/`
 3. Follow the route structure in `app/(shell)/`
 4. Keep Recharts usage consistent with existing chart components
 5. Use Radix UI primitives for new interactive components
 6. Read the relevant `docs/plans/OC/` prompt before starting any OC task
 7. Do not change visual markup during wiring tasks (OC-2 through OC-5)
-
