@@ -20,3 +20,4 @@ node_modules/
 .open-next
 /civicpulse_user.csv
 /mock_user.csv
+/.opencode/memory-core
