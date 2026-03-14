@@ -32,7 +32,9 @@ export default function LoginPage() {
     startTransition(async () => {
       const result = await signIn(email, password)
       if (result.success) {
-        router.push('/dashboard/overview')
+        // Use window.location for full navigation after auth state change
+        // This ensures cookies/localStorage are properly read by the new page
+        window.location.href = '/dashboard/overview'
       } else {
         setError(result.error || 'Invalid credentials')
       }
