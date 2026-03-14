@@ -9,7 +9,7 @@
     "@franlol/opencode-md-table-formatter",
     "@ramtinj95/opencode-tokenscope",
   ],
-  "instructions": ["./shell_strategy.md"],
+  "instructions": ["./shell_strategy.md", "./CLAUDE.md", "./AGENT.md"],
   "agent": {
     "explore": {
       "disable": true,
@@ -18,5 +18,4 @@
       "disable": true,
     },
   },
-  // Add MCP servers, tools, plugins here
 }
