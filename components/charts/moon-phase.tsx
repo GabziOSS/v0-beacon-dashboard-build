@@ -52,7 +52,7 @@ function MoonIcon({ phase }: { phase: MoonPhaseName }) {
   const terminatorX = R * (1 - illuminationFactor * 2) // -R to R
 
   return (
-    <svg viewBox="0 0 80 80" className="w-16 h-16" aria-hidden>
+    <svg viewBox="0 0 80 80" className="w-full h-full drop-shadow-md aspect-square max-w-[200px]" aria-hidden>
       <defs>
         <clipPath id="moonClip">
           <circle cx={CX} cy={CY} r={R} />
@@ -104,12 +104,16 @@ function MoonIcon({ phase }: { phase: MoonPhaseName }) {
 
 export function MoonPhase({ data }: { data: MoonPhaseData }) {
   return (
-    <div className="flex flex-col items-center justify-center h-full gap-3">
-      <MoonIcon phase={data.phase} />
-      <span className="text-sm font-medium text-foreground">{data.phase}</span>
+    <div className="flex flex-col items-center justify-center h-full gap-4 p-2 w-full">
+      <div className="flex-1 w-full min-h-[120px] flex items-center justify-center aspect-square">
+        <MoonIcon phase={data.phase} />
+      </div>
+      <div className="flex flex-col items-center text-center">
+        <span className="text-base font-semibold text-foreground tracking-tight">{data.phase}</span>
       {data.illumination !== undefined && (
         <span className="text-xs text-muted-foreground">{data.illumination}% illuminated</span>
       )}
+      </div>
     </div>
   )
 }

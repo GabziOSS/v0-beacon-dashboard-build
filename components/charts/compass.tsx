@@ -50,8 +50,8 @@ export function CompassChart({ bearing, label }: { bearing: number; label: strin
 
   return (
     <div className="flex flex-col items-center justify-center h-full gap-4 w-full">
-      <div className="relative w-full flex-1 min-h-[160px] max-h-[220px] aspect-square flex items-center justify-center">
-        <svg viewBox="0 0 160 160" className="w-full h-full drop-shadow-sm" aria-hidden>
+      <div className="relative w-full flex-1 min-h-[160px] aspect-square flex items-center justify-center">
+        <svg viewBox="0 0 160 160" className="w-full h-full drop-shadow-sm max-w-[320px]" aria-hidden>
         {/* Outer ring */}
         <circle cx={CX} cy={CY} r={RING_R} fill="none" stroke="var(--border)" strokeWidth={1} />
         <circle

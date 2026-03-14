@@ -52,8 +52,9 @@ export function SunriseSunset({ data }: { data: SunriseSunsetData }) {
   const isDay = currentMin >= sunriseMin && currentMin <= sunsetMin
 
   return (
-    <div className="flex flex-col items-center justify-center h-full gap-1">
-      <svg viewBox="0 0 200 100" className="w-full max-w-[220px]" aria-hidden>
+    <div className="flex flex-col items-center justify-center h-full gap-3 p-2 w-full">
+      <div className="relative w-full flex-1 aspect-[2/1] flex items-center justify-center min-h-[140px]">
+        <svg viewBox="0 0 200 100" className="w-full h-full drop-shadow-sm max-w-[400px]" aria-hidden>
         {/* Horizon line */}
         <line
           x1={CX - R - 10}
@@ -103,8 +104,9 @@ export function SunriseSunset({ data }: { data: SunriseSunsetData }) {
           <circle r={4} fill="var(--chart-5)" />
         </g>
       </svg>
+      </div>
 
-      <div className="flex items-center justify-between w-full max-w-[200px] px-2">
+      <div className="flex items-center justify-between w-full px-4 text-muted-foreground">
         <div className="flex items-center gap-1.5">
           <Sun className="w-3.5 h-3.5 text-chart-1" />
           <span className="text-xs font-mono text-foreground">{data.sunrise}</span>

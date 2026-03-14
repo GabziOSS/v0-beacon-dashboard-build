@@ -32,8 +32,8 @@ export function RainBar({ data }: { data: RainBarData }) {
   }
 
   return (
-    <div className="flex flex-col h-full w-full justify-center">
-      <ChartContainer config={chartConfig} className="h-[200px] w-full">
+    <div className="flex flex-col h-full w-full justify-center flex-1">
+      <ChartContainer config={chartConfig} className="w-full h-full min-h-[160px]">
         <BarChart
           data={chartData}
           margin={{
