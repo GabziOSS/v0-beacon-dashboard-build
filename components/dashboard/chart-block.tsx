@@ -1,7 +1,27 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
-import { GripVertical, MoreHorizontal, Expand, Maximize2, Trash2, Download } from 'lucide-react'
+import { useState, useRef, useEffect, useCallback } from 'react'
+
+/** Returns the current inner-window width, updated on resize. */
+function useWindowWidth() {
+  const [width, setWidth] = useState<number>(() =>
+    typeof window !== 'undefined' ? window.innerWidth : 1280
+  )
+  useEffect(() => {
+    function handle() { setWidth(window.innerWidth) }
+    window.addEventListener('resize', handle)
+    return () => window.removeEventListener('resize', handle)
+  }, [])
+  return width
+}
+import {
+  GripVertical,
+  MoreHorizontal,
+  Expand,
+  Maximize2,
+  Trash2,
+  Download,
+} from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
@@ -29,7 +49,6 @@ interface ChartBlockProps {
   onRowSpanChange?: (id: string, span: RowSpan) => void
   onRemove: (id: string) => void
   children: React.ReactNode
-  isDragging?: boolean
   readOnly?: boolean
 }
 
@@ -47,6 +66,15 @@ function findNextSize(col: ColSpan, row: RowSpan): SizeState {
   return SIZE_CYCLE[(idx + 1) % SIZE_CYCLE.length]
 }
 
+/** A single resize direction handle */
+type ResizeEdge = 'bottom-right' | 'bottom' | 'right'
+
+interface ResizePreview {
+  col: ColSpan
+  row: RowSpan
+  rect: DOMRect
+}
+
 export function ChartBlock({
   id,
   title,
@@ -60,20 +88,22 @@ export function ChartBlock({
   readOnly = false,
 }: ChartBlockProps) {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [resizePreview, setResizePreview] = useState<{
-    col: ColSpan
-    row: RowSpan
-    rect: DOMRect
-  } | null>(null)
+  const [resizePreview, setResizePreview] = useState<ResizePreview | null>(null)
   const blockRef = useRef<HTMLDivElement>(null)
   const pendingResizeRef = useRef<{ col: ColSpan; row: RowSpan } | null>(null)
   const [mounted, setMounted] = useState(false)
+  const windowWidth = useWindowWidth()
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  // Clamp colSpan to what the responsive grid can actually show:
+  // mobile (<640px) → 1, sm tablet (<1024px) → max 2, lg+ → stored value
+  const effectiveColSpan: ColSpan =
+    windowWidth < 640 ? 1
+    : windowWidth < 1024 ? (Math.min(colSpan, 2) as ColSpan)
+    : colSpan
 
-  // Handle pending resize updates after render cycle completes
+  useEffect(() => { setMounted(true) }, [])
+
+  // Apply pending resize after render
   useEffect(() => {
     if (pendingResizeRef.current) {
       const { col, row } = pendingResizeRef.current
@@ -91,9 +121,15 @@ export function ChartBlock({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition: resizePreview ? undefined : transition,
-    gridColumn: `span ${colSpan}`,
+    gridColumn: `span ${effectiveColSpan}`,
     gridRow: `span ${rowSpan}`,
+    zIndex: isDragging ? 10 : undefined,
   }
+
+  const mergedRef = useCallback((node: HTMLDivElement | null) => {
+    setNodeRef(node)
+    ;(blockRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+  }, [setNodeRef])
 
   function cycleSize() {
     const next = findNextSize(colSpan, rowSpan)
@@ -101,65 +137,58 @@ export function ChartBlock({
     if (onRowSpanChange) onRowSpanChange(id, next.row)
   }
 
-  function handleResizeStart(e: React.PointerEvent<HTMLDivElement>) {
+  function startResize(e: React.PointerEvent<HTMLDivElement>, edge: ResizeEdge) {
     if (!blockRef.current) return
+    e.stopPropagation()
     const rect = blockRef.current.getBoundingClientRect()
     const startX = e.clientX
     const startY = e.clientY
-    const startColSpan = colSpan
-    const startRowSpan = rowSpan
+    const startCol = colSpan
+    const startRow = rowSpan
     const COL_STEP = rect.width / colSpan
     const ROW_STEP = rect.height / rowSpan
+    let currentRect = { ...rect.toJSON(), width: rect.width, height: rect.height } as DOMRect
 
     setResizePreview({ col: colSpan, row: rowSpan, rect })
 
-    function handleMove(me: PointerEvent) {
-      const deltaX = me.clientX - startX
-      const deltaY = me.clientY - startY
-      const newColSpan = Math.max(
-        1,
-        Math.min(3, startColSpan + Math.round(deltaX / COL_STEP))
-      ) as ColSpan
-      const newRowSpan = Math.max(
-        1,
-        Math.min(2, startRowSpan + Math.round(deltaY / ROW_STEP))
-      ) as RowSpan
+    ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
 
-      setResizePreview(prev =>
-        prev
-          ? {
-              ...prev,
-              col: newColSpan,
-              row: newRowSpan,
-              rect: {
-                ...prev.rect,
-                width: rect.width + (newColSpan - startColSpan) * COL_STEP,
-                height: rect.height + (newRowSpan - startRowSpan) * ROW_STEP,
-              } as DOMRect,
-            }
-          : null
-      )
+    function onMove(me: PointerEvent) {
+      const dx = me.clientX - startX
+      const dy = me.clientY - startY
+
+      const newCol = (edge === 'bottom'
+        ? startCol
+        : Math.max(1, Math.min(3, startCol + Math.round(dx / COL_STEP)))) as ColSpan
+
+      const newRow = (edge === 'right'
+        ? startRow
+        : Math.max(1, Math.min(2, startRow + Math.round(dy / ROW_STEP)))) as RowSpan
+
+      const newWidth = rect.width + (newCol - startCol) * COL_STEP
+      const newHeight = rect.height + (newRow - startRow) * ROW_STEP
+
+      currentRect = {
+        x: rect.x, y: rect.y, left: rect.left, top: rect.top,
+        right: rect.right, bottom: rect.bottom,
+        width: newWidth, height: newHeight,
+        toJSON: () => ({ x: rect.x, y: rect.y, width: newWidth, height: newHeight }),
+      } as DOMRect
+
+      setResizePreview({ col: newCol, row: newRow, rect: currentRect })
     }
 
-    function handleEnd() {
-      // Capture the current preview state and store in ref for useEffect to handle
+    function onUp() {
       setResizePreview(prev => {
-        if (prev) {
-          pendingResizeRef.current = { col: prev.col, row: prev.row }
-        }
+        if (prev) pendingResizeRef.current = { col: prev.col, row: prev.row }
         return null
       })
-      document.removeEventListener('pointermove', handleMove)
-      document.removeEventListener('pointerup', handleEnd)
+      document.removeEventListener('pointermove', onMove)
+      document.removeEventListener('pointerup', onUp)
     }
 
-    document.addEventListener('pointermove', handleMove)
-    document.addEventListener('pointerup', handleEnd)
-  }
-
-  const mergedRef = (node: HTMLDivElement | null) => {
-    setNodeRef(node)
-    ;(blockRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+    document.addEventListener('pointermove', onMove)
+    document.addEventListener('pointerup', onUp)
   }
 
   return (
@@ -168,14 +197,13 @@ export function ChartBlock({
         ref={mergedRef}
         style={style}
         className={cn(
-          'flex flex-col bg-card border border-border rounded-sm min-h-[220px] transition-all relative group',
-          isDragging && 'opacity-50 scale-[0.97] shadow-lg ring-1 ring-primary/40',
-          resizePreview && 'ring-1 ring-primary/60'
+          'flex flex-col bg-card border border-border rounded-sm min-h-[280px] transition-all relative group',
+          isDragging && 'opacity-40 scale-[0.97] shadow-2xl ring-1 ring-primary/40',
+          resizePreview && 'ring-1 ring-primary/60',
         )}
       >
-        {/* Header */}
+        {/* ── Header ── */}
         <div className="flex items-center gap-2 px-3 py-2.5 border-b border-border shrink-0">
-          {/* Drag grip */}
           {!readOnly && (
             <button
               {...attributes}
@@ -187,7 +215,6 @@ export function ChartBlock({
             </button>
           )}
 
-          {/* Title */}
           <div className="flex-1 min-w-0">
             <p className="text-xs font-semibold text-foreground truncate leading-tight">{title}</p>
             {subtitle && (
@@ -197,7 +224,6 @@ export function ChartBlock({
             )}
           </div>
 
-          {/* Expand cycle (both axes) */}
           {!readOnly && (
             <button
               onClick={cycleSize}
@@ -235,7 +261,7 @@ export function ChartBlock({
                           'w-full px-3 py-1.5 text-left text-xs hover:bg-secondary flex items-center gap-2',
                           s.col === colSpan && s.row === rowSpan
                             ? 'text-primary'
-                            : 'text-foreground'
+                            : 'text-foreground',
                         )}
                       >
                         <Maximize2 className="w-3 h-3" />
@@ -252,10 +278,7 @@ export function ChartBlock({
                   </button>
                   {!readOnly && (
                     <button
-                      onClick={() => {
-                        onRemove(id)
-                        setMenuOpen(false)
-                      }}
+                      onClick={() => { onRemove(id); setMenuOpen(false) }}
                       className="w-full px-3 py-1.5 text-left text-xs text-destructive hover:bg-secondary flex items-center gap-2"
                     >
                       <Trash2 className="w-3 h-3" />
@@ -268,60 +291,42 @@ export function ChartBlock({
           </div>
         </div>
 
-        {/* Chart area */}
+        {/* ── Chart area ── */}
         <div className="flex-1 min-h-0 p-3">{children}</div>
 
-        {/* Corner resize handle */}
+        {/* ── Resize handles ── */}
         {!readOnly && (
-          <div
-            onPointerDown={handleResizeStart}
-            className="absolute bottom-0 right-0 w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity cursor-nwse-resize"
-            style={{ touchAction: 'none' }}
-          >
-            <svg
-              className="w-full h-full"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          <>
+            {/* Bottom edge */}
+            <div
+              className="absolute bottom-0 inset-x-4 h-2 opacity-0 group-hover:opacity-100 cursor-s-resize transition-opacity"
+              style={{ touchAction: 'none' }}
+              onPointerDown={e => startResize(e, 'bottom')}
+            />
+            {/* Right edge */}
+            <div
+              className="absolute right-0 inset-y-4 w-2 opacity-0 group-hover:opacity-100 cursor-e-resize transition-opacity"
+              style={{ touchAction: 'none' }}
+              onPointerDown={e => startResize(e, 'right')}
+            />
+            {/* Corner (diagonal) */}
+            <div
+              className="absolute bottom-0 right-0 w-5 h-5 opacity-0 group-hover:opacity-100 cursor-nwse-resize transition-opacity"
+              style={{ touchAction: 'none' }}
+              onPointerDown={e => startResize(e, 'bottom-right')}
             >
-              <line
-                x1="4"
-                y1="16"
-                x2="16"
-                y2="4"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                className="text-muted-foreground"
-                opacity="0.4"
-              />
-              <line
-                x1="8"
-                y1="16"
-                x2="16"
-                y2="8"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                className="text-muted-foreground"
-                opacity="0.4"
-              />
-              <line
-                x1="12"
-                y1="16"
-                x2="16"
-                y2="12"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                className="text-muted-foreground"
-                opacity="0.4"
-              />
-            </svg>
-          </div>
+              <svg className="w-full h-full" viewBox="0 0 20 20" fill="none">
+                <line x1="4" y1="16" x2="16" y2="4" stroke="currentColor" strokeWidth="1.5" className="text-muted-foreground" opacity="0.4" />
+                <line x1="8" y1="16" x2="16" y2="8" stroke="currentColor" strokeWidth="1.5" className="text-muted-foreground" opacity="0.4" />
+                <line x1="12" y1="16" x2="16" y2="12" stroke="currentColor" strokeWidth="1.5" className="text-muted-foreground" opacity="0.4" />
+              </svg>
+            </div>
+          </>
         )}
       </div>
 
-      {/* Resize preview ghost — rendered via portal */}
-      {mounted &&
-        resizePreview &&
+      {/* ── Resize ghost overlay ── */}
+      {mounted && resizePreview &&
         createPortal(
           <div
             className="fixed pointer-events-none z-50 border-2 border-dashed border-primary/60 rounded-sm bg-primary/10 backdrop-blur-sm"
@@ -339,7 +344,7 @@ export function ChartBlock({
               </span>
             </div>
           </div>,
-          document.body
+          document.body,
         )}
     </>
   )
