@@ -1,0 +1,13 @@
+{
+  "name": "@rie-nexus/nextjs-web-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "implicitDependencies": [
+      "@rie-nexus/nextjs-web"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^24.12.0"
+  }
+}
