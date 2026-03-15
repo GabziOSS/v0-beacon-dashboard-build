@@ -25,7 +25,7 @@ const MOCK_USER: BeaconUser = {
   email: "riz.rupert.ortiz@nwssu.edu.ph",
   role: "admin",
   avatar: "RZ",
-  org: "CDRRMO · Calbayog",
+  org: "NWSSU-RIE · Calbayog",
   zones: ["z01", "z02", "z03", "z04"],
 }
 

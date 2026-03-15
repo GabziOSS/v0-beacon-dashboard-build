@@ -6,9 +6,7 @@
   "scripts": {
     "dev": "pnpm nx run @civicpulse/beacon:dev",
     "s:dev": "sst dev",
-    "build": "pnpm nx run-many -t build",
-    "build:opennext": "open-next build",
-    "start": "next start",
+    "build": "pnpm nx run @civicpulse/beacon:build",
     "s:deploy": "sst deploy",
     "s:remove": "sst remove",
     "s:deploy:prod": "sst deploy --stage production",

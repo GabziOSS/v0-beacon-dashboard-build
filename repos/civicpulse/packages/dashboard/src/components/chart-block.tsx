@@ -21,6 +21,8 @@ import {
   ArrowUpRight,
   Trash2,
   Download,
+  Maximize2,
+  Fullscreen,
 } from 'lucide-react'
 import {
   Dialog,
@@ -298,7 +300,7 @@ export function ChartBlock({
                   title="Fullscreen view"
                   aria-label="View fullscreen"
                 >
-                  <Maximize className="w-3.5 h-3.5" />
+                  <Fullscreen className="w-3.5 h-3.5" />
                 </button>
               </DialogTrigger>
               <DialogContent className="max-w-[95vw] w-full h-[90vh] flex flex-col p-1 gap-0 overflow-hidden bg-card border-border">
@@ -320,7 +322,7 @@ export function ChartBlock({
                   title="Resize block"
                   aria-label="Set block size"
                 >
-                  <ArrowUpRight className="w-3 h-3" />
+                  <Maximize2 className="w-3 h-3" />
                   {!(colSpan === 1 && rowSpan === 1) && (
                     <span className="hidden xs:inline">{colSpan} × {rowSpan}</span>
                   )}

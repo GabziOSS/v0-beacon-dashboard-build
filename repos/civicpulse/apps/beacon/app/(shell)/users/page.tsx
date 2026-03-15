@@ -55,7 +55,7 @@ const MOCK_USERS: User[] = [
   {
     id: "usr_000",
     name: "Dr. R. Ortiz",
-    email: "coordinator@cdrrmo.gov.ph",
+    email: "riz.rupert.ortiz@nwssu.edu.ph",
     phone: "+63 917 123 4567",
     role: "admin",
     status: "active",
