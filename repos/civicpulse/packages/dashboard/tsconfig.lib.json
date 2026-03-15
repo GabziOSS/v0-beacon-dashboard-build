@@ -1,0 +1,51 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "outDir": "../../../../dist/out-tsc",
+    "types": [
+      "node",
+      "@nx/react/typings/cssmodule.d.ts",
+      "@nx/react/typings/image.d.ts"
+    ],
+    "moduleResolution": "bundler",
+    "tsBuildInfoFile": "../../../../dist/out-tsc/dashboard.tsbuildinfo"
+  },
+  "exclude": [
+    "jest.config.ts",
+    "jest.config.cts",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "src/**/*.spec.tsx",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.js",
+    "src/**/*.test.js",
+    "src/**/*.spec.jsx",
+    "src/**/*.test.jsx"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "references": [
+    {
+      "path": "../types/tsconfig.lib.json"
+    },
+    {
+      "path": "../hooks/tsconfig.lib.json"
+    },
+    {
+      "path": "../weather-charts/tsconfig.lib.json"
+    },
+    {
+      "path": "../chart-kit/tsconfig.lib.json"
+    },
+    {
+      "path": "../beacon-ui/tsconfig.lib.json"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "extends": "../../../../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "../../../../repos/civicpulse/packages/beacon-ui/src/**/*",
+    "../../../../repos/civicpulse/packages/hooks/src/**/*",
+    "../../../../repos/civicpulse/packages/types/src/**/*",
+    "../../../../repos/civicpulse/packages/data/src/**/*",
+    "../../../../repos/civicpulse/packages/dashboard/src/**/*",
+    "../../../../repos/civicpulse/packages/chart-kit/src/**/*",
+    "../../../../repos/civicpulse/packages/weather-charts/src/**/*"
+  ],
+  "exclude": ["node_modules"]
+}
