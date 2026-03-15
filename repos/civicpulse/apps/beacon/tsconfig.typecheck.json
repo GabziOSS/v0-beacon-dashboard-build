@@ -1,0 +1,42 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": false,
+    "declarationMap": false,
+    "emitDeclarationOnly": false,
+    "noEmit": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "target": "es2017",
+    "noImplicitReturns": false,
+    "strict": false
+  },
+  "references": [],
+  "include": [
+    "next-env.d.ts",
+    "open-next.config.ts",
+    "hooks/**/*.ts",
+    "hooks/**/*.tsx",
+    "lib/**/*.ts",
+    "lib/**/*.tsx",
+    "components/**/*.ts",
+    "components/**/*.tsx",
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "repos/civicpulse/packages/beacon-ui/src/**/*.ts",
+    "repos/civicpulse/packages/beacon-ui/src/**/*.tsx",
+    "repos/civicpulse/packages/hooks/src/**/*.ts",
+    "repos/civicpulse/packages/hooks/src/**/*.tsx",
+    "repos/civicpulse/packages/types/src/**/*.ts",
+    "repos/civicpulse/packages/types/src/**/*.tsx",
+    "repos/civicpulse/packages/data/src/**/*.ts",
+    "repos/civicpulse/packages/data/src/**/*.tsx",
+    "repos/civicpulse/packages/dashboard/src/**/*.ts",
+    "repos/civicpulse/packages/dashboard/src/**/*.tsx",
+    "repos/civicpulse/packages/chart-kit/src/**/*.ts",
+    "repos/civicpulse/packages/chart-kit/src/**/*.tsx",
+    "repos/civicpulse/packages/weather-charts/src/**/*.ts",
+    "repos/civicpulse/packages/weather-charts/src/**/*.tsx"
+  ],
+  "exclude": ["node_modules", ".next", ".sst", "dist"]
+}

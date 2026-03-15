@@ -1,0 +1,6 @@
+.next
+.output
+.turbo
+node_modules
+dist
+out-tsc
