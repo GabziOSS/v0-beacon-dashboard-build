@@ -1,5 +1,5 @@
 // OpenNext config for SST deployment
-import type { OpenNextConfig } from '@opennextjs/aws/types/open-next'
+import type { OpenNextConfig } from "@opennextjs/aws/types/open-next"
 
 const config: OpenNextConfig = {
   default: {},
