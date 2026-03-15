@@ -1,8 +1,0 @@
-// OpenNext config for SST deployment
-import type { OpenNextConfig } from '@opennextjs/aws/types/open-next'
-
-const config: OpenNextConfig = {
-  default: {},
-}
-
-export default config
