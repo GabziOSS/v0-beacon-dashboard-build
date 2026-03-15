@@ -1,32 +1,32 @@
-'use client'
+"use client"
 
-import { useEffect, useState } from 'react'
-import { usePathname } from 'next/navigation'
-import { Bell, ChevronRight, Shield } from 'lucide-react'
-import { cn } from '@beacon/ui'
-import { SidebarTrigger } from '@/components/shell/sidebar'
+import { useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
+import { Bell, ChevronRight, Shield } from "lucide-react"
+import { cn } from "@beacon/ui"
+import { SidebarTrigger } from "@/components/shell/sidebar"
 
 const BREADCRUMBS: Record<string, string[]> = {
-  '/': ['CivicPulse', 'Dashboard'],
-  '/map': ['CivicPulse', 'Map'],
-  '/alerts': ['CivicPulse', 'Alerts'],
-  '/users': ['CivicPulse', 'Users'],
-  '/settings': ['CivicPulse', 'Settings'],
+  "/": ["CivicPulse", "Dashboard"],
+  "/map": ["CivicPulse", "Map"],
+  "/alerts": ["CivicPulse", "Alerts"],
+  "/users": ["CivicPulse", "Users"],
+  "/settings": ["CivicPulse", "Settings"],
 }
 
 export function Topbar() {
   const pathname = usePathname()
-  const crumbs = BREADCRUMBS[pathname] ?? ['CivicPulse']
+  const crumbs = BREADCRUMBS[pathname] ?? ["CivicPulse"]
   // Initialize with null to avoid hydration mismatch, then set on client
   const [time, setTime] = useState<string | null>(null)
 
   useEffect(() => {
     function tick() {
       setTime(
-        new Date().toLocaleTimeString('en-PH', {
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
+        new Date().toLocaleTimeString("en-PH", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
           hour12: false,
         })
       )
@@ -37,19 +37,26 @@ export function Topbar() {
   }, [])
 
   return (
-    <header className="h-14 flex items-center px-2 sm:px-4 gap-2 sm:gap-4 border-b border-border bg-card shrink-0 z-10">
+    <header className="z-10 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-card px-2 sm:gap-4 sm:px-4">
       {/* Mobile hamburger menu trigger */}
       <SidebarTrigger />
 
       {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 min-w-0">
+      <nav
+        aria-label="Breadcrumb"
+        className="flex min-w-0 items-center gap-1.5"
+      >
         {crumbs.map((crumb, i) => (
           <span key={crumb} className="flex items-center gap-1.5">
-            {i > 0 && <ChevronRight className="w-3 h-3 text-muted-foreground shrink-0" />}
+            {i > 0 && (
+              <ChevronRight className="h-3 w-3 shrink-0 text-muted-foreground" />
+            )}
             <span
               className={cn(
-                'text-sm font-medium truncate max-w-[120px] sm:max-w-none',
-                i === crumbs.length - 1 ? 'text-foreground' : 'text-muted-foreground'
+                "max-w-[120px] truncate text-sm font-medium sm:max-w-none",
+                i === crumbs.length - 1
+                  ? "text-foreground"
+                  : "text-muted-foreground"
               )}
             >
               {crumb}
@@ -59,28 +66,28 @@ export function Topbar() {
       </nav>
 
       {/* Live clock — center (hidden on mobile) */}
-      <div className="hidden md:flex flex-1 justify-center">
+      <div className="hidden flex-1 justify-center md:flex">
         <div className="flex flex-col items-center">
-          <span className="text-sm font-medium text-foreground font-mono tabular-nums tracking-wider">
-            {time ?? '--:--:--'}
+          <span className="font-mono text-sm font-medium tracking-wider text-foreground tabular-nums">
+            {time ?? "--:--:--"}
           </span>
-          <span className="text-[10px] text-muted-foreground font-medium tracking-widest uppercase leading-none hidden lg:block">
+          <span className="hidden text-[10px] leading-none font-medium tracking-widest text-muted-foreground uppercase lg:block">
             Calbayog City
           </span>
         </div>
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-2 ml-auto md:ml-0">
+      <div className="ml-auto flex items-center gap-2 md:ml-0">
         <button
           aria-label="Notifications"
-          className="w-8 h-8 rounded-sm flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors relative"
+          className="relative flex h-8 w-8 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
         >
-          <Bell className="w-4 h-4" />
-          <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-destructive" />
+          <Bell className="h-4 w-4" />
+          <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-destructive" />
         </button>
-        <div className="w-8 h-8 rounded-sm bg-primary/10 border border-primary/20 flex items-center justify-center">
-          <Shield className="w-4 h-4 text-primary" />
+        <div className="flex h-8 w-8 items-center justify-center rounded-sm border border-primary/20 bg-primary/10">
+          <Shield className="h-4 w-4 text-primary" />
         </div>
       </div>
     </header>

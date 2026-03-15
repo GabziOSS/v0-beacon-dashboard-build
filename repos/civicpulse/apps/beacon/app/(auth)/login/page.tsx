@@ -1,31 +1,31 @@
-'use client'
+"use client"
 
-import { useState, useTransition } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { Eye, EyeOff, BarChart3, MapPin, Shield, Loader2 } from 'lucide-react'
-import { useAuth } from '@/lib/auth'
-import { cn } from '@beacon/ui'
+import { useState, useTransition } from "react"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
+import { Eye, EyeOff, BarChart3, MapPin, Shield, Loader2 } from "lucide-react"
+import { useAuth } from "@/lib/auth"
+import { cn } from "@beacon/ui"
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState("")
   const [isPending, startTransition] = useTransition()
   const { signIn } = useAuth()
   const router = useRouter()
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setError('')
+    setError("")
 
-    if (!email.includes('@')) {
-      setError('Please enter a valid email address')
+    if (!email.includes("@")) {
+      setError("Please enter a valid email address")
       return
     }
     if (!password) {
-      setError('Password is required')
+      setError("Password is required")
       return
     }
 
@@ -34,31 +34,33 @@ export default function LoginPage() {
       if (result.success) {
         // Use window.location for full navigation after auth state change
         // This ensures cookies/localStorage are properly read by the new page
-        window.location.href = '/dashboard/overview'
+        window.location.href = "/dashboard/overview"
       } else {
-        setError(result.error || 'Invalid credentials')
+        setError(result.error || "Invalid credentials")
       }
     })
   }
 
   return (
-    <div className="min-h-screen flex">
+    <div className="flex min-h-screen">
       {/* Left decorative panel */}
-      <div className="hidden lg:flex lg:w-1/2 bg-card relative overflow-hidden">
+      <div className="relative hidden overflow-hidden bg-card lg:flex lg:w-1/2">
         {/* Topographic pattern */}
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 C20 25, 80 25, 50 50 C20 75, 80 75, 50 100' stroke='%23fff' fill='none' stroke-width='0.5'/%3E%3Cpath d='M0 50 C25 20, 25 80, 50 50 C75 20, 75 80, 100 50' stroke='%23fff' fill='none' stroke-width='0.5'/%3E%3C/svg%3E")`,
-            backgroundSize: '100px 100px',
+            backgroundSize: "100px 100px",
           }}
         />
 
-        <div className="relative z-10 flex flex-col justify-between p-12 w-full">
+        <div className="relative z-10 flex w-full flex-col justify-between p-12">
           {/* Logo and tagline */}
           <div>
-            <h1 className="text-4xl font-bold text-foreground tracking-tight">CivicPulse</h1>
-            <p className="mt-3 text-lg text-muted-foreground max-w-sm">
+            <h1 className="text-4xl font-bold tracking-tight text-foreground">
+              CivicPulse
+            </h1>
+            <p className="mt-3 max-w-sm text-lg text-muted-foreground">
               Situational awareness for Calbayog City (WIP)
             </p>
           </div>
@@ -66,34 +68,41 @@ export default function LoginPage() {
           {/* Feature highlights */}
           <div className="space-y-6">
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-sm bg-primary/10 flex items-center justify-center shrink-0">
-                <BarChart3 className="w-5 h-5 text-primary" />
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-primary/10">
+                <BarChart3 className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <p className="text-sm font-medium text-foreground">Demo Charts, mock data</p>
-                <p className="text-xs text-muted-foreground mt-0.5">
+                <p className="text-sm font-medium text-foreground">
+                  Demo Charts, mock data
+                </p>
+                <p className="mt-0.5 text-xs text-muted-foreground">
                   Weatherlink data coming soon 🚧
                 </p>
               </div>
             </div>
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-sm bg-primary/10 flex items-center justify-center shrink-0">
-                <MapPin className="w-5 h-5 text-primary" />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-foreground">12 monitored zones (Sample)</p>
-                <p className="text-xs text-muted-foreground mt-0.5">Map got taken out for now 🚧</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-sm bg-primary/10 flex items-center justify-center shrink-0">
-                <Shield className="w-5 h-5 text-primary" />
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-primary/10">
+                <MapPin className="h-5 w-5 text-primary" />
               </div>
               <div>
                 <p className="text-sm font-medium text-foreground">
-                  enim sint non Lorem magna aliquip minim amet non eu Lorem velit
+                  12 monitored zones (Sample)
                 </p>
-                <p className="text-xs text-muted-foreground mt-0.5">
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  Map got taken out for now 🚧
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-primary/10">
+                <Shield className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-foreground">
+                  enim sint non Lorem magna aliquip minim amet non eu Lorem
+                  velit
+                </p>
+                <p className="mt-0.5 text-xs text-muted-foreground">
                   Took some creative liberty for the texts 😉
                 </p>
               </div>
@@ -101,19 +110,25 @@ export default function LoginPage() {
           </div>
 
           {/* Attribution */}
-          <p className="text-xs text-muted-foreground">NwSSU · CDRRMO · Calbayog City</p>
+          <p className="text-xs text-muted-foreground">
+            NwSSU · CDRRMO · Calbayog City
+          </p>
         </div>
       </div>
 
       {/* Right login panel */}
-      <div className="flex-1 flex items-center justify-center p-8">
+      <div className="flex flex-1 items-center justify-center p-8">
         <div className="w-full max-w-sm">
           {/* Mobile logo */}
-          <div className="lg:hidden mb-8">
-            <h1 className="text-2xl font-bold text-foreground tracking-tight">CivicPulse</h1>
+          <div className="mb-8 lg:hidden">
+            <h1 className="text-2xl font-bold tracking-tight text-foreground">
+              CivicPulse
+            </h1>
           </div>
 
-          <h2 className="text-xl font-semibold text-foreground">Sign in to CivicPulse</h2>
+          <h2 className="text-xl font-semibold text-foreground">
+            Sign in to CivicPulse
+          </h2>
           <p className="mt-1 text-sm text-muted-foreground">
             Enter your credentials to access the dashboard
           </p>
@@ -121,15 +136,18 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="mt-8 space-y-4">
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-xs font-medium text-foreground mb-1.5">
+              <label
+                htmlFor="email"
+                className="mb-1.5 block text-xs font-medium text-foreground"
+              >
                 Email
               </label>
               <input
                 id="email"
                 type="email"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
-                className="w-full h-10 px-3 text-sm bg-input border border-border rounded-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                onChange={(e) => setEmail(e.target.value)}
+                className="h-10 w-full rounded-sm border border-border bg-input px-3 text-sm text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-ring focus:outline-none"
                 placeholder="coordinator@cdrrmo.gov.ph"
                 autoComplete="email"
               />
@@ -139,26 +157,30 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="password"
-                className="block text-xs font-medium text-foreground mb-1.5"
+                className="mb-1.5 block text-xs font-medium text-foreground"
               >
                 Password
               </label>
               <div className="relative">
                 <input
                   id="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  className="w-full h-10 px-3 pr-10 text-sm bg-input border border-border rounded-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="h-10 w-full rounded-sm border border-border bg-input px-3 pr-10 text-sm text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-ring focus:outline-none"
                   placeholder="Enter password"
                   autoComplete="current-password"
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassword(v => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
                 </button>
               </div>
             </div>
@@ -171,18 +193,18 @@ export default function LoginPage() {
               type="submit"
               disabled={isPending}
               className={cn(
-                'w-full h-10 flex items-center justify-center gap-2 text-sm font-medium rounded-sm transition-colors',
-                'bg-primary text-primary-foreground hover:bg-primary/90',
-                'disabled:opacity-50 disabled:cursor-not-allowed'
+                "flex h-10 w-full items-center justify-center gap-2 rounded-sm text-sm font-medium transition-colors",
+                "bg-primary text-primary-foreground hover:bg-primary/90",
+                "disabled:cursor-not-allowed disabled:opacity-50"
               )}
             >
               {isPending ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="h-4 w-4 animate-spin" />
                   Signing in...
                 </>
               ) : (
-                'Sign in'
+                "Sign in"
               )}
             </button>
           </form>
@@ -193,16 +215,18 @@ export default function LoginPage() {
               <div className="w-full border-t border-border" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-background px-2 text-muted-foreground">or</span>
+              <span className="bg-background px-2 text-muted-foreground">
+                or
+              </span>
             </div>
           </div>
 
           {/* OAuth placeholder */}
           <button
             type="button"
-            className="w-full h-10 flex items-center justify-center gap-2 text-sm font-medium rounded-sm border border-border bg-card text-foreground hover:bg-secondary transition-colors"
+            className="flex h-10 w-full items-center justify-center gap-2 rounded-sm border border-border bg-card text-sm font-medium text-foreground transition-colors hover:bg-secondary"
           >
-            <svg className="w-4 h-4" viewBox="0 0 24 24">
+            <svg className="h-4 w-4" viewBox="0 0 24 24">
               <path
                 fill="currentColor"
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -225,7 +249,10 @@ export default function LoginPage() {
 
           {/* Forgot password */}
           <div className="mt-6 text-center">
-            <Link href="/forgot-password" className="text-sm text-primary hover:underline">
+            <Link
+              href="/forgot-password"
+              className="text-sm text-primary hover:underline"
+            >
               Forgot password?
             </Link>
           </div>

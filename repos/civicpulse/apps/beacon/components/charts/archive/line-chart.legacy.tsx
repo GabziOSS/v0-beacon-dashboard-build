@@ -1,6 +1,6 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
+import { useState } from "react"
 import {
   ResponsiveContainer,
   LineChart,
@@ -9,24 +9,28 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-} from 'recharts'
-import { cn } from '@beacon/ui'
-import type { TrendPoint } from '@civicpulse/types'
+} from "recharts"
+import { cn } from "@beacon/ui"
+import type { TrendPoint } from "@civicpulse/types"
 
-const SERIES: Array<{ key: keyof Omit<TrendPoint, 'time'>; label: string; color: string }> = [
-  { key: 'medical', label: 'Medical', color: 'var(--chart-1)' },
-  { key: 'crime', label: 'Crime', color: 'var(--chart-2)' },
-  { key: 'fire', label: 'Fire', color: 'var(--chart-5)' },
-  { key: 'flood', label: 'Flood', color: 'var(--chart-6)' },
-  { key: 'infrastructure', label: 'Infrastructure', color: 'var(--chart-4)' },
-  { key: 'typhoon', label: 'Typhoon', color: 'var(--chart-7)' },
+const SERIES: Array<{
+  key: keyof Omit<TrendPoint, "time">
+  label: string
+  color: string
+}> = [
+  { key: "medical", label: "Medical", color: "var(--chart-1)" },
+  { key: "crime", label: "Crime", color: "var(--chart-2)" },
+  { key: "fire", label: "Fire", color: "var(--chart-5)" },
+  { key: "flood", label: "Flood", color: "var(--chart-6)" },
+  { key: "infrastructure", label: "Infrastructure", color: "var(--chart-4)" },
+  { key: "typhoon", label: "Typhoon", color: "var(--chart-7)" },
 ]
 
 export function IncidentTrendChart({ data }: { data: TrendPoint[] }) {
   const [hidden, setHidden] = useState<Set<string>>(new Set())
 
   function toggle(key: string) {
-    setHidden(prev => {
+    setHidden((prev) => {
       const next = new Set(prev)
       next.has(key) ? next.delete(key) : next.add(key)
       return next
@@ -34,17 +38,24 @@ export function IncidentTrendChart({ data }: { data: TrendPoint[] }) {
   }
 
   return (
-    <div className="flex flex-col h-full gap-3">
-      <div className="flex-1 min-h-0">
+    <div className="flex h-full flex-col gap-3">
+      <div className="min-h-0 flex-1">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="2 4" stroke="var(--border)" vertical={false} />
+          <LineChart
+            data={data}
+            margin={{ top: 4, right: 8, left: -20, bottom: 0 }}
+          >
+            <CartesianGrid
+              strokeDasharray="2 4"
+              stroke="var(--border)"
+              vertical={false}
+            />
             <XAxis
               dataKey="time"
               tick={{
-                fill: 'var(--muted-foreground)',
+                fill: "var(--muted-foreground)",
                 fontSize: 10,
-                fontFamily: 'var(--font-mono)',
+                fontFamily: "var(--font-mono)",
               }}
               tickLine={false}
               axisLine={false}
@@ -52,25 +63,25 @@ export function IncidentTrendChart({ data }: { data: TrendPoint[] }) {
             />
             <YAxis
               tick={{
-                fill: 'var(--muted-foreground)',
+                fill: "var(--muted-foreground)",
                 fontSize: 10,
-                fontFamily: 'var(--font-mono)',
+                fontFamily: "var(--font-mono)",
               }}
               tickLine={false}
               axisLine={false}
             />
             <Tooltip
               contentStyle={{
-                background: 'var(--card)',
-                border: '1px solid var(--border)',
-                borderRadius: 'var(--radius)',
+                background: "var(--card)",
+                border: "1px solid var(--border)",
+                borderRadius: "var(--radius)",
                 fontSize: 11,
-                fontFamily: 'var(--font-mono)',
-                color: 'var(--foreground)',
+                fontFamily: "var(--font-mono)",
+                color: "var(--foreground)",
               }}
-              cursor={{ stroke: 'var(--border)', strokeWidth: 1 }}
+              cursor={{ stroke: "var(--border)", strokeWidth: 1 }}
             />
-            {SERIES.filter(s => !hidden.has(s.key)).map(s => (
+            {SERIES.filter((s) => !hidden.has(s.key)).map((s) => (
               <Line
                 key={s.key}
                 type="monotone"
@@ -88,17 +99,20 @@ export function IncidentTrendChart({ data }: { data: TrendPoint[] }) {
 
       {/* Legend pills */}
       <div className="flex flex-wrap gap-1.5 px-1">
-        {SERIES.map(s => (
+        {SERIES.map((s) => (
           <button
             key={s.key}
             onClick={() => toggle(s.key)}
             className={cn(
-              'inline-flex items-center gap-1 text-[10px] font-medium font-mono px-2 py-0.5 rounded-sm border transition-opacity',
-              hidden.has(s.key) ? 'opacity-30' : 'opacity-100'
+              "inline-flex items-center gap-1 rounded-sm border px-2 py-0.5 font-mono text-[10px] font-medium transition-opacity",
+              hidden.has(s.key) ? "opacity-30" : "opacity-100"
             )}
             style={{ borderColor: s.color, color: s.color }}
           >
-            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: s.color }} />
+            <span
+              className="h-1.5 w-1.5 shrink-0 rounded-full"
+              style={{ background: s.color }}
+            />
             {s.label}
           </button>
         ))}

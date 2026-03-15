@@ -1,6 +1,6 @@
-import { DashboardGrid } from '@beacon/dashboard'
+import { DashboardGrid } from "@beacon/dashboard"
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic"
 
 export default function CrimeDashboard() {
   return <DashboardGrid initialPreset="crime" />
