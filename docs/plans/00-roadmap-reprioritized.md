@@ -1,6 +1,6 @@
 # 00 — Beacon Dashboard: Reprioritized Roadmap
 
-> Last updated: 2026-03-15
+> Last updated: 2026-03-15 (post chart-refinement sprint)
 
 ## Context
 This project is a **UI scaffold**. All data is hardcoded. The priority is to solidify the frontend architecture before wiring data or jumping to a monorepo.
@@ -11,8 +11,8 @@ This project is a **UI scaffold**. All data is hardcoded. The priority is to sol
 
 | # | Plan | Focus | Est. Hours | Depends On | Status |
 |---|------|-------|-----------|------------|--------|
-| **0** | [05.5-nx-workspace-migration](05.5-nx-workspace-migration.md) | NX workspace + package boundaries + Vite lib mode | 6–9 | — | 📋 **Next** |
-| **1** | [06-atomic-componentization](06-atomic-componentization.md) | Atom → Molecule → Organism refactor (inside NX libs) | 11–15 | #0 | 📋 Queued |
+| **0** | [05.5-nx-workspace-migration](05.5-nx-workspace-migration.md) | NX workspace + package boundaries + Vite lib mode | 6–9 | — | ✅ **Done** |
+| **1** | [06-atomic-componentization](06-atomic-componentization.md) | Atom → Molecule → Organism refactor (inside NX libs) | 11–15 | #0 | 📋 **Next** |
 | **2** | [07-chart-props-surface-area](07-chart-props-surface-area.md) | Unified type-safe props for all charts | 7–11 | #1 | 📋 Queued |
 | **3** | [08-weather-route-expansion](08-weather-route-expansion.md) | `/weather` section — faithful WeatherLink recreation, modernized | 16–24 | #1, #2 | 📋 Queued |
 | — | — | **UI HANDOFF POINT** | — | — | — |
@@ -33,6 +33,16 @@ This project is a **UI scaffold**. All data is hardcoded. The priority is to sol
 | [04-gauge-chart-layout-fixes](04-gauge-chart-layout-fixes.md) | ✅ Replaced custom SVG with Recharts RadialBar |
 | [05-layout-responsiveness-fixes](05-layout-responsiveness-fixes.md) | ✅ Topbar + Sidebar responsive (flexbox, overflow-y-auto) |
 | [05-responsive-charts-grid-refactor](05-responsive-charts-grid-refactor.md) | ✅ CSS Grid responsive + colSpan clamping + aspect-ratio |
+| [05.5-nx-workspace-migration](05.5-nx-workspace-migration.md) | ✅ Nx monorepo (4-tier), 7 packages extracted, scaffolds imported |
+
+### Sprint Accomplishments (2026-03-15)
+| Area | Details |
+|------|---------|
+| Chart Aesthetics | Nighttime sun view, 5-stop gradient, moon easter egg, uniform glow effects across 7 charts |
+| Interactivity | Wind rose legend filtering, scroll-to-moon, multi-slot forecast modal |
+| Responsiveness | Verified all charts across 1×1, 2×1, 2×2, 3×2, 4×1, 4×2 grid configs |
+| Monorepo | Merged Nexus config, extracted 7 packages, imported 2 scaffold sets |
+| Commits | 7 logical commits covering features, refactoring, docs, and scaffolds |
 
 ---
 
