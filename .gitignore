@@ -41,3 +41,5 @@ pnpm-debug.log*
 # Next.js
 .next
 out
+
+vite.config.*.timestamp*

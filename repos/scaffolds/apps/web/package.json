@@ -4,9 +4,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "vite dev --port 3002",
-    "build": "vite build",
-    "preview": "vite preview",
+    "dev": "nx serve dev --port 3002",
+    "build": "nx vite:build",
+    "preview": "nx vite:preview",
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit"
