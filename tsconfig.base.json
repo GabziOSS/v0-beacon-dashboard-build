@@ -1,0 +1,49 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "importHelpers": true,
+    "isolatedModules": true,
+    "lib": [
+      "es2022"
+    ],
+    "baseUrl": ".",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es2022",
+    "customConditions": [
+      "@rie-nexus/source"
+    ],
+    "paths": {
+      "@beacon/ui": [
+        "repos/civicpulse/packages/beacon-ui/src/index.ts"
+      ],
+      "@beacon/chart-kit": [
+        "repos/civicpulse/packages/chart-kit/src/index.ts"
+      ],
+      "@beacon/weather-charts": [
+        "repos/civicpulse/packages/weather-charts/src/index.ts"
+      ],
+      "@beacon/dashboard": [
+        "repos/civicpulse/packages/dashboard/src/index.ts"
+      ],
+      "@civicpulse/data": [
+        "repos/civicpulse/packages/data/src/index.ts"
+      ],
+      "@civicpulse/hooks": [
+        "repos/civicpulse/packages/hooks/src/index.ts"
+      ],
+      "@civicpulse/types": [
+        "repos/civicpulse/packages/types/src/index.ts"
+      ]
+    }
+  }
+}

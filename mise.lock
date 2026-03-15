@@ -133,9 +133,17 @@ backend = "core:node"
 version = "2.0.2"
 backend = "npm:@vudovn/ag-kit"
 
+[[tools."npm:nx"]]
+version = "22.5.4"
+backend = "npm:nx"
+
 [[tools."npm:ocx"]]
 version = "2.0.0"
 backend = "npm:ocx"
+
+[[tools."npm:turbo"]]
+version = "2.8.17"
+backend = "npm:turbo"
 
 [[tools.opencode]]
 version = "1.2.26"

@@ -21,3 +21,23 @@ node_modules/
 /civicpulse_user.csv
 /mock_user.csv
 /.opencode/memory-core
+
+# Nx
+.nx/
+
+# Build artifacts
+dist/
+.output/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Other
+.turbo/
+
+# Next.js
+.next
+out

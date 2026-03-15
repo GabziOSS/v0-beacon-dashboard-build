@@ -1,0 +1,4 @@
+packages:
+  # - "./repos/civicpulse/*"
+  - "repos/*/apps/*"
+  - "repos/*/packages/*"

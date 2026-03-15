@@ -29,5 +29,32 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "sst.config.ts", "sst.config.ts"]
+  "exclude": [
+    "node_modules",
+    "sst.config.ts",
+    "sst.config.ts"
+  ],
+  "references": [
+    {
+      "path": "./repos/civicpulse/packages/weather-charts"
+    },
+    {
+      "path": "./repos/civicpulse/packages/beacon-ui"
+    },
+    {
+      "path": "./repos/civicpulse/packages/chart-kit"
+    },
+    {
+      "path": "./repos/civicpulse/packages/dashboard"
+    },
+    {
+      "path": "./repos/civicpulse/packages/hooks"
+    },
+    {
+      "path": "./repos/civicpulse/packages/types"
+    },
+    {
+      "path": "./repos/civicpulse/packages/data"
+    }
+  ]
 }

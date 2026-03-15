@@ -1,25 +1,42 @@
-import nextPlugin from 'eslint-config-next'
+import nx from "@nx/eslint-plugin"
 
 export default [
-  ...nextPlugin,
+  ...nx.configs["flat/base"],
+  ...nx.configs["flat/typescript"],
+  ...nx.configs["flat/javascript"],
   {
-    ignores: [
-      'node_modules/',
-      '.next/',
-      'dist/',
-      'build/',
-      '.sst/',
-      'coverage/',
-      '*.config.js',
-      '*.config.mjs',
-    ],
+    ignores: ["**/dist", "**/out-tsc", "**/test-output"],
   },
   {
+    files: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
     rules: {
-      'no-console': 'warn',
-      'no-debugger': 'warn',
-      'react/no-unescaped-entities': 'off',
-      'react-hooks/set-state-in-effect': 'off', // Allow setState in useEffect for mount detection
+      "@nx/enforce-module-boundaries": [
+        "error",
+        {
+          enforceBuildableLibDependency: true,
+          allow: ["^.*/eslint(\\.base)?\\.config\\.[cm]?[jt]s$"],
+          depConstraints: [
+            {
+              sourceTag: "*",
+              onlyDependOnLibsWithTags: ["*"],
+            },
+          ],
+        },
+      ],
     },
+  },
+  {
+    files: [
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.cts",
+      "**/*.mts",
+      "**/*.js",
+      "**/*.jsx",
+      "**/*.cjs",
+      "**/*.mjs",
+    ],
+    // Override or add rules here
+    rules: {},
   },
 ]

@@ -12,15 +12,26 @@ dotenvx = "latest"
 opencode = "latest"
 "npm:ocx" = "latest"
 "npm:@vudovn/ag-kit" = "latest"
+"npm:nx" = "latest"
+"npm:turbo" = "latest"
 
 [settings]
 experimental = true
 lockfile = true
 
+[env]
+OC_PORT = 2026
+# OCX_PROFILE = "omo-free"
+
 [shell_alias]
 ms = "./bin/mise"
 
-[tasks.omo-setup]
+[tasks]
+oc-web = "dotenvx run -f ./.env._oc -- ocx oc -- web --port $OC_PORT"
+oc-at = "dotenvx run -f ./.env._oc -- ocx oc -- attach localhost:$OC_PORT"
+oc = "dotenvx run -f ./.env._oc -- ocx oc"
+
+[tasks.omo-setup-auto]
 run = '''
   bunx oh-my-opencode-slim install --no-tui '--skills=yes' '--tmux=no' \
     '--opencode-free=yes' '--opencode-free-model=auto' \
