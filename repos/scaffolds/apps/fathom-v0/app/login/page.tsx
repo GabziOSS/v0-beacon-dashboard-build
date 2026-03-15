@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useAtom, useSetAtom } from 'jotai'
+import { useAtom, useSetAtom, useAtomValue } from 'jotai'
 import { Shield, Eye, EyeOff, Loader2, Palette } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -15,13 +15,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { loginAtom } from '@/lib/atoms/auth'
-import { themeNameAtom, availableThemes, type ThemeName } from '@/lib/atoms/theme'
+import { themeNameAtom, availableThemesAtom, type ThemeName } from '@/lib/atoms/theme'
 import { cn } from '@/lib/utils'
 
 export default function LoginPage() {
   const router = useRouter()
   const login = useSetAtom(loginAtom)
   const [themeName, setThemeName] = useAtom(themeNameAtom)
+  const availableThemes = useAtomValue(availableThemesAtom)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)

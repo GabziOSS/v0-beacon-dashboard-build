@@ -9,13 +9,25 @@
     "@franlol/opencode-md-table-formatter",
     "@ramtinj95/opencode-tokenscope",
   ],
-  "instructions": ["./shell_strategy.md", "./CLAUDE.md", "./AGENT.md", "./v0.md"],
+  "instructions": [
+    "./shell_strategy.md",
+    "./CLAUDE.md",
+    "./AGENT.md",
+    "./v0.md",
+  ],
   "agent": {
     "explore": {
       "disable": true,
     },
     "general": {
       "disable": true,
+    },
+  },
+  "mcp": {
+    "nx-mcp": {
+      "type": "local",
+      "command": ["pnpx", "nx", "mcp"],
+      "enabled": true,
     },
   },
 }
