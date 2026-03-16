@@ -9,7 +9,10 @@ export default [
         "**/dist",
         "**/out-tsc",
         "**/test-output",
-        "**/vite.config.*.timestamp*"
+        "**/vite.config.*.timestamp*",
+        "**/.next",
+        "**/.output",
+        "**/.turbo"
       ]
   },
   {
@@ -29,19 +32,5 @@ export default [
         },
       ],
     },
-  },
-  {
-    files: [
-      "**/*.ts",
-      "**/*.tsx",
-      "**/*.cts",
-      "**/*.mts",
-      "**/*.js",
-      "**/*.jsx",
-      "**/*.cjs",
-      "**/*.mjs",
-    ],
-    // Override or add rules here
-    rules: {},
   },
 ]
